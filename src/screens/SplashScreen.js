@@ -4,18 +4,19 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 
  
-export default SplashScreen = ({navigation}) => {
+const SplashScreen = ({navigation}) => {
   const [animating, setAnimating] = useState(true);
  
   useEffect(() => {
     setTimeout(() => {
       setAnimating(false);
+      navigation.replace('SignupScreen')
       // AsyncStorage.getItem('user_id').then((value) =>
       //   navigation.replace(
       //     value === null ? 'Auth' : 'DrawerNavigationRoutes'
       //   ),
       // );
-    }, 5000);
+    }, 4000);
   }, []);
  
   return (
@@ -26,12 +27,12 @@ export default SplashScreen = ({navigation}) => {
         size="large"
         style={styles.activityIndicator}
       />
-      <Text>Loading...</Text>
     </View>
   );
 };
  
- 
+export default SplashScreen; 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

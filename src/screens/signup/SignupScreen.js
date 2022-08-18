@@ -36,14 +36,14 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     fontSize: headerFontSize,
     fontWeight: 'bold',
-    marginLeft: -10,
+    marginLeft: -12,
     marginTop: (Dimensions.get('window').height / 2.7),
     color: '#fff'
   },
   subTextStyle: {
     textAlign: 'left',
     fontSize: fontSizes.regular,
-    marginTop: 50,
+    marginTop: 10,
     marginBottom: 10,
     marginLeft: 35,
     marginRight: 35,
@@ -120,12 +120,11 @@ const styles = StyleSheet.create({
   },
 });
 
-
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
-const interpolatedColor1 = new Animated.Value(0);
-const interpolatedColor2 = new Animated.Value(0);
+const [interpolatedColor1, interpolatedColor2, interpolatedColor3] = [new Animated.Value(0), new Animated.Value(0), new Animated.Value(0)];
  
-const LoginScreen = ({navigation}) => {
+const SignupScreen = ({navigation}) => {
+  const [userFullName, setUserFullName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -177,29 +176,44 @@ const LoginScreen = ({navigation}) => {
                     onPress={() => navigation.goBack()}
                     style={{
                       fontWeight: 'bold',
-                      marginLeft: -10,
+                      marginLeft: -12,
                       marginTop: (Dimensions.get('window').height / 3.2),
-                      color: '#fff'
+                      color: '#fff',
                     }}>
                       <Text style={{color: '#fff', fontSize: fontSizes.regular}}>
                         <Icon name="arrow-left" size={fontSizes.regular} /> &nbsp; Back
                       </Text>
                     </TouchableOpacity>
                   
-                  <Text style={styles.headerStyle}>Log in</Text>
+                  <Text style={styles.headerStyle}>Sign up</Text>
 
                 </View>
             </TouchableHighlight>
-                <Text style={styles.subTextStyle}>We're happy to see you back, please login to continue.</Text>
+                <Text style={styles.subTextStyle}>New here? Please create an account and continue.</Text>
                 <KeyboardAvoidingView enabled>
+
                     <View style={styles.SectionStyle}>
                         <AnimatedTextInput
                             style={{...styles.inputStyle, borderColor: AnimColor(interpolatedColor1, 'transparent')}}
-                            onChangeText={(UserEmail) => setUserEmail(UserEmail)}
+                            onChangeText={(UserFullName) => setUserFullName(UserFullName)}
                             onFocus={() => showFocusColor(interpolatedColor1)}
                             onBlur={() => showOriginColor(interpolatedColor1)}
-                            placeholder="Enter Email"
+                            placeholder="Full name" //12345
                             placeholderTextColor={AnimColor(interpolatedColor1, colors.placeholderColor)}
+                            keyboardType="default"
+                            underlineColorAndroid="#f000"
+                            returnKeyType="next"
+                        />
+                    </View>
+
+                    <View style={styles.SectionStyle}>
+                        <AnimatedTextInput
+                            style={{...styles.inputStyle, borderColor: AnimColor(interpolatedColor2, 'transparent')}}
+                            onChangeText={(UserEmail) => setUserEmail(UserEmail)}
+                            onFocus={() => showFocusColor(interpolatedColor2)}
+                            onBlur={() => showOriginColor(interpolatedColor2)}
+                            placeholder="Email address"
+                            placeholderTextColor={AnimColor(interpolatedColor2, colors.placeholderColor)}
                             autoCapitalize="none"
                             keyboardType="email-address"
                             returnKeyType="next"
@@ -210,12 +224,12 @@ const LoginScreen = ({navigation}) => {
                     </View>
                     <View style={styles.SectionStyle}>
                         <AnimatedTextInput
-                            style={{...styles.inputStyle, borderColor: AnimColor(interpolatedColor2, 'transparent')}}
+                            style={{...styles.inputStyle, borderColor: AnimColor(interpolatedColor3, 'transparent')}}
                             onChangeText={(UserPassword) => setUserPassword(UserPassword)}
-                            onFocus={() => showFocusColor(interpolatedColor2)}
-                            onBlur={() => showOriginColor(interpolatedColor2)}
-                            placeholder="Enter Password" //12345
-                            placeholderTextColor={AnimColor(interpolatedColor2, colors.placeholderColor)}
+                            onFocus={() => showFocusColor(interpolatedColor3)}
+                            onBlur={() => showOriginColor(interpolatedColor3)}
+                            placeholder="Create Password" //12345
+                            placeholderTextColor={AnimColor(interpolatedColor3, colors.placeholderColor)}
                             keyboardType="default"
                             ref={passwordInputRef}
                             onSubmitEditing={Keyboard.dismiss}
@@ -225,12 +239,6 @@ const LoginScreen = ({navigation}) => {
                             returnKeyType="next"
                         />
                     </View>
-
-                    <Text
-                    style={styles.forgotPasswordTextStyle}
-                    onPress={() => navigation.navigate('RegisterScreen')}>
-                    Forgot password?
-                    </Text>
 
                     {errortext != '' ? (
                     <Text style={styles.errorTextStyle}>
@@ -242,13 +250,13 @@ const LoginScreen = ({navigation}) => {
                     style={styles.buttonStyle}
                     activeOpacity={0.5}
                     onPress={handleSubmitPress}>
-                        <Text style={styles.buttonTextStyle}>LOGIN</Text>
+                        <Text style={styles.buttonTextStyle}>CREATE ACCOUNT</Text>
                     </TouchableOpacity>
                     
                     <Text
                     style={styles.registerTextStyle}
-                    onPress={() => navigation.navigate('SignupScreen')}>
-                    New Here? Please register!
+                    onPress={() => navigation.navigate('LoginScreen')}>
+                    Already registered? Please log in!
                     </Text>
                 </KeyboardAvoidingView>
             </View>
@@ -256,4 +264,4 @@ const LoginScreen = ({navigation}) => {
     </View>
   );
 };
-export default LoginScreen;
+export default SignupScreen;

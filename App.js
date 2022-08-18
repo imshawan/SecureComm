@@ -28,8 +28,9 @@ import {
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
-// import SplashScreen from './src/screens/SplashScreen';
+import SplashScreen from './src/screens/SplashScreen';
 import LoginScreen from './src/screens/login/LoginScreen';
+import SignupScreen from './src/screens/signup/SignupScreen';
 
 const Stack = createStackNavigator();
 
@@ -47,8 +48,18 @@ const App = () => {
           {/* SplashScreen which will come once for 5 Seconds */}
           <Stack.Screen
             name="SplashScreen"
-            component={LoginScreen}
+            component={SplashScreen}
             // Hiding header for Splash Screen
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="LoginScreen"
+            component={LoginScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="SignupScreen"
+            component={SignupScreen}
             options={{headerShown: false}}
           />
           </Stack.Navigator>
