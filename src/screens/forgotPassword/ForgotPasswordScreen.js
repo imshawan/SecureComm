@@ -35,13 +35,10 @@ const pageStyles = StyleSheet.create({
 
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
-const interpolatedColor1 = new Animated.Value(0);
-const interpolatedColor2 = new Animated.Value(0);
+const interpolatedColor = new Animated.Value(0);
  
-const LoginScreen = ({navigation}) => {
+const ForgotPasswordScreen = ({navigation}) => {
   const [userEmail, setUserEmail] = useState('');
-  const [userPassword, setUserPassword] = useState('');
-  const [loading, setLoading] = useState(false);
   const [errortext, setErrortext] = useState('');
  
   const passwordInputRef = createRef();
@@ -53,10 +50,9 @@ const LoginScreen = ({navigation}) => {
       showAlert('Please fill Email');
       return;
     }
-    if (!userPassword) {
-      showAlert('Please fill Password');
-      return;
-    }
+    navigation.navigate('EnterOtpScreen', {
+        userEmail
+    })
   };
  
   return (
@@ -80,7 +76,7 @@ const LoginScreen = ({navigation}) => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 position: 'absolute',
-                marginTop: -(Dimensions.get('window').width / 0.90),
+                marginTop: -(Dimensions.get('window').width / 0.809),
                 marginLeft: -(Dimensions.get('window').width / 3.2)
               }}
             >
@@ -99,20 +95,20 @@ const LoginScreen = ({navigation}) => {
                       </Text>
                     </TouchableOpacity>
                   
-                  <Text style={pageStyles.headerStyle}>Log in</Text>
+                  <Text style={pageStyles.headerStyle}>Reset</Text>
 
                 </View>
             </TouchableHighlight>
-                <Text style={styles.subTextStyle}>We're happy to see you back, please login to continue.</Text>
+                <Text style={styles.subTextStyle}>No worries, we got you covered. Please enter the email associated with your account.</Text>
                 <KeyboardAvoidingView enabled>
                     <View style={styles.SectionStyle}>
                         <AnimatedTextInput
-                            style={{...styles.inputStyle, borderColor: AnimColor(interpolatedColor1, 'transparent')}}
+                            style={{...styles.inputStyle, borderColor: AnimColor(interpolatedColor, 'transparent')}}
                             onChangeText={(UserEmail) => setUserEmail(UserEmail)}
-                            onFocus={() => showFocusColor(interpolatedColor1)}
-                            onBlur={() => showOriginColor(interpolatedColor1)}
+                            onFocus={() => showFocusColor(interpolatedColor)}
+                            onBlur={() => showOriginColor(interpolatedColor)}
                             placeholder="Enter Email"
-                            placeholderTextColor={AnimColor(interpolatedColor1, colors.placeholderColor)}
+                            placeholderTextColor={AnimColor(interpolatedColor, colors.placeholderColor)}
                             autoCapitalize="none"
                             keyboardType="email-address"
                             returnKeyType="next"
@@ -121,29 +117,6 @@ const LoginScreen = ({navigation}) => {
                             blurOnSubmit={false}
                         />
                     </View>
-                    <View style={styles.SectionStyle}>
-                        <AnimatedTextInput
-                            style={{...styles.inputStyle, borderColor: AnimColor(interpolatedColor2, 'transparent')}}
-                            onChangeText={(UserPassword) => setUserPassword(UserPassword)}
-                            onFocus={() => showFocusColor(interpolatedColor2)}
-                            onBlur={() => showOriginColor(interpolatedColor2)}
-                            placeholder="Enter Password" //12345
-                            placeholderTextColor={AnimColor(interpolatedColor2, colors.placeholderColor)}
-                            keyboardType="default"
-                            ref={passwordInputRef}
-                            onSubmitEditing={Keyboard.dismiss}
-                            blurOnSubmit={false}
-                            secureTextEntry={true}
-                            underlineColorAndroid="#f000"
-                            returnKeyType="next"
-                        />
-                    </View>
-
-                    <Text
-                    style={styles.forgotPasswordTextStyle}
-                    onPress={() => navigation.navigate('ForgotPasswordScreen')}>
-                    Forgot password?
-                    </Text>
 
                     {errortext != '' ? (
                     <Text style={styles.errorTextStyle}>
@@ -155,7 +128,7 @@ const LoginScreen = ({navigation}) => {
                     style={styles.buttonStyle}
                     activeOpacity={0.5}
                     onPress={handleSubmitPress}>
-                        <Text style={styles.buttonTextStyle}>LOGIN</Text>
+                        <Text style={styles.buttonTextStyle}>SEND OTP</Text>
                     </TouchableOpacity>
                     
                     <Text
@@ -169,4 +142,4 @@ const LoginScreen = ({navigation}) => {
     </View>
   );
 };
-export default LoginScreen;
+export default ForgotPasswordScreen;

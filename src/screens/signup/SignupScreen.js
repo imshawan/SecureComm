@@ -17,20 +17,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { log, showAlert } from '../../config';
 import { colors, fontSizes, headerFontSize } from '../../common';
 import { showFocusColor, AnimColor, showOriginColor } from '../../utils';
+import { styles } from '../styles';
  
 // import Loader from './Components/Loader';
 
-const styles = StyleSheet.create({
-  mainBody: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#fff',
-    alignContent: 'center',
-  },
-  backNav: {
-    flexDirection: 'row',
-    flex: 1,
-  },
+const pageStyles = StyleSheet.create({
   headerStyle: {
     position: 'absolute',
     textAlign: 'right',
@@ -39,84 +30,6 @@ const styles = StyleSheet.create({
     marginLeft: -12,
     marginTop: (Dimensions.get('window').height / 2.7),
     color: '#fff'
-  },
-  subTextStyle: {
-    textAlign: 'left',
-    fontSize: fontSizes.regular,
-    marginTop: 10,
-    marginBottom: 10,
-    marginLeft: 35,
-    marginRight: 35,
-    color: '#000'
-  },
-  SectionStyle: {
-    flexDirection: 'row',
-    height: 40,
-    marginTop: 20,
-    marginLeft: 35,
-    marginRight: 35,
-    margin: 10,
-  },
-  buttonStyle: {
-    backgroundColor: colors.brandColor,
-    borderWidth: 0,
-    color: '#FFFFFF',
-    borderColor: colors.borderColor,
-    height: 50,
-    alignItems: 'center',
-    borderRadius: 10,
-    marginLeft: 35,
-    marginRight: 35,
-    marginTop: 20,
-    marginBottom: 15,
-    elevation: 5,
-    shadowRadius: 8,
-    shadowOpacity: 0.6,
-    shadowColor: colors.brandColor,
-    shadowOffset: {
-      width: 0,
-      height: 13,
-    },
-  },
-  buttonTextStyle: {
-    color: '#FFFFFF',
-    paddingVertical: 13,
-    fontSize: fontSizes.regular,
-  },
-  inputStyle: {
-    flex: 1,
-    color: colors.placeholderColor,
-    paddingLeft: 15,
-    paddingRight: 15,
-    borderWidth: 1,
-    borderRadius: 10,
-    height: 50,
-    borderColor: colors.borderColor,
-    fontSize: fontSizes.medium,
-    backgroundColor: '#eceef5'
-  },
-  forgotPasswordTextStyle: {
-      color: colors.brandColor,
-      textAlign: 'right',
-      fontWeight: 'bold',
-      fontSize: fontSizes.medium,
-      padding: 10,
-      paddingBottom: 0,
-      marginRight: 35,
-  },
-  registerTextStyle: {
-    color: colors.brandColor,
-    textAlign: 'center',
-    fontWeight: 'bold',
-    fontSize: fontSizes.medium,
-    alignSelf: 'center',
-    padding: 10,
-    paddingTop: 0,
-  },
-  errorTextStyle: {
-    color: 'red',
-    textAlign: 'center',
-    fontSize: fontSizes.medium,
   },
 });
 
@@ -166,7 +79,7 @@ const SignupScreen = ({navigation}) => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 position: 'absolute',
-                marginTop: -(Dimensions.get('window').width / 0.98),
+                marginTop: -(Dimensions.get('window').width / 0.94),
                 marginLeft: -(Dimensions.get('window').width / 3.2)
               }}
             >
@@ -185,7 +98,7 @@ const SignupScreen = ({navigation}) => {
                       </Text>
                     </TouchableOpacity>
                   
-                  <Text style={styles.headerStyle}>Sign up</Text>
+                  <Text style={pageStyles.headerStyle}>Sign up</Text>
 
                 </View>
             </TouchableHighlight>
