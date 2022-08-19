@@ -31,16 +31,6 @@ const pageStyles = StyleSheet.create({
     marginTop: (Dimensions.get('window').height / 2.7),
     color: '#fff'
   },
-  headTextStyle: {
-    textAlign: 'left',
-    fontSize: fontSizes.extraLarge,
-    fontWeight: 'bold',
-    color: '#000',
-    marginTop: 50,
-    marginBottom: 5,
-    marginLeft: 35,
-    marginRight: 35,
-  },
 });
 
 
@@ -114,7 +104,7 @@ const EnterOtpScreen = ({navigation, route}) => {
 
                 </View>
             </TouchableHighlight>
-                <Text style={pageStyles.headTextStyle}>Enter the Authorization Code</Text>
+                <Text style={styles.headTextStyle}>Enter the Authorization Code</Text>
                 <Text style={{...styles.subTextStyle, fontSize: fontSizes.medium, marginBottom: 10}}>Sent to {userEmail}</Text>
                 <KeyboardAvoidingView enabled>
                     <View style={styles.SectionStyle}>

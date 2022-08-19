@@ -76,7 +76,7 @@ const ForgotPasswordScreen = ({navigation}) => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 position: 'absolute',
-                marginTop: -(Dimensions.get('window').width / 0.809),
+                marginTop: -(Dimensions.get('window').width / 0.87),
                 marginLeft: -(Dimensions.get('window').width / 3.2)
               }}
             >
@@ -99,7 +99,8 @@ const ForgotPasswordScreen = ({navigation}) => {
 
                 </View>
             </TouchableHighlight>
-                <Text style={styles.subTextStyle}>No worries, we got you covered. Please enter the email associated with your account.</Text>
+                <Text style={styles.headTextStyle}>No worries, we got you covered</Text>
+                <Text style={styles.subTextStyle}>Please enter the email associated with your account.</Text>
                 <KeyboardAvoidingView enabled>
                     <View style={styles.SectionStyle}>
                         <AnimatedTextInput

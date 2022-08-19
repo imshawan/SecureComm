@@ -80,7 +80,7 @@ const LoginScreen = ({navigation}) => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 position: 'absolute',
-                marginTop: -(Dimensions.get('window').width / 0.90),
+                marginTop: -(Dimensions.get('window').width / 0.98),
                 marginLeft: -(Dimensions.get('window').width / 3.2)
               }}
             >
@@ -103,7 +103,8 @@ const LoginScreen = ({navigation}) => {
 
                 </View>
             </TouchableHighlight>
-                <Text style={styles.subTextStyle}>We're happy to see you back, please login to continue.</Text>
+                <Text style={styles.headTextStyle}>We're happy to see you back</Text>
+                <Text style={styles.subTextStyle}>Please login to continue.</Text>
                 <KeyboardAvoidingView enabled>
                     <View style={styles.SectionStyle}>
                         <AnimatedTextInput

@@ -15,7 +15,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { log, showAlert } from '../../config';
-import { colors, fontSizes, headerFontSize } from '../../common';
+import { colors, fontSizes, headerFontSize, APP_NAME } from '../../common';
 import { showFocusColor, AnimColor, showOriginColor } from '../../utils';
 import { styles } from '../styles';
  
@@ -79,7 +79,7 @@ const SignupScreen = ({navigation}) => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 position: 'absolute',
-                marginTop: -(Dimensions.get('window').width / 0.94),
+                marginTop: -(Dimensions.get('window').width / 1.03),
                 marginLeft: -(Dimensions.get('window').width / 3.2)
               }}
             >
@@ -102,7 +102,8 @@ const SignupScreen = ({navigation}) => {
 
                 </View>
             </TouchableHighlight>
-                <Text style={styles.subTextStyle}>New here? Please create an account and continue.</Text>
+                <Text style={styles.headTextStyle}>New to {APP_NAME}?</Text>
+                <Text style={styles.subTextStyle}>Please create an account and continue.</Text>
                 <KeyboardAvoidingView enabled>
 
                     <View style={styles.SectionStyle}>

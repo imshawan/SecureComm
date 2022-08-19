@@ -12,12 +12,23 @@ export const styles = StyleSheet.create({
       flexDirection: 'row',
       flex: 1,
     },
+    headTextStyle: {
+      textAlign: 'left',
+      fontSize: fontSizes.extraLarge,
+      fontWeight: 'bold',
+      color: '#000',
+      marginTop: 50,
+      marginBottom: 5,
+      marginLeft: 36,
+      marginRight: 35,
+    },
     subTextStyle: {
       textAlign: 'left',
-      fontSize: fontSizes.regular,
+      fontSize: fontSizes.medium,
       color: '#000',
-      marginLeft: 35,
+      marginLeft: 36,
       marginRight: 35,
+      marginBottom: 10
     },
     SectionStyle: {
       flexDirection: 'row',
