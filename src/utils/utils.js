@@ -17,7 +17,7 @@ export const showFocusColor = (interpolatedColor) => {
     }).start();
 };
 
-export const AnimColor = (interpolatedColor, defaultColor) => interpolatedColor.interpolate({
+export const AnimColor = (interpolatedColor, defaultColor, transform = colors.brandColor) => interpolatedColor.interpolate({
     inputRange: [0, 1],
-    outputRange: [defaultColor, colors.brandColor],
+    outputRange: [defaultColor, transform],
 });

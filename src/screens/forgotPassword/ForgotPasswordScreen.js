@@ -76,7 +76,7 @@ const ForgotPasswordScreen = ({navigation}) => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 position: 'absolute',
-                marginTop: -(Dimensions.get('window').width / 0.87),
+                marginTop: -(Dimensions.get('window').width / 0.893),
                 marginLeft: -(Dimensions.get('window').width / 3.2)
               }}
             >
