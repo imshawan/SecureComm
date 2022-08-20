@@ -16,7 +16,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { log, showAlert } from '../../config';
 import { colors, fontSizes, headerFontSize } from '../../common';
-import { showFocusColor, AnimColor, showOriginColor } from '../../utils';
+import { showFocusColor, AnimColor, showOriginColor, validateEmail } from '../../utils';
 import { styles } from '../styles';
  
 // import Loader from './Components/Loader';
@@ -76,7 +76,7 @@ const ForgotPasswordScreen = ({navigation}) => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 position: 'absolute',
-                marginTop: -(Dimensions.get('window').width / 0.893),
+                marginTop: -(Dimensions.get('window').width / 0.86),
                 marginLeft: -(Dimensions.get('window').width / 3.2)
               }}
             >

@@ -31,9 +31,10 @@ export const styles = StyleSheet.create({
       marginBottom: 10
     },
     SectionStyle: {
+      position: 'relative',
       flexDirection: 'row',
       height: 40,
-      marginTop: 20,
+      marginTop: 15,
       marginLeft: 35,
       marginRight: 35,
       margin: 10,
@@ -96,7 +97,20 @@ export const styles = StyleSheet.create({
     },
     errorTextStyle: {
       color: 'red',
-      textAlign: 'center',
+      textAlign: 'left',
       fontSize: fontSizes.medium,
+      marginLeft: 50,
+      marginRight: 35
+    },
+    iconContainerStyle: {
+      right: 16,
+      position: "absolute",
+    },
+    iconStyle: {
+      height: 24,
+      width: 24,
+      tintColor: "#b5b9bb",
+      color: "#000",
+      marginTop: 16
     },
   });

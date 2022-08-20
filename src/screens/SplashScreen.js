@@ -10,7 +10,7 @@ const SplashScreen = ({navigation}) => {
   useEffect(() => {
     setTimeout(() => {
       setAnimating(false);
-      navigation.replace('SignupScreen')
+      navigation.replace('LoginScreen')
       // AsyncStorage.getItem('user_id').then((value) =>
       //   navigation.replace(
       //     value === null ? 'Auth' : 'DrawerNavigationRoutes'

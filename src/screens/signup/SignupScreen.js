@@ -79,7 +79,7 @@ const SignupScreen = ({navigation}) => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 position: 'absolute',
-                marginTop: -(Dimensions.get('window').width / 1.03),
+                marginTop: -(Dimensions.get('window').width / 0.967),
                 marginLeft: -(Dimensions.get('window').width / 3.2)
               }}
             >

@@ -81,7 +81,7 @@ const EnterOtpScreen = ({navigation, route}) => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 position: 'absolute',
-                marginTop: -(Dimensions.get('window').width / 1.03),
+                marginTop: -(Dimensions.get('window').width / 0.98),
                 marginLeft: -(Dimensions.get('window').width / 3.2)
               }}
             >
@@ -148,7 +148,7 @@ const EnterOtpScreen = ({navigation, route}) => {
                         />
                     </View>
 
-                    <View style={styles.SectionStyle}>
+                    <View style={{...styles.SectionStyle}}>
                         <AnimatedTextInput
                             style={{...styles.inputStyle, borderColor: AnimColor(interpolatedColor3, 'transparent')}}
                             onChangeText={(UserPassword) => setUserPassword(UserPassword)}

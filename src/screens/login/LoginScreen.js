@@ -15,8 +15,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { log, showAlert } from '../../config';
-import { colors, fontSizes, headerFontSize } from '../../common';
-import { showFocusColor, AnimColor, showOriginColor } from '../../utils';
+import { colors, fontSizes, headerFontSize, ERRORS } from '../../common';
+import { showFocusColor, AnimColor, showOriginColor, validateEmail } from '../../utils';
 import { styles } from '../styles';
  
 // import Loader from './Components/Loader';
@@ -39,25 +39,35 @@ const interpolatedColor1 = new Animated.Value(0);
 const interpolatedColor2 = new Animated.Value(0);
  
 const LoginScreen = ({navigation}) => {
-  const [userEmail, setUserEmail] = useState('');
-  const [userPassword, setUserPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [errortext, setErrortext] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState({ });
+  const [errorStyles, setErrorStyles] = useState({ });
+  const [userInput, setUserInput] = useState({
+    email: '',
+    password: '',
+  })
  
   const passwordInputRef = createRef();
 
- 
   const handleSubmitPress = () => {
-    setErrortext('');
-    if (!userEmail) {
-      showAlert('Please fill Email');
-      return;
+    Keyboard.dismiss();
+
+    if (!userInput.email) {
+      handleErrors(ERRORS.noEmailSupplied, 'email');
     }
-    if (!userPassword) {
-      showAlert('Please fill Password');
-      return;
+    if (!userInput.password) {
+      handleErrors(ERRORS.noPasswordSupplied, 'password')
     }
+
   };
+
+  const handleOnChange = (value, field) => {
+    setUserInput(prevState => ({...prevState, [field]: value}));
+  }
+
+  const handleErrors = (errorMessage, field) => {
+    setErrors(prevState => ({...prevState, [field]: errorMessage}));
+  }
  
   return (
     <View style={styles.mainBody}>
@@ -80,10 +90,9 @@ const LoginScreen = ({navigation}) => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 position: 'absolute',
-                marginTop: -(Dimensions.get('window').width / 0.98),
+                marginTop: -(Dimensions.get('window').width / 0.93),
                 marginLeft: -(Dimensions.get('window').width / 3.2)
-              }}
-            >
+              }}>
                 <View style={styles.backNav}>
                  
                     <TouchableOpacity 
@@ -108,12 +117,13 @@ const LoginScreen = ({navigation}) => {
                 <KeyboardAvoidingView enabled>
                     <View style={styles.SectionStyle}>
                         <AnimatedTextInput
-                            style={{...styles.inputStyle, borderColor: AnimColor(interpolatedColor1, 'transparent')}}
-                            onChangeText={(UserEmail) => setUserEmail(UserEmail)}
-                            onFocus={() => showFocusColor(interpolatedColor1)}
+                            style={{...styles.inputStyle,
+                              borderColor: errors.email ? colors.red : AnimColor(interpolatedColor1, 'transparent')}}
+                            onChangeText={(UserEmail) => handleOnChange(UserEmail, "email")}
+                            onFocus={() => {showFocusColor(interpolatedColor1); handleErrors(null, 'email');}}
                             onBlur={() => showOriginColor(interpolatedColor1)}
                             placeholder="Enter Email"
-                            placeholderTextColor={AnimColor(interpolatedColor1, colors.placeholderColor)}
+                            placeholderTextColor={errors.email ? colors.red : AnimColor(interpolatedColor1, colors.placeholderColor)}
                             autoCapitalize="none"
                             keyboardType="email-address"
                             returnKeyType="next"
@@ -122,35 +132,35 @@ const LoginScreen = ({navigation}) => {
                             blurOnSubmit={false}
                         />
                     </View>
+                        {errors.email ? <Text style={styles.errorTextStyle}>{errors.email}</Text> : ''}
                     <View style={styles.SectionStyle}>
                         <AnimatedTextInput
-                            style={{...styles.inputStyle, borderColor: AnimColor(interpolatedColor2, 'transparent')}}
-                            onChangeText={(UserPassword) => setUserPassword(UserPassword)}
-                            onFocus={() => showFocusColor(interpolatedColor2)}
+                            style={{...styles.inputStyle,
+                              borderColor: errors.password ? colors.red : AnimColor(interpolatedColor2, 'transparent'), 
+                              ...errorStyles}}
+                            onChangeText={(UserPassword) => handleOnChange(UserPassword, "password")}
+                            onFocus={() => {showFocusColor(interpolatedColor2); handleErrors(null, 'password');}}
                             onBlur={() => showOriginColor(interpolatedColor2)}
                             placeholder="Enter Password" //12345
-                            placeholderTextColor={AnimColor(interpolatedColor2, colors.placeholderColor)}
+                            placeholderTextColor={errors.password ? colors.red : AnimColor(interpolatedColor2, colors.placeholderColor)}
                             keyboardType="default"
                             ref={passwordInputRef}
                             onSubmitEditing={Keyboard.dismiss}
                             blurOnSubmit={false}
-                            secureTextEntry={true}
+                            secureTextEntry={!showPassword}
                             underlineColorAndroid="#f000"
                             returnKeyType="next"
-                        />
+                        >
+                        </AnimatedTextInput>
+                        <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.iconContainerStyle}>
+                          <Icon name={showPassword ? "eye-slash" : "eye"} size={fontSizes.regular} style={styles.iconStyle} />
+                        </TouchableOpacity>
                     </View>
+                    {errors.password ? <Text style={styles.errorTextStyle}>{errors.password}</Text> : ''}
 
-                    <Text
-                    style={styles.forgotPasswordTextStyle}
-                    onPress={() => navigation.navigate('ForgotPasswordScreen')}>
+                    <Text style={styles.forgotPasswordTextStyle} onPress={() => navigation.navigate('ForgotPasswordScreen')}>
                     Forgot password?
                     </Text>
-
-                    {errortext != '' ? (
-                    <Text style={styles.errorTextStyle}>
-                        {errortext}
-                    </Text>
-                    ) : null}
 
                     <TouchableOpacity
                     style={styles.buttonStyle}
