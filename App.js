@@ -26,7 +26,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import { PublicRoutes, DrawerRoutes } from './src/Router';
+import { PublicRoutes, DrawerRoutes, PrivateRoutes } from './src/Router';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -36,7 +36,7 @@ const App = () => {
   };
 
   return (
-      <DrawerRoutes />
+      <PrivateRoutes />
   );
 };
 

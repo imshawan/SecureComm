@@ -10,6 +10,7 @@
  import SignupScreen from './screens/signup/SignupScreen';
  import ForgotPasswordScreen from './screens/forgotPassword/ForgotPasswordScreen';
  import EnterOtpScreen from './screens/forgotPassword/EnterOtpScreen';
+ import Home from './screens/Home';
  
  
  const Stack = createStackNavigator();
@@ -71,3 +72,15 @@
         </NavigationContainer>
     );
  }
+
+ export const PrivateRoutes = () => {
+  return (
+    <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home">
+
+          <Stack.Screen name="Home" component={Home} options={{headerShown: false}}/>
+
+        </ Stack.Navigator>
+      </NavigationContainer>
+  );
+}
