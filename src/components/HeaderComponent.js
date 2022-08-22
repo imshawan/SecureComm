@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import ProfileAvtar from './ProfileAvtar';
-import { colors, HEADER_HEIGHT, fontSizes } from '../common'
+import { colors, HEADER_HEIGHT, fontSizes, appHeaderSize } from '../common'
 import { log } from '../config';
 
 const styles = StyleSheet.create({
@@ -30,11 +30,17 @@ const styles = StyleSheet.create({
     headerTextStyle: {
         flexDirection: 'row',
         marginTop: 2,
-        fontSize: fontSizes.extraLarge, 
+        fontSize: appHeaderSize, 
         marginLeft: 5, 
         fontWeight: 'bold',
         color: colors.black
     },
+    controlStyle: {
+        flexDirection: 'row',
+    },
+    touchControlStyle: {
+        marginHorizontal: 10,
+    }
 });
 
 const HeaderComponent = ({image, name}) => {
@@ -44,15 +50,23 @@ const HeaderComponent = ({image, name}) => {
         <View style={styles.headerContainer}>
 
             <View style={styles.headerRow}>
-                <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
+            {/* <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
                     <ProfileAvtar />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <Text style={styles.headerTextStyle}>Messages</Text>
             </View>
 
-            <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
-                <Icon name="cog" size={fontSizes.large} />
-            </TouchableOpacity>
+            <View style={styles.controlStyle}>
+
+                <TouchableOpacity style={styles.touchControlStyle}>
+                    <Icon name="user" size={fontSizes.large} />
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.touchControlStyle}>
+                    <Icon name="cog" size={fontSizes.large} />
+                </TouchableOpacity>
+
+            </View>
 
         </View>
     )

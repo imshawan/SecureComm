@@ -8,4 +8,5 @@ export const fontSizes = {
     extraLarge: 22,
   };
 
+export const appHeaderSize = 28;
 export const headerFontSize = 40;
