@@ -1,28 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, ScrollView, StatusBar } from "react-native";
+import { SpeedDial } from '@rneui/themed';
 
 import HeaderComponent from "../components/HeaderComponent";
 import List from "../components/chat/List";;
 
 import { log } from '../config';
-
-const dummy = [
-    {name: 'Anirban Mukherjee', msg: 'Hello there, I\'m fascinated by up-and-coming technology.'},
-    {name: 'Shawan Mandal', msg: 'Backend focused full-stack developer (MERN stack)'},
-    {name: 'Shagun Mishra', msg: 'Hello there, I was just wondering what to do now Oh no..!!'},
-    {name: 'Pinky Paul', msg: 'Hello there, Still there??'},
-    {name: 'Pooja Sonavane', msg: 'I was just wondering what to do'},
-    {name: 'Anirban Mukherjee', msg: 'Hello there, I\'m fascinated by up-and-coming technology.'},
-    {name: 'Sidhanth Mandal', msg: 'Backend focused full-stack developer (MERN stack)'},
-    {name: 'Shagun Mishra', msg: 'Hello there, I was just wondering what to do now Oh no..!!'},
-    {name: 'Pinky Paul', msg: 'Hello there, Still there??'},
-    {name: 'Pooja Sonavane', msg: 'I was just wondering what to do'},
-    {name: 'Anirban Mukherjee', msg: 'Hello there, I\'m fascinated by up-and-coming technology.'},
-    {name: 'Shawan Mandal', msg: 'Backend focused full-stack developer (MERN stack)'},
-    {name: 'Shagun Mishra', msg: 'Hello there, I was just wondering what to do now Oh no..!!'},
-    {name: 'Pinky Paul', msg: 'Hello there, Still there??'},
-    {name: 'Pooja Sonavane', msg: 'I was just wondering what to do'},
-];
+import { colors, dummyJSON } from '../common';
 
 const styles = StyleSheet.create({
     container: {
@@ -32,13 +16,26 @@ const styles = StyleSheet.create({
 })
 
 const Home = ({navigation}) => {
+    const [open, setOpen] = React.useState(false);
+
     return (
         <View style={styles.container}>
+
             <StatusBar barStyle='dark-content' backgroundColor="#fff" />
             <HeaderComponent />
             <ScrollView>
-                {dummy.map((item, index) => { return (<List name={item.name} key={index} message={item.msg} />) })}
+                {dummyJSON.map((item, index) => { return (<List name={item.name} key={index} message={item.msg} />) })}
             </ScrollView>
+
+            <SpeedDial
+                icon={{ name: 'comment', color: '#fff' }}
+                overlayColor={'transparent'}
+                size='large'
+                color={colors.brandColor}
+            >
+                 
+            </SpeedDial>
+
         </View>
     )
 };

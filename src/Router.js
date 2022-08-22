@@ -11,6 +11,7 @@
  import ForgotPasswordScreen from './screens/forgotPassword/ForgotPasswordScreen';
  import EnterOtpScreen from './screens/forgotPassword/EnterOtpScreen';
  import Home from './screens/Home';
+ import SearchScreen from './screens/SearchScreen';
  
  
  const Stack = createStackNavigator();
@@ -79,6 +80,7 @@
         <Stack.Navigator initialRouteName="Home">
 
           <Stack.Screen name="Home" component={Home} options={{headerShown: false}}/>
+          <Stack.Screen name="SearchScreen" component={SearchScreen} options={{headerShown: false}}/>
 
         </ Stack.Navigator>
       </NavigationContainer>

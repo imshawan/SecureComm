@@ -25,7 +25,9 @@ const styles = StyleSheet.create({
         fontSize: fontSizes.large
     },
     avtarContainer: {
-        marginLeft: 10
+        marginLeft: 5,
+        marginTop: -2.5,
+        paddingBottom: 10
     },
     textContainer: {
         marginLeft: 10,
@@ -34,7 +36,7 @@ const styles = StyleSheet.create({
     userNameText: {
         fontSize: fontSizes.regular,
         fontWeight: 'bold',
-        color: colors.black
+        color: colors.black,
     },
     latestMsgText: {
         fontSize: fontSizes.medium
@@ -49,7 +51,7 @@ const List = ({name, message}) => {
     return (
         <AnimatedTouchable 
         activeOpacity={1}
-        style={{backgroundColor: AnimColor(interpolatedColor, '#fff', colors.grey)}}
+        style={{backgroundColor: AnimColor(interpolatedColor, '#fff', colors.grey), borderRadius: 10, marginHorizontal: 10}}
         onPressIn={() => showFocusColor(interpolatedColor, TOUCHABLE_TAP.onTapDuration)} 
         onPressOut={() => showOriginColor(interpolatedColor, TOUCHABLE_TAP.onReleaseDuration)}
         >

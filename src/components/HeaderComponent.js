@@ -3,14 +3,13 @@ import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import ProfileAvtar from './ProfileAvtar';
 import { colors, HEADER_HEIGHT, fontSizes, appHeaderSize } from '../common'
 import { log } from '../config';
 
 const styles = StyleSheet.create({
     headerContainer: {
         backgroundColor: colors.white,
-        paddingHorizontal: 20,
+        paddingHorizontal: 25,
         paddingVertical: 12,
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -37,6 +36,7 @@ const styles = StyleSheet.create({
     },
     controlStyle: {
         flexDirection: 'row',
+        marginTop: 2
     },
     touchControlStyle: {
         marginHorizontal: 10,
@@ -58,8 +58,8 @@ const HeaderComponent = ({image, name}) => {
 
             <View style={styles.controlStyle}>
 
-                <TouchableOpacity style={styles.touchControlStyle}>
-                    <Icon name="user" size={fontSizes.large} />
+                <TouchableOpacity style={styles.touchControlStyle} onPress={() => navigation.navigate('SearchScreen')}>
+                    <Icon name="search" size={fontSizes.large} />
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.touchControlStyle}>
