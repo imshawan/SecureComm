@@ -26,8 +26,9 @@ const styles = StyleSheet.create({
 })
 
 
-const UserAvtar = ({image, name}) => {
+const UserAvtar = ({image, name, customStyles}) => {
     let component;
+    
     const props = {
         style: styles.avtarStyle,
         source: {uri: image},
@@ -36,9 +37,9 @@ const UserAvtar = ({image, name}) => {
         component = React.createElement(Image, props);
     } else if (name){
         let { text, backgroundColor } = stringAvatar(name, 2);
-        component = <Text style={{...styles.avtarTextStyle, backgroundColor}}>{text}</Text>
+        component = <Text style={{...styles.avtarTextStyle,...customStyles, backgroundColor}}>{text}</Text>
     } else {
-        component = <Text style={{...styles.avtarTextStyle, backgroundColor: stringToColor('Unknown')}}>UN</Text>
+        component = <Text style={{...styles.avtarTextStyle,...customStyles, backgroundColor: stringToColor('Unknown')}}>UN</Text>
     }
 
     return (

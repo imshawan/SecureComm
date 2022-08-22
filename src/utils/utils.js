@@ -1,17 +1,17 @@
 import  {Animated} from 'react-native';
 import { colors } from "../common";
 
-export const showOriginColor = (interpolatedColor) => {
+export const showOriginColor = (interpolatedColor, duration=350) => {
     Animated.timing(interpolatedColor, {
-        duration: 350,
+        duration,
         toValue: 0,
         useNativeDriver: false,
     }).start();
 };
 
-export const showFocusColor = (interpolatedColor) => {
+export const showFocusColor = (interpolatedColor, duration=450) => {
     Animated.timing(interpolatedColor, {
-        duration: 450,
+        duration,
         toValue: 1,
         useNativeDriver: false,
     }).start();
