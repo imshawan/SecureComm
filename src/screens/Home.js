@@ -28,6 +28,7 @@ const Home = ({navigation}) => {
             </ScrollView>
 
             <SpeedDial
+                onOpen={() => navigation.navigate('NewChatScreen')}
                 icon={{ name: 'comment', color: colors.white }}
                 overlayColor={'transparent'}
                 size='large'

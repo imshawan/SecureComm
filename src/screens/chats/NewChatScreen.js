@@ -1,12 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView, StatusBar } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { TextInput } from 'react-native-paper';
 
-import { List } from "../components/chat";
-import SearchBar from '../components/SearchBar';
+import { Thread } from '../../components/chat';
+import ProfileAvtar from '../../components/ProfileAvtar';
 
-import { log } from '../config';
-import { colors, HEADER_HEIGHT, fontSizes, dummyJSON } from '../common';
+import { log } from '../../config';
+import { colors, HEADER_HEIGHT, fontSizes, dummyChat } from '../../common';
+import { showOriginColor, showFocusColor, AnimColor } from '../../utils';
 
 
 const styles = StyleSheet.create({
@@ -50,20 +52,31 @@ const styles = StyleSheet.create({
         marginBottom: 8
     },
     touchControlStyle: {
-        paddingVertical: 5,
+        paddingVertical: 6,
         marginRight: 14,
         marginLeft: 0,
         paddingLeft: 0
+    },
+    labelStyle: {
+        fontSize: fontSizes.regular,
+        color: colors.black,
+        fontWeight: 'bold',
+        paddingVertical: 7,
+        paddingRight: 7
+    },
+    inputStyles: {
+        width: '90%',
+        height: 40,
+        backgroundColor: colors.white,
     }
 });
 
-const SearchScreen = ({navigation}) => {
-    const [value, setValue] = useState("");
-    const [clicked, setClicked] = useState(false);
-    const [fakeData, setFakeData] = useState();
+const NewChatScreen = ({navigation, route}) => {
+    const [search, setSearch] = useState('');
 
-    return (
-        <View style={styles.container}>
+    return (<>
+            <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
+            <View style={styles.container}>
             <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
             <View style={styles.headerContainer}>
 
@@ -72,32 +85,19 @@ const SearchScreen = ({navigation}) => {
                         <TouchableOpacity style={styles.touchControlStyle} onPress={() => navigation.goBack()}>
                             <Icon name="arrow-left" size={fontSizes.large} />
                         </TouchableOpacity>
-                        <Text style={styles.headerTextStyle}>Search</Text>
+                        <Text style={styles.headerTextStyle}>New Message</Text>
                     </View>
                 </View>
-
-                <View>
-                    <SearchBar
-                        value={value}
-                        setValue={setValue}
-                        clicked={clicked}
-                        setClicked={setClicked}
-                        />
+                <View style={styles.headerContent}>
+                    <Text style={styles.labelStyle}>To</Text>
+                    <TextInput style={styles.inputStyles} placeholder="@username or name"/>
                 </View>
 
+
             </View>
-            
-            <ScrollView>
-                {dummyJSON.map((item, index) => { 
-                    if (item.name && new RegExp(value).test(item.name)) {
-                        return (<List name={item.name} key={item.id} id={item.id} message={item.msg} />)
-                    }
-                    else {
-                        return (<View key={'empty'}></View>)
-                    } })}
-            </ScrollView>
         </View>
+        </>
     )
 };
 
-export default SearchScreen;
+export default NewChatScreen;

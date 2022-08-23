@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     },
     touchControlStyle: {
         marginHorizontal: 10,
-        marginVertical: 10
+        marginVertical: 6
     },
     senderThreadStyles: {
         backgroundColor: colors.blue,
@@ -102,11 +102,11 @@ const ViewScreen = ({navigation, route}) => {
     return (<>
             <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
             <View style={styles.headerContainer}>
-                <View style={styles.headerContent}>
+                <View>
                     <View style={styles.headerRow}>
                         <TouchableOpacity style={{flexDirection: 'row', paddingLeft: 5}} activeOpacity={0.5} onPress={() => navigation.goBack()}>
                             <View style={styles.touchControlStyle}>
-                                <Icon name="arrow-left" size={fontSizes.regular} style={styles.backNavStyle}/>
+                                <Icon name="arrow-left" size={fontSizes.large} style={styles.backNavStyle}/>
                             </View>
                             <ProfileAvtar name={name} customStyles={styles.avtarStyles} />
                         </TouchableOpacity>
