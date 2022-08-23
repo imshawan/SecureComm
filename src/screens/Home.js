@@ -24,7 +24,7 @@ const Home = ({navigation}) => {
             <StatusBar barStyle='dark-content' backgroundColor="#fff" />
             <HeaderComponent />
             <ScrollView>
-                {dummyJSON.map((item, index) => { return (<List name={item.name} key={index} message={item.msg} />) })}
+                {dummyJSON.map((item, index) => { return (<List name={item.name} key={index} id={item.id} message={item.msg} />) })}
             </ScrollView>
 
             <SpeedDial

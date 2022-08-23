@@ -8,25 +8,12 @@
 
 import 'react-native-gesture-handler';
 import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import { useColorScheme } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { Provider as PaperProvider } from 'react-native-paper';
 
-import { PublicRoutes, DrawerRoutes, PrivateRoutes } from './src/Router';
+import { PublicRoutes, PrivateRoutes } from './src/Router';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -36,7 +23,9 @@ const App = () => {
   };
 
   return (
+    <PaperProvider>
       <PrivateRoutes />
+    </PaperProvider>
   );
 };
 

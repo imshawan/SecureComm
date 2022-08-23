@@ -3,7 +3,6 @@
 
  import {NavigationContainer} from '@react-navigation/native';
  import {createStackNavigator} from '@react-navigation/stack';
- import {createDrawerNavigator} from '@react-navigation/drawer';
  
  import SplashScreen from './screens/SplashScreen';
  import LoginScreen from './screens/login/LoginScreen';
@@ -12,10 +11,10 @@
  import EnterOtpScreen from './screens/forgotPassword/EnterOtpScreen';
  import Home from './screens/Home';
  import SearchScreen from './screens/SearchScreen';
+ import ViewScreen from './screens/chats/ViewScreen';
  
  
  const Stack = createStackNavigator();
- const Drawer = createDrawerNavigator();
  
  
  export const PublicRoutes = () => {
@@ -64,16 +63,6 @@
   );
 }
 
- export const DrawerRoutes = () => {
-    return (
-        <NavigationContainer>
-            <Drawer.Navigator initialRouteName="DummyScreen">
-                <Drawer.Screen name="DummyScreen" component={DummyScreen} />
-            </Drawer.Navigator>
-        </NavigationContainer>
-    );
- }
-
  export const PrivateRoutes = () => {
   return (
     <NavigationContainer>
@@ -81,6 +70,7 @@
 
           <Stack.Screen name="Home" component={Home} options={{headerShown: false}}/>
           <Stack.Screen name="SearchScreen" component={SearchScreen} options={{headerShown: false}}/>
+          <Stack.Screen name="ViewScreen" component={ViewScreen} options={{headerShown: false}}/>
 
         </ Stack.Navigator>
       </NavigationContainer>

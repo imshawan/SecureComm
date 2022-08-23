@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 })
 
 
-const UserAvtar = ({image, name, customStyles}) => {
+const ProfileAvtar = ({image, name, customStyles}) => {
     let component;
     
     const props = {
@@ -50,4 +50,4 @@ const UserAvtar = ({image, name, customStyles}) => {
 }
 
 
-export default UserAvtar;
+export default ProfileAvtar;

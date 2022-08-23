@@ -90,10 +90,10 @@ const SearchScreen = ({navigation}) => {
             <ScrollView>
                 {dummyJSON.map((item, index) => { 
                     if (item.name && new RegExp(value).test(item.name)) {
-                        return (<List name={item.name} key={index} message={item.msg} />)
+                        return (<List name={item.name} key={item.id} id={item.id} message={item.msg} />)
                     }
                     else {
-                        return (<></>)
+                        return (<View key={'empty'}></View>)
                     } })}
             </ScrollView>
         </View>

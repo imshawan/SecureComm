@@ -44,9 +44,10 @@ const styles = StyleSheet.create({
 })
 
 
-const List = ({name, message}) => {
+const List = ({name, message, id}) => {
     const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
     const interpolatedColor = new Animated.Value(0);
+    const navigation = useNavigation();
 
     return (
         <AnimatedTouchable 
@@ -54,6 +55,9 @@ const List = ({name, message}) => {
         style={{backgroundColor: AnimColor(interpolatedColor, '#fff', colors.grey), borderRadius: 10, marginHorizontal: 10}}
         onPressIn={() => showFocusColor(interpolatedColor, TOUCHABLE_TAP.onTapDuration)} 
         onPressOut={() => showOriginColor(interpolatedColor, TOUCHABLE_TAP.onReleaseDuration)}
+        onPress={() => navigation.navigate('ViewScreen', {
+            id, name
+        })}
         >
             <View style={styles.container}>
                 <View style={styles.avtarContainer}>
