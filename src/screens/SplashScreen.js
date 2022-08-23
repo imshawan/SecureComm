@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { ActivityIndicator, View, StyleSheet, Image, Text } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import { colors } from '../common';
 
 
  
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
   activityIndicator: {
     alignItems: 'center',

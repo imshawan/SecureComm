@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import { stringAvatar, stringToColor } from "../utils";
 import { log } from "../config";
+import { colors } from "../common";
 
 
 const styles = StyleSheet.create({
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
         textAlign: 'center', 
         paddingVertical: 10,
         fontWeight: 'bold',
-        color: '#fff'
+        color: colors.white,
     }
 })
 

@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
     mainBody: {
       flex: 1,
       justifyContent: 'center',
-      backgroundColor: '#fff',
+      backgroundColor: colors.white,
       alignContent: 'center',
     },
     backNav: {
@@ -42,7 +42,7 @@ export const styles = StyleSheet.create({
     buttonStyle: {
       backgroundColor: colors.brandColor,
       borderWidth: 0,
-      color: '#FFFFFF',
+      color: colors.white,
       borderColor: colors.borderColor,
       height: 50,
       alignItems: 'center',
@@ -61,7 +61,7 @@ export const styles = StyleSheet.create({
       },
     },
     buttonTextStyle: {
-      color: '#FFFFFF',
+      color: colors.white,
       paddingVertical: 13,
       fontSize: fontSizes.regular,
     },

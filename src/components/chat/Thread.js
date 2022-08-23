@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 })
 
 
-const Thread = ({name, message, id, customStyles}) => {
+export const Thread = ({name, message, id, customStyles}) => {
     const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
     const interpolatedColor = new Animated.Value(0);
     const navigation = useNavigation();
@@ -31,7 +31,7 @@ const Thread = ({name, message, id, customStyles}) => {
     return (
         <AnimatedTouchable 
         activeOpacity={1}
-        style={{backgroundColor: AnimColor(interpolatedColor, '#fff', colors.grey), borderRadius: 10, marginHorizontal: 10}}
+        style={{backgroundColor: AnimColor(interpolatedColor, colors.white, colors.grey), borderRadius: 10, marginHorizontal: 10}}
         >
             <View style={{...styles.container, ...customStyles}}>
                 <Text style={{...styles.messageTextStyle, color: customStyles.color || '#000'}}>{message}</Text>
@@ -39,5 +39,3 @@ const Thread = ({name, message, id, customStyles}) => {
         </AnimatedTouchable>
     );
 }
-
-export default Thread;

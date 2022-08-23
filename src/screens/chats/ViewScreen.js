@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView, StatusBar, TextInput, Animated } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import Thread from '../../components/chat/Thread';
+import { Thread } from '../../components/chat';
 import ProfileAvtar from '../../components/ProfileAvtar';
 
 import { log } from '../../config';
@@ -102,7 +102,7 @@ const ViewScreen = ({navigation, route}) => {
 
     return (
         <View style={styles.container}>
-            <StatusBar barStyle='dark-content' backgroundColor="#fff" />
+            <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
             <View style={styles.headerContainer}>
 
                 <View style={styles.headerContent}>

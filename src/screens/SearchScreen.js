@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView, StatusBar } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import List from "../components/chat/List";
+import { List } from "../components/chat";
 import SearchBar from '../components/SearchBar';
 
 import { log } from '../config';
@@ -11,7 +11,7 @@ import { colors, HEADER_HEIGHT, fontSizes, dummyJSON } from '../common';
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#fff',
+        backgroundColor: colors.white,
         flex: 1
     },
     searchBar: {
@@ -64,7 +64,7 @@ const SearchScreen = ({navigation}) => {
 
     return (
         <View style={styles.container}>
-            <StatusBar barStyle='dark-content' backgroundColor="#fff" />
+            <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
             <View style={styles.headerContainer}>
 
                 <View style={styles.headerContent}>

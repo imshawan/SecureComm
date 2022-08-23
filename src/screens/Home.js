@@ -3,14 +3,14 @@ import { View, StyleSheet, ScrollView, StatusBar } from "react-native";
 import { SpeedDial } from '@rneui/themed';
 
 import HeaderComponent from "../components/HeaderComponent";
-import List from "../components/chat/List";;
+import { List } from "../components/chat";
 
 import { log } from '../config';
 import { colors, dummyJSON } from '../common';
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#fff',
+        backgroundColor: colors.white,
         flex: 1
     }
 })
@@ -21,14 +21,14 @@ const Home = ({navigation}) => {
     return (
         <View style={styles.container}>
 
-            <StatusBar barStyle='dark-content' backgroundColor="#fff" />
+            <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
             <HeaderComponent />
             <ScrollView>
                 {dummyJSON.map((item, index) => { return (<List name={item.name} key={index} id={item.id} message={item.msg} />) })}
             </ScrollView>
 
             <SpeedDial
-                icon={{ name: 'comment', color: '#fff' }}
+                icon={{ name: 'comment', color: colors.white }}
                 overlayColor={'transparent'}
                 size='large'
                 color={colors.brandColor}

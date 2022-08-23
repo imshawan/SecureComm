@@ -29,7 +29,7 @@ const pageStyles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: -12,
     marginTop: (Dimensions.get('window').height / 2.7),
-    color: '#fff'
+    color: colors.white
   },
 });
 
@@ -91,9 +91,9 @@ const SignupScreen = ({navigation}) => {
                       fontWeight: 'bold',
                       marginLeft: -12,
                       marginTop: (Dimensions.get('window').height / 3.2),
-                      color: '#fff',
+                      color: colors.white,
                     }}>
-                      <Text style={{color: '#fff', fontSize: fontSizes.regular}}>
+                      <Text style={{color: colors.white, fontSize: fontSizes.regular}}>
                         <Icon name="arrow-left" size={fontSizes.regular} /> &nbsp; Back
                       </Text>
                     </TouchableOpacity>
