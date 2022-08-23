@@ -9,7 +9,7 @@ import { log } from '../config';
 const styles = StyleSheet.create({
     headerContainer: {
         backgroundColor: colors.white,
-        paddingHorizontal: 25,
+        paddingHorizontal: 12,
         paddingVertical: 12,
         flexDirection: 'row',
         justifyContent: 'space-between',

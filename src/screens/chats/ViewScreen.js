@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView, StatusBar, TextInput, Animated } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView, StatusBar, TextInput, Animated, KeyboardAvoidingView } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { Thread } from '../../components/chat';
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: colors.white,
         flex: 1,
-        paddingHorizontal: 10,
+        paddingHorizontal: 6,
     },
     headerContainer: {
         backgroundColor: colors.white,
@@ -74,8 +74,7 @@ const styles = StyleSheet.create({
         paddingLeft: 15,
         paddingRight: 15,
         borderRadius: 25,
-        borderWidth: 1,
-        height: 50,
+        minHeight: 50,
         borderColor: colors.borderColor,
         fontSize: fontSizes.medium,
         backgroundColor: '#eceef5'
@@ -100,50 +99,53 @@ const ViewScreen = ({navigation, route}) => {
     const interpolatedColor = new Animated.Value(0);
     const { id, name } = route.params;
 
-    return (
-        <View style={styles.container}>
+    return (<>
             <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
             <View style={styles.headerContainer}>
-
                 <View style={styles.headerContent}>
                     <View style={styles.headerRow}>
-                        <TouchableOpacity style={styles.touchControlStyle} onPress={() => navigation.goBack()}>
-                            <Icon name="arrow-left" size={fontSizes.regular} style={styles.backNavStyle}/>
+                        <TouchableOpacity style={{flexDirection: 'row', paddingLeft: 5}} activeOpacity={0.5} onPress={() => navigation.goBack()}>
+                            <View style={styles.touchControlStyle}>
+                                <Icon name="arrow-left" size={fontSizes.regular} style={styles.backNavStyle}/>
+                            </View>
+                            <ProfileAvtar name={name} customStyles={styles.avtarStyles} />
                         </TouchableOpacity>
-                        <ProfileAvtar name={name} customStyles={styles.avtarStyles} />
                         <View>
                             <Text style={styles.headerTextStyle}>{name}</Text>
                             <Text style={styles.activeTimeStyle} numberOfLines={1} ellipsizeMode='tail'>{'Last online 2 min ago'}</Text>
                         </View>
                     </View>
                 </View>
-
             </View>
+            <View style={styles.container}>
+                {/* <KeyboardAvoidingView enabled> */}
+                <ScrollView>
+                    {dummyChat.map(item => (
+                        <View key={item.id} style={{flexDirection: 'row', justifyContent: item.name == name ? 'flex-start' : 'flex-end'}}>
+                            <Thread key={item.id} name={item.name} message={item.message} customStyles={item.name == name ? styles.receiverThreadStyles : styles.senderThreadStyles}/>
+                        </View>
+                    ))}
+                </ScrollView>
+                {/* </KeyboardAvoidingView> */}
 
-            <ScrollView>
-                {dummyChat.map(item => (
-                    <View key={item.id} style={{flexDirection: 'row', justifyContent: item.name == name ? 'flex-start' : 'flex-end'}}>
-                        <Thread key={item.id} name={item.name} message={item.message} customStyles={item.name == name ? styles.receiverThreadStyles : styles.senderThreadStyles}/>
-                    </View>
-                ))}
-            </ScrollView>
-
-            <View style={styles.textInputSectionStyle}>
-                <AnimatedTextInput
-                    style={{...styles.textInputStyles, borderColor: AnimColor(interpolatedColor, 'transparent')}}
-                    onFocus={() => showFocusColor(interpolatedColor)}
-                    onBlur={() => showOriginColor(interpolatedColor)}
-                    placeholder="Type a message..."
-                    keyboardType="default"
-                    underlineColorAndroid="#f000"
-                    returnKeyType="next"
-                />
-                <TouchableOpacity style={styles.sendMessageButton}>
-                    <Icon name="send" style={styles.sendIconStyle} size={fontSizes.extraLarge}/>
-                </TouchableOpacity>
+                <View style={styles.textInputSectionStyle}>
+                    <TextInput
+                        style={styles.textInputStyles}
+                        placeholder="Type a message..."
+                        keyboardType="default"
+                        underlineColorAndroid="#f000"
+                        returnKeyType="next"
+                        multiline
+                        autoCapitalize
+                        textAlignVertical='auto'
+                    />
+                    <TouchableOpacity style={styles.sendMessageButton}>
+                        <Icon name="send" style={styles.sendIconStyle} size={fontSizes.extraLarge}/>
+                    </TouchableOpacity>
+                </View>
+                
             </View>
-            
-        </View>
+        </>
     )
 };
 

@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         height: 70,
-        paddingHorizontal: 10,
+        paddingHorizontal: 6,
         paddingVertical: 12,
         marginVertical: 2,
         width: '80%',
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         fontSize: fontSizes.large
     },
     avtarContainer: {
-        marginLeft: 5,
+        // marginLeft: 5,
         marginTop: -2.5,
         paddingBottom: 10
     },

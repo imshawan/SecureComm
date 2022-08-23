@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
         padding: 8,
         marginVertical: 2,
         backgroundColor: colors.grey,
-        borderRadius: 10,
+        borderRadius: 15,
     },
     messageTextStyle: {
         fontSize: fontSizes.medium
