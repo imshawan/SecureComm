@@ -14,5 +14,6 @@ export const colors = {
     drawerBackGroundGray: 'rgba(52, 52, 52, 0.6)',
     brandColor: '#5C33F6',
     placeholderColor: '#000',
+    blue: 'blue'
   };
   
