@@ -68,7 +68,10 @@ const styles = StyleSheet.create({
         width: '90%',
         height: 40,
         backgroundColor: colors.white,
-    }
+    },
+    iconStyles: {
+        color: colors.black
+    },
 });
 
 const NewChatScreen = ({navigation, route}) => {
@@ -83,7 +86,7 @@ const NewChatScreen = ({navigation, route}) => {
                 <View style={styles.headerContent}>
                     <View style={styles.headerRow}>
                         <TouchableOpacity style={styles.touchControlStyle} onPress={() => navigation.goBack()}>
-                            <Icon name="arrow-left" size={fontSizes.large} />
+                            <Icon name="arrow-left" style={styles.iconStyles} size={fontSizes.large} />
                         </TouchableOpacity>
                         <Text style={styles.headerTextStyle}>New Message</Text>
                     </View>

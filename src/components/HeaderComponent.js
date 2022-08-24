@@ -40,6 +40,9 @@ const styles = StyleSheet.create({
     },
     touchControlStyle: {
         marginHorizontal: 10,
+    },
+    iconStyles: {
+        color: colors.black
     }
 });
 
@@ -59,11 +62,11 @@ const HeaderComponent = ({image, name}) => {
             <View style={styles.controlStyle}>
 
                 <TouchableOpacity style={styles.touchControlStyle} onPress={() => navigation.navigate('SearchScreen')}>
-                    <Icon name="search" size={fontSizes.large} />
+                    <Icon name="search" style={styles.iconStyles} size={fontSizes.large} />
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.touchControlStyle}>
-                    <Icon name="cog" size={fontSizes.large} />
+                    <Icon name="cog" style={styles.iconStyles} size={fontSizes.large} />
                 </TouchableOpacity>
 
             </View>

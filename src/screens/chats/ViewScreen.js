@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
         height: '100%'
     },
     backNavStyle: {
+        color: colors.black,
         marginTop: 5,
         marginRight: 5
     },

@@ -16,7 +16,6 @@ const styles = StyleSheet.create({
 })
 
 const Home = ({navigation}) => {
-    const [open, setOpen] = React.useState(false);
 
     return (
         <View style={styles.container}>

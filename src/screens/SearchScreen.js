@@ -54,7 +54,10 @@ const styles = StyleSheet.create({
         marginRight: 14,
         marginLeft: 0,
         paddingLeft: 0
-    }
+    },
+    iconStyles: {
+        color: colors.black
+    },
 });
 
 const SearchScreen = ({navigation}) => {
@@ -70,7 +73,7 @@ const SearchScreen = ({navigation}) => {
                 <View style={styles.headerContent}>
                     <View style={styles.headerRow}>
                         <TouchableOpacity style={styles.touchControlStyle} onPress={() => navigation.goBack()}>
-                            <Icon name="arrow-left" size={fontSizes.large} />
+                            <Icon name="arrow-left" style={styles.iconStyles} size={fontSizes.large} />
                         </TouchableOpacity>
                         <Text style={styles.headerTextStyle}>Search</Text>
                     </View>
