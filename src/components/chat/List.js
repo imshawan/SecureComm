@@ -39,7 +39,8 @@ const styles = StyleSheet.create({
         color: colors.black,
     },
     latestMsgText: {
-        fontSize: fontSizes.medium
+        fontSize: fontSizes.medium,
+        color: colors.black,
     }
 })
 

@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView, StatusBar, TextInput, Animated, KeyboardAvoidingView } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { Thread } from '../../components/chat';
+import { Thread, ChatInput } from '../../components/chat';
 import ProfileAvtar from '../../components/ProfileAvtar';
 
 import { log } from '../../config';
@@ -62,41 +62,11 @@ const styles = StyleSheet.create({
     receiverThreadStyles: {
         
     },
-    textInputSectionStyle: {
-        position: 'relative',
-        flexDirection: 'row',
-        height: 55,
-        margin: 10,
-    },
-    textInputStyles: {
-        flex: 1,
-        color: colors.placeholderColor,
-        paddingLeft: 15,
-        paddingRight: 15,
-        borderRadius: 25,
-        minHeight: 50,
-        borderColor: colors.borderColor,
-        fontSize: fontSizes.medium,
-        backgroundColor: '#eceef5'
-    },
-    sendMessageButton: {
-        marginLeft: 6,
-        marginTop: 3,
-        backgroundColor: colors.brandColor,
-        height: 45,
-        width: 45,
-        borderRadius: 25
-    },
-    sendIconStyle: {
-        color: colors.whiteSmock,
-        padding: 10
-    }
 });
 
 
 const ViewScreen = ({navigation, route}) => {
-    const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
-    const interpolatedColor = new Animated.Value(0);
+    const [value, setValue] = useState("");
     const { id, name } = route.params;
 
     return (<>
@@ -127,22 +97,7 @@ const ViewScreen = ({navigation, route}) => {
                     ))}
                 </ScrollView>
                 {/* </KeyboardAvoidingView> */}
-
-                <View style={styles.textInputSectionStyle}>
-                    <TextInput
-                        style={styles.textInputStyles}
-                        placeholder="Type a message..."
-                        keyboardType="default"
-                        underlineColorAndroid="#f000"
-                        returnKeyType="next"
-                        multiline
-                        autoCapitalize
-                        textAlignVertical='auto'
-                    />
-                    <TouchableOpacity style={styles.sendMessageButton}>
-                        <Icon name="send" style={styles.sendIconStyle} size={fontSizes.extraLarge}/>
-                    </TouchableOpacity>
-                </View>
+                <ChatInput onActionSend={() => log(value)} value={value} setValue={setValue}/>
                 
             </View>
         </>
