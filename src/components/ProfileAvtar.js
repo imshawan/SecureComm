@@ -7,8 +7,8 @@ import { colors } from "../common";
 
 const styles = StyleSheet.create({
     container: {
-        height: 50,
-        width: 50
+        minHeight: 50,
+        minWidth: 50
     },
     avtarStyle: {
         height: 40,

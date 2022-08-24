@@ -1,14 +1,10 @@
-import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView, StatusBar } from "react-native";
+import React from "react";
+import { View, Text, StyleSheet, StatusBar, TouchableOpacity } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { TextInput } from 'react-native-paper';
 
-import { Thread } from '../../components/chat';
-import ProfileAvtar from '../../components/ProfileAvtar';
+import ProfileAvtar from "../components/ProfileAvtar";
 
-import { log } from '../../config';
-import { colors, HEADER_HEIGHT, fontSizes, dummyChat } from '../../common';
-import { showOriginColor, showFocusColor, AnimColor } from '../../utils';
+import { colors, HEADER_HEIGHT, fontSizes } from '../common';
 
 
 const styles = StyleSheet.create({
@@ -16,18 +12,11 @@ const styles = StyleSheet.create({
         backgroundColor: colors.white,
         flex: 1
     },
-    searchBar: {
-        color: colors.black,
-        height: 50
-    },
     headerContainer: {
         backgroundColor: colors.white,
-        // paddingHorizontal: 25,
         paddingVertical: 12,
         flexDirection: 'column',
-        // justifyContent: 'space-between',
-        height: HEADER_HEIGHT + 50,
-        // alignItems: 'center',
+        height: HEADER_HEIGHT - 5,
         shadowColor: colors.lightestGrey,
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.5,
@@ -52,54 +41,55 @@ const styles = StyleSheet.create({
         marginBottom: 8
     },
     touchControlStyle: {
-        paddingVertical: 6,
+        paddingTop: 6,
         marginRight: 14,
         marginLeft: 0,
         paddingLeft: 0
     },
-    labelStyle: {
-        fontSize: fontSizes.regular,
-        color: colors.black,
-        fontWeight: 'bold',
-        paddingVertical: 7,
-        paddingRight: 7
-    },
-    inputStyles: {
-        width: '90%',
-        height: 40,
-        backgroundColor: colors.white,
-    },
     iconStyles: {
         color: colors.black
     },
+    rowContainerStyle: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginTop: 20,
+        width: '100%',
+    },
+    avtarStyles: {
+        height: 150,
+        width: 150,
+        borderRadius: 150,
+        fontSize: 50,
+        paddingVertical: 38,
+        paddingRight: 7,
+        borderWidth: 5,
+        borderColor: colors.white
+    }
 });
 
-const NewChatScreen = ({navigation, route}) => {
-    const [search, setSearch] = useState('');
-
+const SettingsScreen = ({navigation, route}) => {
     return (<>
             <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
             <View style={styles.container}>
                 <View style={styles.headerContainer}>
-
                     <View style={styles.headerContent}>
                         <View style={styles.headerRow}>
                             <TouchableOpacity style={styles.touchControlStyle} onPress={() => navigation.goBack()}>
                                 <Icon name="arrow-left" style={styles.iconStyles} size={fontSizes.large} />
                             </TouchableOpacity>
-                            <Text style={styles.headerTextStyle}>New Message</Text>
+                            <Text style={styles.headerTextStyle}>Settings</Text>
                         </View>
                     </View>
-                    <View style={styles.headerContent}>
-                        <Text style={styles.labelStyle}>To</Text>
-                        <TextInput style={styles.inputStyles} placeholder="@username or name"/>
-                    </View>
-
-
+                </View>
+                <View style={styles.rowContainerStyle}>
+                    <ProfileAvtar customStyles={styles.avtarStyles} />
+                </View>
+                <View>
+                    <Text>Shawan Mandal</Text>
                 </View>
             </View>
         </>
-    )
-};
+    );
+}
 
-export default NewChatScreen;
+export default SettingsScreen;

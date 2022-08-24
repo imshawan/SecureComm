@@ -65,7 +65,7 @@ const HeaderComponent = ({image, name}) => {
                     <Icon name="search" style={styles.iconStyles} size={fontSizes.large} />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.touchControlStyle}>
+                <TouchableOpacity style={styles.touchControlStyle} onPress={() => navigation.navigate('SettingsScreen')}>
                     <Icon name="cog" style={styles.iconStyles} size={fontSizes.large} />
                 </TouchableOpacity>
 
