@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     }
 });
 
-export const ChatInput = ({value, setValue, onActionSend}) => {
+export const ChatInput = ({value, setValue, onActionSend, onFocused, onRemoveFocus}) => {
     return (
         <View style={styles.container}>
             <View style={styles.mainContainer}>
@@ -50,6 +50,8 @@ export const ChatInput = ({value, setValue, onActionSend}) => {
                     value={value}
                     onChangeText={setValue}
                     style={styles.inputStyles} 
+                    onFocus={onFocused}
+                    onBlur={onRemoveFocus}
                     multiline 
                     autoCapitalize 
                     placeholder='Type a message...'

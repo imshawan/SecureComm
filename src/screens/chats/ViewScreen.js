@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView, StatusBar, TextInput, Animated, KeyboardAvoidingView } from "react-native";
+import React, {useState, useEffect, createRef, useCallback} from 'react';
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView, StatusBar, FlatList, TextInput, Animated, KeyboardAvoidingView } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { Thread, ChatInput } from '../../components/chat';
@@ -59,16 +59,33 @@ const styles = StyleSheet.create({
     senderThreadStyles: {
         backgroundColor: colors.blue,
         color: colors.white,
+        marginVertical: 5,
+        scaleY: -1,
     },
     receiverThreadStyles: {
-        
+        scaleY: -1,
+        minWidth: 20
+    },
+    hiddenContainer: {
+        width: 0,
+        height: 0,
     },
 });
 
 
 const ViewScreen = ({navigation, route}) => {
     const [value, setValue] = useState("");
+    const [messages, setMessages] = useState(dummyChat);
+
     const { id, name } = route.params;
+
+    const sendMessage = () => {
+        setMessages(prevState => ([{
+            name: 'Shawan Mandal', message: value, id: messages.length + 1
+        }, ...prevState]));
+
+        setValue('')
+    }
 
     return (<>
             <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
@@ -89,16 +106,24 @@ const ViewScreen = ({navigation, route}) => {
                 </View>
             </View>
             <View style={styles.container}>
-                {/* <KeyboardAvoidingView enabled> */}
-                <ScrollView>
-                    {dummyChat.map(item => (
+
+                <FlatList 
+                    data={messages}
+                    renderItem={({item}) => (
                         <View key={item.id} style={{flexDirection: 'row', justifyContent: item.name == name ? 'flex-start' : 'flex-end'}}>
                             <Thread key={item.id} name={item.name} message={item.message} customStyles={item.name == name ? styles.receiverThreadStyles : styles.senderThreadStyles}/>
                         </View>
-                    ))}
-                </ScrollView>
-                {/* </KeyboardAvoidingView> */}
-                <ChatInput onActionSend={() => log(value)} value={value} setValue={setValue}/>
+                    )}
+                    style={{scaleY: -1}}
+                />
+                
+
+                <ChatInput 
+                    onActionSend={sendMessage} 
+                    value={value} 
+                    setValue={setValue} 
+                    />
+
                 
             </View>
         </>

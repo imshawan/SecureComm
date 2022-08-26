@@ -42,4 +42,4 @@ export const dummyChat = [
     {id: 11, name: 'Anirban Mukherjee', message: 'So I said, not to work on that, because that has to go to the TPM, right? (Me🤣) Or it\'s a drain on her, I thought.'},
     {id: 12, name: 'Shawan Mandal', message: 'Achaaa, that\'s right...'},
 
-];
+].reverse();
