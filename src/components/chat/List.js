@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     },
     latestMsgText: {
         fontSize: fontSizes.medium,
-        color: colors.black,
+        color: colors.subText,
     }
 })
 
