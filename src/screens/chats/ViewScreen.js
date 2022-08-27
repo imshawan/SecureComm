@@ -1,13 +1,14 @@
 import React, {useState, useEffect, createRef, useCallback} from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView, StatusBar, FlatList, TextInput, Animated, KeyboardAvoidingView } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, StatusBar, FlatList, BackHandler, Alert } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
+
+import { io } from 'socket.io-client';
 
 import { Thread, ChatInput } from '../../components/chat';
 import ProfileAvtar from '../../components/ProfileAvtar';
-
 import { log } from '../../config';
-import { colors, HEADER_HEIGHT, fontSizes, dummyChat } from '../../common';
-import { showOriginColor, showFocusColor, AnimColor } from '../../utils';
+import { colors, HEADER_HEIGHT, fontSizes, dummyChat, APP_REMOTE_HOST } from '../../common';
+import { generateUUID } from '../../utils';
 
 
 const styles = StyleSheet.create({
@@ -39,10 +40,6 @@ const styles = StyleSheet.create({
         marginTop: 5,
         marginRight: 5
     },
-    avtarStyles: {
-        paddingTop: 10,
-        marginTop: 2
-    },
     headerTextStyle: {
         flexDirection: 'row',
         fontSize: fontSizes.big,  
@@ -73,30 +70,73 @@ const styles = StyleSheet.create({
 });
 
 
+
 const ViewScreen = ({navigation, route}) => {
-    const [value, setValue] = useState("");
+    const [message, setMessage] = useState("");
     const [messages, setMessages] = useState(dummyChat);
-
+    
+    const socketIO = io(APP_REMOTE_HOST, {
+        transports: ['websocket']
+    });
     const { id, name } = route.params;
-
+    let userName = 'Shawan Mandal';
+    
     const sendMessage = () => {
+        if (!message) return;
         setMessages(prevState => ([{
-            name: 'Shawan Mandal', message: value, id: messages.length + 1
+            name: userName, message, id: messages.length + 1
         }, ...prevState]));
+        
+       socketIO.emit('message:send', {name: userName, message, room: name =='Pinky Paul' ? 56 : 6})
 
-        setValue('')
+        setMessage('')
     }
+
+    const goBack = () => {
+        socketIO.emit('leave-room', {room: name =='Pinky Paul' ? 56 : 6 });
+        navigation.goBack();
+        return true;
+    }
+    
+    useEffect(() => {
+
+        socketIO.on('connect', () =>{
+            log('Connected to remote server!')
+            socketIO.emit('join-room', {room: name =='Pinky Paul' ? 56 : 6 })
+        });
+
+        
+        socketIO.on('message:receive', (socket) => {
+            setMessages(prevState => ([{
+                ...socket, id: messages.length + 1
+            }, ...prevState]));
+        })
+
+        
+
+        socketIO.on('error', (err) => log(err));
+        
+        socketIO.on('connect_failed', function() {
+            log("Sorry, there seems to be an issue with the connection!");
+         })
+
+        const backHandler = BackHandler.addEventListener("hardwareBackPress", goBack);
+    
+        return () => backHandler.remove();
+    
+        
+    }, [])
 
     return (<>
             <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
             <View style={styles.headerContainer}>
                 <View>
                     <View style={styles.headerRow}>
-                        <TouchableOpacity style={{flexDirection: 'row', paddingLeft: 5}} activeOpacity={0.5} onPress={() => navigation.goBack()}>
+                        <TouchableOpacity style={{flexDirection: 'row', paddingLeft: 5}} activeOpacity={0.5} onPress={goBack}>
                             <View style={styles.touchControlStyle}>
                                 <Icon name="arrow-left" size={fontSizes.large} style={styles.backNavStyle}/>
                             </View>
-                            <ProfileAvtar name={name} customStyles={styles.avtarStyles} />
+                            <ProfileAvtar name={name} />
                         </TouchableOpacity>
                         <View>
                             <Text style={styles.headerTextStyle}>{name}</Text>
@@ -120,8 +160,8 @@ const ViewScreen = ({navigation, route}) => {
 
                 <ChatInput 
                     onActionSend={sendMessage} 
-                    value={value} 
-                    setValue={setValue} 
+                    value={message} 
+                    setValue={setMessage} 
                     />
 
                 

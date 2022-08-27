@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
     headerRow: {
         flexDirection: 'row', 
         height: '100%', 
+        alignItems: 'center',
     },
     headerTextStyle: {
         flexDirection: 'row',
@@ -41,7 +42,6 @@ const styles = StyleSheet.create({
         marginBottom: 8
     },
     touchControlStyle: {
-        paddingTop: 6,
         marginRight: 14,
         marginLeft: 0,
         paddingLeft: 0
@@ -59,12 +59,14 @@ const styles = StyleSheet.create({
         height: 150,
         width: 150,
         borderRadius: 150,
-        fontSize: 50,
         paddingVertical: 38,
         paddingRight: 7,
         borderWidth: 5,
         borderColor: colors.white
-    }
+    },
+    avtarTextStyles: {
+        fontSize: 50,
+    },
 });
 
 const SettingsScreen = ({navigation, route}) => {
@@ -82,7 +84,7 @@ const SettingsScreen = ({navigation, route}) => {
                     </View>
                 </View>
                 <View style={styles.rowContainerStyle}>
-                    <ProfileAvtar customStyles={styles.avtarStyles} />
+                    <ProfileAvtar textStyle={styles.avtarTextStyles} customStyles={styles.avtarStyles} />
                 </View>
                 <View>
                     <Text>Shawan Mandal</Text>

@@ -19,15 +19,20 @@ const styles = StyleSheet.create({
         height: 40,
         width: 40,
         borderRadius: 40,
-        textAlign: 'center', 
-        paddingVertical: 10,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+    },
+    textstyle: {
+        marginTop: -2,
         fontWeight: 'bold',
         color: colors.white,
     }
 })
 
 
-const ProfileAvtar = ({image, name, customStyles}) => {
+const ProfileAvtar = ({image, name, customStyles, textStyle = {}}) => {
     let component;
     
     const props = {
@@ -38,9 +43,13 @@ const ProfileAvtar = ({image, name, customStyles}) => {
         component = React.createElement(Image, props);
     } else if (name){
         let { text, backgroundColor } = stringAvatar(name, 2);
-        component = <Text style={{...styles.avtarTextStyle,...customStyles, backgroundColor}}>{text}</Text>
+        component = <View style={{...styles.avtarTextStyle, backgroundColor, ...customStyles}}>
+            <Text style={{...styles.textstyle, ...textStyle}}>{text}</Text>
+        </View>
     } else {
-        component = <Text style={{...styles.avtarTextStyle,...customStyles, backgroundColor: stringToColor('Unknown')}}>UN</Text>
+        component = <View style={{...styles.avtarTextStyle, backgroundColor: stringToColor('Unknown'), ...customStyles}}>
+            <Text style={{...styles.textstyle, ...textStyle}}>{'UN'}</Text>
+        </View>
     }
 
     return (

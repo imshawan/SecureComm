@@ -21,7 +21,9 @@ const styles = StyleSheet.create({
     avtarStyles: {
         height: 50,
         width: 50,
-        paddingTop: 10,
+        // paddingTop: 10,
+    },
+    avtarTextStyle: {
         fontSize: fontSizes.large
     },
     avtarContainer: {
@@ -62,7 +64,7 @@ export const List = ({name, message, id}) => {
         >
             <View style={styles.container}>
                 <View style={styles.avtarContainer}>
-                    <ProfileAvtar name={name} customStyles={styles.avtarStyles} />
+                    <ProfileAvtar name={name} textStyle={styles.avtarTextStyle} customStyles={styles.avtarStyles} />
                 </View>
                 <View style={styles.textContainer}>
 

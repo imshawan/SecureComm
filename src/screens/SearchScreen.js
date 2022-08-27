@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     headerRow: {
         flexDirection: 'row', 
         height: '100%', 
+        alignItems: 'center'
     },
     headerTextStyle: {
         flexDirection: 'row',
@@ -50,10 +51,9 @@ const styles = StyleSheet.create({
         marginBottom: 8
     },
     touchControlStyle: {
-        paddingVertical: 5,
         marginRight: 14,
         marginLeft: 0,
-        paddingLeft: 0
+        paddingLeft: 0,
     },
     iconStyles: {
         color: colors.black
