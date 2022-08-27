@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
         borderRadius: 15,
     },
     messageTextStyle: {
-        fontSize: fontSizes.medium
+        fontSize: fontSizes.medium,
     },
 })
 

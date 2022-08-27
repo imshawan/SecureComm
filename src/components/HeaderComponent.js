@@ -24,15 +24,18 @@ const styles = StyleSheet.create({
       },
     headerRow: {
         flexDirection: 'row', 
-        height: '100%'
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignContent: 'center',
     },
     headerTextStyle: {
-        flexDirection: 'row',
-        marginTop: 2,
         fontSize: appHeaderSize, 
         marginLeft: 5, 
-        fontWeight: 'bold',
-        color: colors.black
+        // fontWeight: 'bold',
+        color: colors.black,
+        fontFamily: 'SF-Pro-Rounded-Bold',
+        lineHeight: appHeaderSize
     },
     controlStyle: {
         flexDirection: 'row',

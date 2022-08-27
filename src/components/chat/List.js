@@ -33,16 +33,19 @@ const styles = StyleSheet.create({
     },
     textContainer: {
         marginLeft: 10,
-       
+       justifyContent: 'center'
     },
     userNameText: {
         fontSize: fontSizes.regular,
-        fontWeight: 'bold',
+        // fontWeight: 'bold',
+        fontFamily: 'SF-Pro-Rounded-Bold',
         color: colors.black,
+        lineHeight: fontSizes.regular + 5,
     },
     latestMsgText: {
         fontSize: fontSizes.medium,
         color: colors.subText,
+        // fontFamily: 'SF-Pro-Rounded-Regular',
     }
 })
 

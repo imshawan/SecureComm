@@ -42,8 +42,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         fontSize: fontSizes.extraLarge, 
         marginLeft: 5, 
-        fontWeight: 'bold',
+        // fontWeight: 'bold',
         color: colors.black,
+        fontFamily: 'SF-Pro-Rounded-Bold',
+        lineHeight: fontSizes.extraLarge + 5
     },
     headerContent: {
         flexDirection: 'row', 
@@ -63,7 +65,6 @@ const styles = StyleSheet.create({
 const SearchScreen = ({navigation}) => {
     const [value, setValue] = useState("");
     const [clicked, setClicked] = useState(false);
-    const [fakeData, setFakeData] = useState();
 
     return (
         <View style={styles.container}>

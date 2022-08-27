@@ -25,9 +25,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     textstyle: {
-        marginTop: -2,
-        fontWeight: 'bold',
+        marginTop: 1,
         color: colors.white,
+        fontFamily: 'SF-Pro-Rounded-Bold'
     }
 })
 

@@ -39,12 +39,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row', 
         height: '100%', 
         alignItems: 'center',
+        justifyContent: 'center',
     },
     headerTextStyle: {
         flexDirection: 'row',
         fontSize: fontSizes.extraLarge, 
         marginLeft: 5, 
-        fontWeight: 'bold',
+        // fontWeight: 'bold',
+        fontFamily: 'SF-Pro-Rounded-Bold',
+        lineHeight: fontSizes.extraLarge + 5,
         color: colors.black,
     },
     headerContent: {
@@ -60,14 +63,15 @@ const styles = StyleSheet.create({
     labelStyle: {
         fontSize: fontSizes.regular,
         color: colors.black,
-        fontWeight: 'bold',
         paddingVertical: 7,
-        paddingRight: 7
+        paddingRight: 7,
+        fontFamily: 'SF-Pro-Rounded-Bold',
     },
     inputStyles: {
         width: '90%',
         height: 40,
         backgroundColor: colors.white,
+        fontFamily: 'SF-Pro-Rounded-Regular'
     },
     iconStyles: {
         color: colors.black

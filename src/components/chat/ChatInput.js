@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         color: colors.placeholderColor,
         backgroundColor: '#eceef5',
         borderRadius: 20,
-        padding: 10
+        padding: 10,
     },
     buttonContainer: {
         backgroundColor: colors.brandColor,

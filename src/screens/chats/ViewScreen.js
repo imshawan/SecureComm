@@ -43,8 +43,10 @@ const styles = StyleSheet.create({
     headerTextStyle: {
         flexDirection: 'row',
         fontSize: fontSizes.big,  
-        fontWeight: 'bold',
-        color: colors.black
+        // fontWeight: 'bold',
+        color: colors.black,
+        fontFamily: 'SF-Pro-Rounded-Bold',
+        lineHeight: fontSizes.big + 5
     },
     activeTimeStyle: {
         fontSize: fontSizes.small

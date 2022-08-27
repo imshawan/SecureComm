@@ -33,8 +33,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         fontSize: fontSizes.extraLarge, 
         marginLeft: 5, 
-        fontWeight: 'bold',
+        // fontWeight: 'bold',
         color: colors.black,
+        fontFamily: 'SF-Pro-Rounded-Bold',
+        lineHeight: fontSizes.extraLarge + 5
     },
     headerContent: {
         flexDirection: 'row', 
@@ -44,7 +46,8 @@ const styles = StyleSheet.create({
     touchControlStyle: {
         marginRight: 14,
         marginLeft: 0,
-        paddingLeft: 0
+        paddingLeft: 0,
+        marginTop: -2
     },
     iconStyles: {
         color: colors.black
@@ -66,6 +69,7 @@ const styles = StyleSheet.create({
     },
     avtarTextStyles: {
         fontSize: 50,
+        lineHeight: 60
     },
 });
 
