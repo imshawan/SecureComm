@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 10,
         elevation: 3,
-        zIndex: 9
+        zIndex: 9,
       },
     headerRow: {
         flexDirection: 'row', 
@@ -68,7 +68,7 @@ const HeaderComponent = ({image, name}) => {
                     <Icon name="search" style={styles.iconStyles} size={fontSizes.large} />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.touchControlStyle} onPress={() => navigation.navigate('SettingsScreen')}>
+                <TouchableOpacity style={styles.touchControlStyle} onPress={() => navigation.navigate('AccountScreen')}>
                     <Icon name="cog" style={styles.iconStyles} size={fontSizes.large} />
                 </TouchableOpacity>
 

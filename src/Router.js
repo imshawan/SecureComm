@@ -13,7 +13,7 @@
  import SearchScreen from './screens/SearchScreen';
  import ViewScreen from './screens/chats/ViewScreen';
  import NewChatScreen from './screens/chats/NewChatScreen';
- import SettingsScreen from './screens/SettingsScreen';
+ import AccountScreen from './screens/AccountScreen';
  
  
  const Stack = createStackNavigator();
@@ -74,7 +74,7 @@
           <Stack.Screen name="SearchScreen" component={SearchScreen} options={{headerShown: false}}/>
           <Stack.Screen name="ViewScreen" component={ViewScreen} options={{headerShown: false}}/>
           <Stack.Screen name="NewChatScreen" component={NewChatScreen} options={{headerShown: false}}/>
-          <Stack.Screen name="SettingsScreen" component={SettingsScreen} options={{headerShown: false}}/>
+          <Stack.Screen name="AccountScreen" component={AccountScreen} options={{headerShown: false}}/>
 
         </ Stack.Navigator>
       </NavigationContainer>

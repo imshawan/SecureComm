@@ -32,11 +32,11 @@ const styles = StyleSheet.create({
 })
 
 
-const ProfileAvtar = ({image, name, customStyles, textStyle = {}}) => {
+const ProfileAvtar = ({image, name, customStyles={}, textStyle = {}}) => {
     let component;
     
     const props = {
-        style: styles.avtarStyle,
+        style: {...styles.avtarStyle, ...customStyles},
         source: {uri: image},
     }
     if (image) {
