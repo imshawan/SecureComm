@@ -1,4 +1,4 @@
-import React, {useState, createRef} from 'react';
+import React, {useState, createRef, useEffect} from 'react';
 import {
   TextInput,
   View,
@@ -8,7 +8,7 @@ import {
   Keyboard,
   TouchableOpacity, StyleSheet,
   Dimensions, TouchableHighlight,
-  KeyboardAvoidingView,
+  KeyboardAvoidingView, Platform
 } from 'react-native';
  
 import AsyncStorage from '@react-native-community/async-storage';
@@ -26,10 +26,19 @@ const pageStyles = StyleSheet.create({
     position: 'absolute',
     textAlign: 'right',
     fontSize: headerFontSize,
-    fontWeight: 'bold',
+    fontFamily: 'SF-Pro-Rounded-Bold',
+    lineHeight: headerFontSize + 5,
     marginLeft: -10,
     marginTop: (Dimensions.get('window').height / 2.7),
     color: colors.white
+  },
+  headerContainer: {
+    backgroundColor: colors.white,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').width,
+    marginTop: -(Dimensions.get('window').width / 2),
+    marginLeft: -(Dimensions.get('window').width / 3.2),
+    // flexDirection: 'row',
   },
 });
 
@@ -39,6 +48,8 @@ const interpolatedColor1 = new Animated.Value(0);
 const interpolatedColor2 = new Animated.Value(0);
  
 const LoginScreen = ({navigation}) => {
+  const [display, setDisplay] = useState('flex');
+  const [justifyContent, setJustifyContent] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({ });
   const [errorStyles, setErrorStyles] = useState({ });
@@ -68,20 +79,33 @@ const LoginScreen = ({navigation}) => {
   const handleErrors = (errorMessage, field) => {
     setErrors(prevState => ({...prevState, [field]: errorMessage}));
   }
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setDisplay('none');
+        setJustifyContent(true)
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setDisplay('flex');
+        setJustifyContent(false)
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, [])
  
   return (
     <View style={styles.mainBody}>
-      {/* <Loader loading={loading} /> */}
-      <ScrollView
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{
-          flex: 1,
-          justifyContent: 'center',
-          alignContent: 'center',
-        }}>
-            
-            <View>
-            <TouchableHighlight
+      <View style={{...pageStyles.headerContainer, display }}>
+        <TouchableHighlight
               style = {{
                 borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
                 width: Dimensions.get('window').width,
@@ -89,9 +113,7 @@ const LoginScreen = ({navigation}) => {
                 backgroundColor: colors.brandColor,
                 justifyContent: 'center',
                 alignItems: 'center',
-                position: 'absolute',
-                marginTop: -(Dimensions.get('window').width / 0.93),
-                marginLeft: -(Dimensions.get('window').width / 3.2)
+                position: 'relative',
               }}>
                 <View style={styles.backNav}>
                  
@@ -111,17 +133,36 @@ const LoginScreen = ({navigation}) => {
                   <Text style={pageStyles.headerStyle}>Log in</Text>
 
                 </View>
-            </TouchableHighlight>
+        </TouchableHighlight>
+      </View>
+      <ScrollView
+        
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{
+          flex: 1,
+          justifyContent: justifyContent ? 'center' :'flex-start',
+          paddingTop: justifyContent ? 0 : Dimensions.get('window').height / 10,
+          alignContent: 'center',
+        }}>
+            
+            <View>
                 <Text style={styles.headTextStyle}>We're happy to see you back</Text>
                 <Text style={styles.subTextStyle}>Please login to continue.</Text>
-                <KeyboardAvoidingView enabled>
+                <KeyboardAvoidingView enabled={false} keyboardVerticalOffset={0} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
                     <View style={styles.SectionStyle}>
                         <AnimatedTextInput
                             style={{...styles.inputStyle,
                               borderColor: errors.email ? colors.red : AnimColor(interpolatedColor1, 'transparent')}}
                             onChangeText={(UserEmail) => handleOnChange(UserEmail, "email")}
-                            onFocus={() => {showFocusColor(interpolatedColor1); handleErrors(null, 'email');}}
-                            onBlur={() => showOriginColor(interpolatedColor1)}
+                            onFocus={() => {
+                              showFocusColor(interpolatedColor1); 
+                              handleErrors(null, 'email'); 
+                              
+                            }}
+                            onBlur={() => {
+                              showOriginColor(interpolatedColor1); 
+                              
+                            }}
                             placeholder="Enter Email"
                             placeholderTextColor={errors.email ? colors.red : AnimColor(interpolatedColor1, colors.placeholderColor)}
                             autoCapitalize="none"
@@ -139,8 +180,15 @@ const LoginScreen = ({navigation}) => {
                               borderColor: errors.password ? colors.red : AnimColor(interpolatedColor2, 'transparent'), 
                               ...errorStyles}}
                             onChangeText={(UserPassword) => handleOnChange(UserPassword, "password")}
-                            onFocus={() => {showFocusColor(interpolatedColor2); handleErrors(null, 'password');}}
-                            onBlur={() => showOriginColor(interpolatedColor2)}
+                            onFocus={() => {
+                              showFocusColor(interpolatedColor2); 
+                              handleErrors(null, 'password'); 
+                              
+                            }}
+                            onBlur={() => {
+                              showOriginColor(interpolatedColor2); 
+                              
+                            }}
                             placeholder="Enter Password" //12345
                             placeholderTextColor={errors.password ? colors.red : AnimColor(interpolatedColor2, colors.placeholderColor)}
                             keyboardType="default"

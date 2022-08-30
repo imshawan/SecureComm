@@ -1,4 +1,4 @@
-import React, {useState, createRef} from 'react';
+import React, {useState, createRef, useEffect} from 'react';
 import {
   TextInput,
   View,
@@ -31,6 +31,13 @@ const pageStyles = StyleSheet.create({
     marginTop: (Dimensions.get('window').height / 2.7),
     color: colors.white
   },
+  headerContainer: {
+    backgroundColor: colors.white,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').width,
+    marginTop: -(Dimensions.get('window').width / 2),
+    marginLeft: -(Dimensions.get('window').width / 3.2),
+  },
 });
 
 
@@ -42,6 +49,8 @@ const EnterOtpScreen = ({navigation, route}) => {
     navigation.navigate('EnterOtpScreen');
   }
 
+  const [display, setDisplay] = useState('flex');
+  const [justifyContent, setJustifyContent] = useState(false);
   const [otp, setOTP] = useState('');
   const [userEmail, setUSerEmail] = useState(route.params.userEmail);
   const [userPassword, setUserPassword] = useState('');
@@ -59,51 +68,74 @@ const EnterOtpScreen = ({navigation, route}) => {
       return;
     }
   };
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setDisplay('none');
+        setJustifyContent(true)
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setDisplay('flex');
+        setJustifyContent(false)
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, [])
  
   return (
     <View style={styles.mainBody}>
-      {/* <Loader loading={loading} /> */}
+      <View style={{...pageStyles.headerContainer, display }}>
+          <TouchableHighlight
+            style = {{
+              borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
+              width: Dimensions.get('window').width,
+              height: Dimensions.get('window').width,
+              backgroundColor: colors.brandColor,
+              justifyContent: 'center',
+              alignItems: 'center',
+              position: 'relative',
+            }}
+          >
+              <View style={styles.backNav}>
+                
+                  <TouchableOpacity 
+                  onPress={() => navigation.goBack()}
+                  style={{
+                    fontWeight: 'bold',
+                    marginLeft: -10,
+                    marginTop: (Dimensions.get('window').height / 3.2),
+                    color: colors.white
+                  }}>
+                    <Text style={{color: colors.white, fontSize: fontSizes.regular}}>
+                      <Icon name="arrow-left" size={fontSizes.regular} /> &nbsp; Back
+                    </Text>
+                  </TouchableOpacity>
+                
+                <Text style={pageStyles.headerStyle}>Reset</Text>
+
+              </View>
+          </TouchableHighlight>
+      </View>
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{
           flex: 1,
-          justifyContent: 'center',
+          justifyContent: justifyContent ? 'center' :'flex-start',
           alignContent: 'center',
+          paddingTop: justifyContent ? 0 : 50
         }}>
             
             <View>
-            <TouchableHighlight
-              style = {{
-                borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
-                width: Dimensions.get('window').width,
-                height: Dimensions.get('window').width,
-                backgroundColor: colors.brandColor,
-                justifyContent: 'center',
-                alignItems: 'center',
-                position: 'absolute',
-                marginTop: -(Dimensions.get('window').width / 0.98),
-                marginLeft: -(Dimensions.get('window').width / 3.2)
-              }}
-            >
-                <View style={styles.backNav}>
-                 
-                    <TouchableOpacity 
-                    onPress={() => navigation.goBack()}
-                    style={{
-                      fontWeight: 'bold',
-                      marginLeft: -10,
-                      marginTop: (Dimensions.get('window').height / 3.2),
-                      color: colors.white
-                    }}>
-                      <Text style={{color: colors.white, fontSize: fontSizes.regular}}>
-                        <Icon name="arrow-left" size={fontSizes.regular} /> &nbsp; Back
-                      </Text>
-                    </TouchableOpacity>
-                  
-                  <Text style={pageStyles.headerStyle}>Reset</Text>
-
-                </View>
-            </TouchableHighlight>
+            
                 <Text style={styles.headTextStyle}>Enter the Authorization Code</Text>
                 <Text style={{...styles.subTextStyle, fontSize: fontSizes.medium, marginBottom: 10}}>Sent to {userEmail}</Text>
                 <KeyboardAvoidingView enabled>
@@ -150,7 +182,9 @@ const EnterOtpScreen = ({navigation, route}) => {
 
                     <View style={{...styles.SectionStyle}}>
                         <AnimatedTextInput
-                            style={{...styles.inputStyle, borderColor: AnimColor(interpolatedColor3, 'transparent')}}
+                            style={{...styles.inputStyle, 
+                              borderColor: AnimColor(interpolatedColor3, 'transparent'),
+                            }}
                             onChangeText={(UserPassword) => setUserPassword(UserPassword)}
                             onFocus={() => showFocusColor(interpolatedColor3)}
                             onBlur={() => showOriginColor(interpolatedColor3)}
@@ -173,7 +207,7 @@ const EnterOtpScreen = ({navigation, route}) => {
                     ) : null}
 
                     <TouchableOpacity
-                    style={styles.buttonStyle}
+                    style={{...styles.buttonStyle}}
                     activeOpacity={0.5}
                     onPress={handleSubmitPress}>
                         <Text style={styles.buttonTextStyle}>CHANGE PASSWORD</Text>
@@ -185,4 +219,5 @@ const EnterOtpScreen = ({navigation, route}) => {
     </View>
   );
 };
+
 export default EnterOtpScreen;

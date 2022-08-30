@@ -15,9 +15,10 @@ export const styles = StyleSheet.create({
     headTextStyle: {
       textAlign: 'left',
       fontSize: fontSizes.extraLarge,
-      fontWeight: 'bold',
+      fontFamily: 'SF-Pro-Rounded-Bold',
+      lineHeight: fontSizes.extraLarge + 5,
       color: '#000',
-      marginTop: 50,
+      // marginTop: 50,
       marginBottom: 5,
       marginLeft: 36,
       marginRight: 35,
@@ -25,6 +26,7 @@ export const styles = StyleSheet.create({
     subTextStyle: {
       textAlign: 'left',
       fontSize: fontSizes.medium,
+      fontFamily: 'SF-Pro-Rounded-Regular',
       color: '#000',
       marginLeft: 36,
       marginRight: 35,
@@ -45,6 +47,7 @@ export const styles = StyleSheet.create({
       color: colors.white,
       borderColor: colors.borderColor,
       height: 50,
+      justifyContent: 'center',
       alignItems: 'center',
       borderRadius: 10,
       marginLeft: 35,
@@ -62,8 +65,8 @@ export const styles = StyleSheet.create({
     },
     buttonTextStyle: {
       color: colors.white,
-      paddingVertical: 13,
       fontSize: fontSizes.regular,
+      fontFamily: 'SF-Pro-Rounded-Bold',
     },
     inputStyle: {
       flex: 1,
@@ -80,20 +83,22 @@ export const styles = StyleSheet.create({
     forgotPasswordTextStyle: {
         color: colors.brandColor,
         textAlign: 'right',
-        fontWeight: 'bold',
+        fontFamily: 'SF-Pro-Rounded-Bold',
         fontSize: fontSizes.medium,
         padding: 10,
+        paddingTop: 0,
         paddingBottom: 0,
         marginRight: 35,
     },
     registerTextStyle: {
       color: colors.brandColor,
       textAlign: 'center',
-      fontWeight: 'bold',
+      fontFamily: 'SF-Pro-Rounded-Bold',
       fontSize: fontSizes.medium,
       alignSelf: 'center',
       padding: 10,
       paddingTop: 0,
+      marginTop: -4
     },
     errorTextStyle: {
       color: 'red',

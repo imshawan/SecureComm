@@ -26,7 +26,7 @@
            {/* SplashScreen which will come once for 5 Seconds */}
            <Stack.Screen
              name="SplashScreen"
-             component={DummyScreen}
+             component={SplashScreen}
              // Hiding header for Splash Screen
              options={{headerShown: false}}
            />

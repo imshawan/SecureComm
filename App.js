@@ -24,7 +24,7 @@ const App = () => {
 
   return (
     <PaperProvider>
-      <PrivateRoutes />
+      <PublicRoutes />
     </PaperProvider>
   );
 };
