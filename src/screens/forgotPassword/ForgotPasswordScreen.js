@@ -12,7 +12,7 @@ import {
 } from 'react-native';
  
 import AsyncStorage from '@react-native-community/async-storage';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import TopNavigation from '../../components/TopNavigation';
 
 import { log, showAlert } from '../../config';
 import { colors, fontSizes, headerFontSize } from '../../common';
@@ -89,6 +89,7 @@ const ForgotPasswordScreen = ({navigation}) => {
  
   return (
     <View style={styles.mainBody}>
+      <TopNavigation name={'Reset'} customStyles={{display}} />
       <View style={{...pageStyles.headerContainer, display }}>
           <TouchableHighlight
               style = {{
@@ -103,20 +104,7 @@ const ForgotPasswordScreen = ({navigation}) => {
             >
                 <View style={styles.backNav}>
                  
-                    <TouchableOpacity 
-                    onPress={() => navigation.goBack()}
-                    style={{
-                      fontWeight: 'bold',
-                      marginLeft: -10,
-                      marginTop: (Dimensions.get('window').height / 3.2),
-                      color: colors.white
-                    }}>
-                      <Text style={{color: colors.white, fontSize: fontSizes.regular}}>
-                        <Icon name="arrow-left" size={fontSizes.regular} /> &nbsp; Back
-                      </Text>
-                    </TouchableOpacity>
-                  
-                  <Text style={pageStyles.headerStyle}>Reset</Text>
+                    
 
                 </View>
           </TouchableHighlight>

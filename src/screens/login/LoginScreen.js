@@ -13,6 +13,7 @@ import {
  
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import TopNavigation from '../../components/TopNavigation';
 
 import { log, showAlert } from '../../config';
 import { colors, fontSizes, headerFontSize, ERRORS } from '../../common';
@@ -22,23 +23,12 @@ import { styles } from '../styles';
 // import Loader from './Components/Loader';
 
 const pageStyles = StyleSheet.create({
-  headerStyle: {
-    position: 'absolute',
-    textAlign: 'right',
-    fontSize: headerFontSize,
-    fontFamily: 'SF-Pro-Rounded-Bold',
-    lineHeight: headerFontSize + 5,
-    marginLeft: -10,
-    marginTop: (Dimensions.get('window').height / 2.7),
-    color: colors.white
-  },
   headerContainer: {
     backgroundColor: colors.white,
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').width,
     marginTop: -(Dimensions.get('window').width / 2),
     marginLeft: -(Dimensions.get('window').width / 3.2),
-    // flexDirection: 'row',
   },
 });
 
@@ -104,6 +94,7 @@ const LoginScreen = ({navigation}) => {
  
   return (
     <View style={styles.mainBody}>
+      <TopNavigation name={'Log in'} customStyles={{display}} />
       <View style={{...pageStyles.headerContainer, display }}>
         <TouchableHighlight
               style = {{
@@ -115,24 +106,7 @@ const LoginScreen = ({navigation}) => {
                 alignItems: 'center',
                 position: 'relative',
               }}>
-                <View style={styles.backNav}>
-                 
-                    <TouchableOpacity 
-                    onPress={() => navigation.goBack()}
-                    style={{
-                      fontWeight: 'bold',
-                      marginLeft: -10,
-                      marginTop: (Dimensions.get('window').height / 3.2),
-                      color: colors.white
-                    }}>
-                      <Text style={{color: colors.white, fontSize: fontSizes.regular}}>
-                        <Icon name="arrow-left" size={fontSizes.regular} /> &nbsp; Back
-                      </Text>
-                    </TouchableOpacity>
-                  
-                  <Text style={pageStyles.headerStyle}>Log in</Text>
-
-                </View>
+                <View />
         </TouchableHighlight>
       </View>
       <ScrollView

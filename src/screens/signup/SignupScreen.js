@@ -12,7 +12,7 @@ import {
 } from 'react-native';
  
 import AsyncStorage from '@react-native-community/async-storage';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import TopNavigation from '../../components/TopNavigation';
 
 import { log, showAlert } from '../../config';
 import { colors, fontSizes, headerFontSize, APP_NAME } from '../../common';
@@ -22,15 +22,6 @@ import { styles } from '../styles';
 // import Loader from './Components/Loader';
 
 const pageStyles = StyleSheet.create({
-  headerStyle: {
-    position: 'absolute',
-    textAlign: 'right',
-    fontSize: headerFontSize,
-    fontWeight: 'bold',
-    marginLeft: -12,
-    marginTop: (Dimensions.get('window').height / 2.7),
-    color: colors.white
-  },
   headerContainer: {
     backgroundColor: colors.white,
     width: Dimensions.get('window').width,
@@ -91,6 +82,9 @@ const SignupScreen = ({navigation}) => {
  
   return (
     <View style={styles.mainBody}>
+
+      <TopNavigation name={'Sign up'} customStyles={{display}} />
+
       <View style={{...pageStyles.headerContainer, display }}>
           <TouchableHighlight
               style = {{
@@ -103,24 +97,7 @@ const SignupScreen = ({navigation}) => {
                 position: 'relative',
               }}
             >
-                <View style={styles.backNav}>
-                 
-                    <TouchableOpacity 
-                    onPress={() => navigation.goBack()}
-                    style={{
-                      fontWeight: 'bold',
-                      marginLeft: -12,
-                      marginTop: (Dimensions.get('window').height / 3.2),
-                      color: colors.white,
-                    }}>
-                      <Text style={{color: colors.white, fontSize: fontSizes.regular}}>
-                        <Icon name="arrow-left" size={fontSizes.regular} /> &nbsp; Back
-                      </Text>
-                    </TouchableOpacity>
-                  
-                  <Text style={pageStyles.headerStyle}>Sign up</Text>
-
-                </View>
+                <View />
           </TouchableHighlight>
       </View>
       <ScrollView
