@@ -16,7 +16,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import TopNavigation from '../../components/TopNavigation';
 
 import { log, showAlert } from '../../config';
-import { colors, fontSizes, headerFontSize, ERRORS } from '../../common';
+import { colors, fontSizes, headerFontSize, ERRORS, PLACEHOLDERS } from '../../common';
 import { showFocusColor, AnimColor, showOriginColor, validateEmail } from '../../utils';
 import { styles } from '../styles';
  
@@ -137,10 +137,10 @@ const LoginScreen = ({navigation}) => {
                               showOriginColor(interpolatedColor1); 
                               
                             }}
-                            placeholder="Enter Email"
+                            placeholder={PLACEHOLDERS.userNameOrEmail}
                             placeholderTextColor={errors.email ? colors.red : AnimColor(interpolatedColor1, colors.placeholderColor)}
                             autoCapitalize="none"
-                            keyboardType="email-address"
+                            keyboardType="default"
                             returnKeyType="next"
                             onSubmitEditing={() => passwordInputRef.current && passwordInputRef.current.focus()}
                             underlineColorAndroid="#f000"
@@ -163,7 +163,7 @@ const LoginScreen = ({navigation}) => {
                               showOriginColor(interpolatedColor2); 
                               
                             }}
-                            placeholder="Enter Password" //12345
+                            placeholder={PLACEHOLDERS.enterPassword}
                             placeholderTextColor={errors.password ? colors.red : AnimColor(interpolatedColor2, colors.placeholderColor)}
                             keyboardType="default"
                             ref={passwordInputRef}

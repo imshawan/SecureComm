@@ -15,8 +15,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import TopNavigation from '../../components/TopNavigation';
 
 import { log, showAlert } from '../../config';
-import { colors, fontSizes, headerFontSize, APP_NAME } from '../../common';
-import { showFocusColor, AnimColor, showOriginColor } from '../../utils';
+import { colors, fontSizes, headerFontSize, APP_NAME, ERRORS, PLACEHOLDERS } from '../../common';
+import { showFocusColor, AnimColor, showOriginColor, validateEmail } from '../../utils';
 import { styles } from '../styles';
  
 // import Loader from './Components/Loader';
@@ -37,26 +37,47 @@ const [interpolatedColor1, interpolatedColor2, interpolatedColor3] = [new Animat
 const SignupScreen = ({navigation}) => {
   const [display, setDisplay] = useState('flex');
   const [justifyContent, setJustifyContent] = useState(false);
-  const [userFullName, setUserFullName] = useState('');
-  const [userEmail, setUserEmail] = useState('');
-  const [userPassword, setUserPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [errortext, setErrortext] = useState('');
+  const [errors, setErrors] = useState({ });
+  const [userInput, setUserInput] = useState({
+    username: '',
+    email: '',
+    password: '',
+  })
  
   const passwordInputRef = createRef();
 
  
   const handleSubmitPress = () => {
-    setErrortext('');
-    if (!userEmail) {
-      showAlert('Please fill Email');
-      return;
+    Keyboard.dismiss();
+    let errors = 0;
+
+    if (!userInput.email) {
+      handleErrors(ERRORS.noEmailSupplied, 'email');
+      errors++;
     }
-    if (!userPassword) {
-      showAlert('Please fill Password');
-      return;
+    if (!validateEmail(userInput.email)) {
+      handleErrors(ERRORS.invalidEmail, 'email');
+      errors++;
     }
+    if (!userInput.username) {
+      handleErrors(ERRORS.noUsernameSupplied, 'username');
+      errors++;
+    }
+    if (!userInput.password) {
+      handleErrors(ERRORS.noPasswordSupplied, 'password');
+      errors++;
+    }
+
+    if (errors) return;
   };
+
+  const handleOnChange = (value, field) => {
+    setUserInput(prevState => ({...prevState, [field]: value}));
+  }
+
+  const handleErrors = (errorMessage, field) => {
+    setErrors(prevState => ({...prevState, [field]: errorMessage}));
+  }
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -116,26 +137,36 @@ const SignupScreen = ({navigation}) => {
 
                     <View style={styles.SectionStyle}>
                         <AnimatedTextInput
-                            style={{...styles.inputStyle, borderColor: AnimColor(interpolatedColor1, 'transparent')}}
-                            onChangeText={(UserFullName) => setUserFullName(UserFullName)}
-                            onFocus={() => showFocusColor(interpolatedColor1)}
-                            onBlur={() => showOriginColor(interpolatedColor1)}
-                            placeholder="Full name" //12345
-                            placeholderTextColor={AnimColor(interpolatedColor1, colors.placeholderColor)}
+                            style={{...styles.inputStyle, borderColor: errors.username ? colors.red : AnimColor(interpolatedColor1, 'transparent')}}
+                            onChangeText={(username) => handleOnChange(username, "username")}
+                            onFocus={() => {
+                              showFocusColor(interpolatedColor1);
+                              handleErrors(null, 'username');
+                            }}
+                            onBlur={() => {
+                              showOriginColor(interpolatedColor1);
+                            }}
+                            placeholder={PLACEHOLDERS.createUsername}
+                            placeholderTextColor={errors.username ? colors.red : AnimColor(interpolatedColor1, colors.placeholderColor)}
                             keyboardType="default"
                             underlineColorAndroid="#f000"
                             returnKeyType="next"
                         />
                     </View>
 
+                    {errors.username ? <Text style={styles.errorTextStyle}>{errors.username}</Text> : ''}
+
                     <View style={styles.SectionStyle}>
                         <AnimatedTextInput
-                            style={{...styles.inputStyle, borderColor: AnimColor(interpolatedColor2, 'transparent')}}
-                            onChangeText={(UserEmail) => setUserEmail(UserEmail)}
-                            onFocus={() => showFocusColor(interpolatedColor2)}
+                            style={{...styles.inputStyle, borderColor: errors.email ? colors.red : AnimColor(interpolatedColor2, 'transparent')}}
+                            onChangeText={(UserEmail) => handleOnChange(UserEmail, "email")}
+                            onFocus={() => {
+                              showFocusColor(interpolatedColor2);
+                              handleErrors(null, 'email');
+                            }}
                             onBlur={() => showOriginColor(interpolatedColor2)}
-                            placeholder="Email address"
-                            placeholderTextColor={AnimColor(interpolatedColor2, colors.placeholderColor)}
+                            placeholder={PLACEHOLDERS.enterEmail}
+                            placeholderTextColor={errors.email ? colors.red : AnimColor(interpolatedColor2, colors.placeholderColor)}
                             autoCapitalize="none"
                             keyboardType="email-address"
                             returnKeyType="next"
@@ -144,14 +175,20 @@ const SignupScreen = ({navigation}) => {
                             blurOnSubmit={false}
                         />
                     </View>
+
+                    {errors.email ? <Text style={styles.errorTextStyle}>{errors.email}</Text> : ''}
+
                     <View style={styles.SectionStyle}>
                         <AnimatedTextInput
-                            style={{...styles.inputStyle, borderColor: AnimColor(interpolatedColor3, 'transparent')}}
+                            style={{...styles.inputStyle, borderColor: errors.password ? colors.red : AnimColor(interpolatedColor3, 'transparent')}}
                             onChangeText={(UserPassword) => setUserPassword(UserPassword)}
-                            onFocus={() => showFocusColor(interpolatedColor3)}
+                            onFocus={() => {
+                              showFocusColor(interpolatedColor3);
+                              handleErrors(null, 'password');
+                            }}
                             onBlur={() => showOriginColor(interpolatedColor3)}
-                            placeholder="Create Password" //12345
-                            placeholderTextColor={AnimColor(interpolatedColor3, colors.placeholderColor)}
+                            placeholder={PLACEHOLDERS.createPassword}
+                            placeholderTextColor={errors.password ? colors.red : AnimColor(interpolatedColor3, colors.placeholderColor)}
                             keyboardType="default"
                             ref={passwordInputRef}
                             onSubmitEditing={Keyboard.dismiss}
@@ -162,16 +199,12 @@ const SignupScreen = ({navigation}) => {
                         />
                     </View>
 
-                    {errortext != '' ? (
-                    <Text style={styles.errorTextStyle}>
-                        {errortext}
-                    </Text>
-                    ) : null}
+                    {errors.password ? <Text style={styles.errorTextStyle}>{errors.password}</Text> : ''}
 
                     <TouchableOpacity
-                    style={styles.buttonStyle}
-                    activeOpacity={0.5}
-                    onPress={handleSubmitPress}>
+                      style={styles.buttonStyle}
+                      activeOpacity={0.5}
+                      onPress={handleSubmitPress}>
                         <Text style={styles.buttonTextStyle}>CREATE ACCOUNT</Text>
                     </TouchableOpacity>
                     

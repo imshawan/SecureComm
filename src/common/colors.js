@@ -13,7 +13,7 @@ export const colors = {
     whiteSmock: '#F5F5F5',
     drawerBackGroundGray: 'rgba(52, 52, 52, 0.6)',
     brandColor: '#5C33F6',
-    placeholderColor: '#000',
+    placeholderColor: '#666666',
     blue: 'blue',
     subText: '#666666',
   };

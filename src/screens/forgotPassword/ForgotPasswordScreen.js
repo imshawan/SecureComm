@@ -15,7 +15,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import TopNavigation from '../../components/TopNavigation';
 
 import { log, showAlert } from '../../config';
-import { colors, fontSizes, headerFontSize } from '../../common';
+import { colors, fontSizes, headerFontSize, ERRORS, PLACEHOLDERS } from '../../common';
 import { showFocusColor, AnimColor, showOriginColor, validateEmail } from '../../utils';
 import { styles } from '../styles';
  
@@ -48,22 +48,40 @@ const interpolatedColor = new Animated.Value(0);
 const ForgotPasswordScreen = ({navigation}) => {
   const [display, setDisplay] = useState('flex');
   const [justifyContent, setJustifyContent] = useState(false);
-  const [userEmail, setUserEmail] = useState('');
-  const [errortext, setErrortext] = useState('');
+  const [errors, setErrors] = useState({ });
+  const [userInput, setUserInput] = useState({
+    email: '',
+  })
  
   const passwordInputRef = createRef();
 
  
   const handleSubmitPress = () => {
-    setErrortext('');
-    if (!userEmail) {
-      showAlert('Please fill Email');
-      return;
+    Keyboard.dismiss();
+    let errors = 0;
+
+    if (!userInput.email) {
+      handleErrors(ERRORS.noEmailSupplied, 'email');
+      errors++;
     }
+    if (!validateEmail(userInput.email)) {
+      handleErrors(ERRORS.invalidEmail, 'email');
+      errors++;
+    }
+    if (errors) return;
+
     navigation.navigate('EnterOtpScreen', {
-        userEmail
+      email: userInput.email
     })
   };
+
+  const handleOnChange = (value, field) => {
+    setUserInput(prevState => ({...prevState, [field]: value}));
+  }
+
+  const handleErrors = (errorMessage, field) => {
+    setErrors(prevState => ({...prevState, [field]: errorMessage}));
+  }
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -125,12 +143,18 @@ const ForgotPasswordScreen = ({navigation}) => {
                 <KeyboardAvoidingView enabled>
                     <View style={styles.SectionStyle}>
                         <AnimatedTextInput
-                            style={{...styles.inputStyle, borderColor: AnimColor(interpolatedColor, 'transparent')}}
-                            onChangeText={(UserEmail) => setUserEmail(UserEmail)}
-                            onFocus={() => showFocusColor(interpolatedColor)}
+                            style={{...styles.inputStyle, 
+                              borderColor: errors.email ? colors.red : AnimColor(interpolatedColor, 'transparent')
+                            }}
+                            onChangeText={(UserEmail) => handleOnChange(UserEmail, "email")}
+                            onFocus={() => {
+                              showFocusColor(interpolatedColor);
+                              handleErrors(null, 'email');
+                            }}
+                            // value={userInput.email}
                             onBlur={() => showOriginColor(interpolatedColor)}
-                            placeholder="Enter Email"
-                            placeholderTextColor={AnimColor(interpolatedColor, colors.placeholderColor)}
+                            placeholder={PLACEHOLDERS.enterEmail}
+                            placeholderTextColor={errors.email ? colors.red : AnimColor(interpolatedColor, colors.placeholderColor)}
                             autoCapitalize="none"
                             keyboardType="email-address"
                             returnKeyType="next"
@@ -140,11 +164,7 @@ const ForgotPasswordScreen = ({navigation}) => {
                         />
                     </View>
 
-                    {errortext != '' ? (
-                    <Text style={styles.errorTextStyle}>
-                        {errortext}
-                    </Text>
-                    ) : null}
+                    {errors.email ? <Text style={styles.errorTextStyle}>{errors.email}</Text> : ''}
 
                     <TouchableOpacity
                     style={styles.buttonStyle}

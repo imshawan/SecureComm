@@ -15,8 +15,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import TopNavigation from '../../components/TopNavigation';
 
 import { log, showAlert } from '../../config';
-import { colors, fontSizes, headerFontSize } from '../../common';
-import { showFocusColor, AnimColor, showOriginColor } from '../../utils';
+import { colors, fontSizes, headerFontSize, ERRORS, PLACEHOLDERS } from '../../common';
+import { showFocusColor, AnimColor, showOriginColor, validateEmail } from '../../utils';
 import { styles } from '../styles';
  
 // import Loader from './Components/Loader';
@@ -45,29 +45,56 @@ const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 const [interpolatedColor1, interpolatedColor2, interpolatedColor3] = [new Animated.Value(0), new Animated.Value(0), new Animated.Value(0)];
  
 const EnterOtpScreen = ({navigation, route}) => {
-  if (route.params && !route.params.userEmail) {
+  if (route.params && !route.params.email) {
     navigation.navigate('EnterOtpScreen');
   }
 
   const [display, setDisplay] = useState('flex');
   const [justifyContent, setJustifyContent] = useState(false);
-  const [otp, setOTP] = useState('');
-  const [userEmail, setUSerEmail] = useState(route.params.userEmail);
-  const [userPassword, setUserPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [errortext, setErrortext] = useState('');
+  const [errors, setErrors] = useState({ });
+  const [userInput, setUserInput] = useState({
+    otp: '',
+    password: '',
+    confirmPassword: '',
+    email: route.params.email
+  })
  
   const passwordInputRef = createRef();
 
-
  
   const handleSubmitPress = () => {
-    setErrortext('');
-    if (!userPassword) {
-      showAlert('Please fill Password');
-      return;
+    Keyboard.dismiss();
+    let errors = 0;
+
+    if (!userInput.otp) {
+      handleErrors(ERRORS.noOtpSupplied, 'otp');
+      errors++;
     }
+    if (!userInput.password) {
+      handleErrors(ERRORS.noPasswordSupplied, 'password');
+      errors++;
+    }
+    if (!userInput.confirmPassword) {
+      handleErrors(ERRORS.noConfirmPassword, 'confirmPassword');
+      errors++;
+    }
+    if (userInput.password != userInput.confirmPassword) {
+      handleErrors(ERRORS.passwordsNoMatch, 'confirmPassword');
+      handleErrors(ERRORS.passwordsNoMatch, 'password');
+      errors++;
+    }
+
+    if (errors) return;
+    log(userInput)
   };
+
+  const handleOnChange = (value, field) => {
+    setUserInput(prevState => ({...prevState, [field]: value}));
+  }
+
+  const handleErrors = (errorMessage, field) => {
+    setErrors(prevState => ({...prevState, [field]: errorMessage}));
+  }
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -121,16 +148,19 @@ const EnterOtpScreen = ({navigation, route}) => {
             <View>
             
                 <Text style={styles.headTextStyle}>Enter the Authorization Code</Text>
-                <Text style={{...styles.subTextStyle, fontSize: fontSizes.medium, marginBottom: 10}}>Sent to {userEmail}</Text>
+                <Text style={{...styles.subTextStyle, fontSize: fontSizes.medium, marginBottom: 10}}>Sent to {userInput.email}</Text>
                 <KeyboardAvoidingView enabled>
                     <View style={styles.SectionStyle}>
                         <AnimatedTextInput
-                            style={{...styles.inputStyle, borderColor: AnimColor(interpolatedColor1, 'transparent')}}
-                            onChangeText={(OTP) => setOTP(OTP)}
-                            onFocus={() => showFocusColor(interpolatedColor1)}
+                            style={{...styles.inputStyle, borderColor: errors.otp ? colors.red : AnimColor(interpolatedColor1, 'transparent')}}
+                            onChangeText={(OTP) => handleOnChange(OTP, "otp")}
+                            onFocus={() => {
+                              showFocusColor(interpolatedColor1);
+                              handleErrors(null, 'otp');
+                            }}
                             onBlur={() => showOriginColor(interpolatedColor1)}
-                            placeholder="Enter Code"
-                            placeholderTextColor={AnimColor(interpolatedColor1, colors.placeholderColor)}
+                            placeholder={PLACEHOLDERS.enterCode}
+                            placeholderTextColor={errors.otp ? colors.red : AnimColor(interpolatedColor1, colors.placeholderColor)}
                             autoCapitalize="none"
                             keyboardType="numeric"
                             returnKeyType="next"
@@ -140,6 +170,8 @@ const EnterOtpScreen = ({navigation, route}) => {
                         />
                     </View>
 
+                    {errors.otp ? <Text style={styles.errorTextStyle}>{errors.otp}</Text> : ''}
+
                     <Text
                     style={styles.forgotPasswordTextStyle}
                     onPress={() => navigation.navigate('ForgotPasswordScreen')}>
@@ -148,47 +180,49 @@ const EnterOtpScreen = ({navigation, route}) => {
 
                     <View style={styles.SectionStyle}>
                         <AnimatedTextInput
-                            style={{...styles.inputStyle, borderColor: AnimColor(interpolatedColor2, 'transparent')}}
-                            onChangeText={(UserPassword) => setUserPassword(UserPassword)}
-                            onFocus={() => showFocusColor(interpolatedColor2)}
+                            style={{...styles.inputStyle, borderColor: errors.password ? colors.red : AnimColor(interpolatedColor2, 'transparent')}}
+                            onChangeText={(UserPassword) => handleOnChange(UserPassword, "password")}
+                            onFocus={() => {
+                              showFocusColor(interpolatedColor2);
+                              handleErrors(null, 'password');
+                            }}
                             onBlur={() => showOriginColor(interpolatedColor2)}
-                            placeholder="Create Password"
-                            placeholderTextColor={AnimColor(interpolatedColor2, colors.placeholderColor)}
+                            placeholder={PLACEHOLDERS.createPassword}
+                            placeholderTextColor={errors.password ? colors.red : AnimColor(interpolatedColor2, colors.placeholderColor)}
                             keyboardType="default"
                             ref={passwordInputRef}
                             onSubmitEditing={Keyboard.dismiss}
                             blurOnSubmit={false}
-                            secureTextEntry={true}
                             underlineColorAndroid="#f000"
                             returnKeyType="next"
                         />
                     </View>
+
+                    {errors.password ? <Text style={styles.errorTextStyle}>{errors.password}</Text> : ''}
 
                     <View style={{...styles.SectionStyle}}>
                         <AnimatedTextInput
                             style={{...styles.inputStyle, 
-                              borderColor: AnimColor(interpolatedColor3, 'transparent'),
+                              borderColor: errors.confirmPassword ? colors.red : AnimColor(interpolatedColor3, 'transparent'),
                             }}
-                            onChangeText={(UserPassword) => setUserPassword(UserPassword)}
-                            onFocus={() => showFocusColor(interpolatedColor3)}
+                            onChangeText={(UserPassword) => handleOnChange(UserPassword, "confirmPassword")}
+                            onFocus={() => {
+                              showFocusColor(interpolatedColor3);
+                              handleErrors(null, 'confirmPassword');
+                            }}
                             onBlur={() => showOriginColor(interpolatedColor3)}
-                            placeholder="Confirm Password" //12345
-                            placeholderTextColor={AnimColor(interpolatedColor3, colors.placeholderColor)}
+                            placeholder={PLACEHOLDERS.confirmPassword}
+                            placeholderTextColor={errors.confirmPassword ? colors.red : AnimColor(interpolatedColor3, colors.placeholderColor)}
                             keyboardType="default"
                             ref={passwordInputRef}
                             onSubmitEditing={Keyboard.dismiss}
                             blurOnSubmit={false}
-                            secureTextEntry={true}
                             underlineColorAndroid="#f000"
                             returnKeyType="next"
                         />
                     </View>
 
-                    {errortext != '' ? (
-                    <Text style={styles.errorTextStyle}>
-                        {errortext}
-                    </Text>
-                    ) : null}
+                    {errors.confirmPassword ? <Text style={styles.errorTextStyle}>{errors.confirmPassword}</Text> : ''}
 
                     <TouchableOpacity
                     style={{...styles.buttonStyle}}
