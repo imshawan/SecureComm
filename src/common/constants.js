@@ -2,15 +2,22 @@ export const LOGS = false;
 
 export const APP_NAME = 'SecureComm';
 
-export const APP_REMOTE_HOST = 'https://406c-2401-4900-1c3a-71e6-d051-ca3f-a541-af14.in.ngrok.io';
-
-
+export const APP_REMOTE_HOST = 'https://d9f2-2401-4900-1c3b-d9c9-496e-ef90-b8e8-38e5.in.ngrok.io';
 
 export const HEADER_HEIGHT = 65;
 export const TOUCHABLE_TAP = {
     onTapDuration: 100,
     onReleaseDuration: 200
-}
+};
+
+export const ENDPOINTS = {
+    logIn: '/api/v1/auth/signin',
+    register: '/api/v1/auth/register',
+
+    forgotPassword: '/api/v1/auth/password/forgot',
+    resetPassword: '/api/v1/auth/password/reset',
+    changePassword: '/api/v1/auth/password/change',
+};
 
 export const dummyJSON = [
     {id: 1, name: 'Anirban Mukherjee', msg: 'Hello there, I\'m fascinated by up-and-coming technology.'},

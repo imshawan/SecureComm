@@ -1,7 +1,7 @@
 
 export const ERRORS = {
     invalidEmail: 'Invalid email Id',
-    noEmailSupplied: 'Email is required',
+    noUsernameOrEmailSupplied: 'Field cannot be empty',
     noPasswordSupplied: 'Password field cannot be empty',
     noUsernameSupplied: 'Username cannot be empty',
     noOtpSupplied: 'Please fill the OTP',

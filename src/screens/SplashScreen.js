@@ -11,13 +11,12 @@ const SplashScreen = ({navigation}) => {
   useEffect(() => {
     setTimeout(() => {
       setAnimating(false);
-      navigation.replace('LoginScreen')
-      // AsyncStorage.getItem('user_id').then((value) =>
-      //   navigation.replace(
-      //     value === null ? 'Auth' : 'DrawerNavigationRoutes'
-      //   ),
-      // );
-    }, 4000);
+      AsyncStorage.getItem('authToken').then((value) =>
+        navigation.navigate(
+          value === null ? 'LoginScreen' : 'Home'
+        ),
+      );
+    }, 2000);
   }, []);
  
   return (

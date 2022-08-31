@@ -50,6 +50,13 @@
              component={EnterOtpScreen}
              options={{headerShown: false}}
            />
+
+          <Stack.Screen name="Home" component={Home} options={{headerShown: false}}/>
+          <Stack.Screen name="SearchScreen" component={SearchScreen} options={{headerShown: false}}/>
+          <Stack.Screen name="ViewScreen" component={ViewScreen} options={{headerShown: false}}/>
+          <Stack.Screen name="NewChatScreen" component={NewChatScreen} options={{headerShown: false}}/>
+          <Stack.Screen name="AccountScreen" component={AccountScreen} options={{headerShown: false}}/>
+
            </Stack.Navigator>
        </NavigationContainer>
    );
