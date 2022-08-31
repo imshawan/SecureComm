@@ -50,10 +50,20 @@ const styles = StyleSheet.create({
 })
 
 
-export const List = ({name, message, id}) => {
+export const List = ({name, message, id, callback}) => {
     const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
     const interpolatedColor = new Animated.Value(0);
     const navigation = useNavigation();
+
+    const onPresshandler = () => {
+        if (typeof callback === 'function') {
+            callback();
+        } else {
+            navigation.navigate('ViewScreen', {
+                id, name
+            });
+        }
+    }
 
     return (
         <AnimatedTouchable 
@@ -61,9 +71,7 @@ export const List = ({name, message, id}) => {
         style={{backgroundColor: AnimColor(interpolatedColor, colors.white, colors.grey), borderRadius: 10, marginHorizontal: 10}}
         onPressIn={() => showFocusColor(interpolatedColor, TOUCHABLE_TAP.onTapDuration)} 
         onPressOut={() => showOriginColor(interpolatedColor, TOUCHABLE_TAP.onReleaseDuration)}
-        onPress={() => navigation.navigate('ViewScreen', {
-            id, name
-        })}
+        onPress={() => onPresshandler()}
         >
             <View style={styles.container}>
                 <View style={styles.avtarContainer}>

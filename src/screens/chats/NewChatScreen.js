@@ -3,12 +3,11 @@ import { View, StyleSheet, Text, TouchableOpacity, ScrollView, StatusBar } from 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { TextInput } from 'react-native-paper';
 
-import { Thread } from '../../components/chat';
-import ProfileAvtar from '../../components/ProfileAvtar';
+import { List } from '../../components/chat';
 
 import { log } from '../../config';
-import { colors, HEADER_HEIGHT, fontSizes, dummyChat } from '../../common';
-import { showOriginColor, showFocusColor, AnimColor } from '../../utils';
+import { colors, HEADER_HEIGHT, fontSizes, ENDPOINTS } from '../../common';
+import { HTTP } from '../../services';
 
 
 const styles = StyleSheet.create({
@@ -22,12 +21,10 @@ const styles = StyleSheet.create({
     },
     headerContainer: {
         backgroundColor: colors.white,
-        // paddingHorizontal: 25,
         paddingVertical: 12,
+        paddingHorizontal: 18,
         flexDirection: 'column',
-        // justifyContent: 'space-between',
         height: HEADER_HEIGHT + 50,
-        // alignItems: 'center',
         shadowColor: colors.lightestGrey,
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.5,
@@ -52,7 +49,7 @@ const styles = StyleSheet.create({
     },
     headerContent: {
         flexDirection: 'row', 
-        paddingHorizontal: 25,
+        // paddingHorizontal: 25,
         marginBottom: 8
     },
     touchControlStyle: {
@@ -79,7 +76,17 @@ const styles = StyleSheet.create({
 });
 
 const NewChatScreen = ({navigation, route}) => {
-    const [search, setSearch] = useState('');
+    const [apiResponse, setApiResponse] = useState([]);
+
+    const handleSearch = async (query) => {
+        if (!query || (query && query.length < 3)) return setApiResponse([]);
+        let {payload} = await HTTP.get(ENDPOINTS.getUsersByUsername, {
+            query
+        });
+        if (payload) {
+            setApiResponse(payload.data);
+        }
+    }
 
     return (<>
             <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
@@ -96,11 +103,21 @@ const NewChatScreen = ({navigation, route}) => {
                     </View>
                     <View style={styles.headerContent}>
                         <Text style={styles.labelStyle}>To</Text>
-                        <TextInput style={styles.inputStyles} placeholder="@username or name"/>
+                        <TextInput 
+                            style={styles.inputStyles} 
+                            placeholder="@username"
+                            onChangeText={(searchText) => handleSearch(searchText)}
+                        />
                     </View>
-
-
                 </View>
+
+                <ScrollView>
+                    {apiResponse.map((item, index) => { 
+                            let name = [item.firstname, item.lastname].join(' ') || item.username;
+                            return (<List name={name} key={item._id} message={`@${item.username}`} />);
+                        })}
+                </ScrollView>
+
             </View>
         </>
     )
