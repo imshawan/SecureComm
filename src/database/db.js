@@ -11,7 +11,7 @@ export const getMessagesByRoomId = async (roomId) => {
 
 export const writeMessage = async (message, realm) => {
     realm.write(() => {
-        task1 = realm.create("Messages", {
+        realm.create("Messages", {
           _id: new BSON.ObjectID(),
           ...message
         });
@@ -25,4 +25,8 @@ export const listMyRooms = async () => {
     return roomsList;
 }
 
-export const storeNewRoom = async () => {}
+export const storeNewRoom = async (room, realm) => {
+    realm.write(() => {
+        realm.create("Rooms", room);
+    });
+}
