@@ -40,7 +40,7 @@ const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 const interpolatedColor1 = new Animated.Value(0);
 const interpolatedColor2 = new Animated.Value(0);
  
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({navigation, route}) => {
   const [display, setDisplay] = useState('flex');
   const [justifyContent, setJustifyContent] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -155,7 +155,7 @@ const LoginScreen = ({navigation}) => {
         }}>
             
             <View>
-                <Text style={styles.headTextStyle}>We're happy to see you back</Text>
+                <Text style={styles.headTextStyle}>{route.params && route.params.message ? route.params.message : 'We\'re happy to see you back'}</Text>
                 <Text style={styles.subTextStyle}>Please login to continue.</Text>
                 <KeyboardAvoidingView enabled={false} keyboardVerticalOffset={0} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
                     <View style={styles.SectionStyle}>

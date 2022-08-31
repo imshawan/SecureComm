@@ -6,7 +6,7 @@ import { ListItem } from "@rneui/themed";
 import ProfileAvtar from "../components/ProfileAvtar";
 
 import { colors, HEADER_HEIGHT, fontSizes } from '../common';
-import { processLogOut, isAuthenticated } from "../utils";
+import { isAuthenticated } from "../utils";
 import AsyncStorage from "@react-native-community/async-storage";
 import { log } from "../config";
 
@@ -87,17 +87,16 @@ const styles = StyleSheet.create({
         color: colors.black,
         fontFamily: 'SF-Pro-Rounded-Bold',
         lineHeight: fontSizes.extraLarge + 2,
-        width: '60%'
     },
     profileText: {
-        width: '60%',
         textAlign: 'left',
         fontSize: fontSizes.medium,
         fontFamily: 'SF-Pro-Rounded-Regular',
     },
     profileTextContainer: {
         marginLeft: 10,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        width: '66%',
     },
     menuRowsContainer: {
         flexDirection: 'row',
@@ -139,10 +138,6 @@ const AccountScreen = ({navigation, route}) => {
     });
    
     const image = 'https://images.pexels.com/photos/38537/woodland-road-falling-leaf-natural-38537.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
-    const props = {
-        style: styles.coverImageStyle,
-        source: {uri: image},
-    }
     
     const processLogOut = async () => {
         await AsyncStorage.clear();
@@ -151,7 +146,8 @@ const AccountScreen = ({navigation, route}) => {
 
     useState(() => {
         isAuthenticated();
-        AsyncStorage.getItem('user').then(user => log(user));
+        AsyncStorage.getItem('user').then(user => setProfile(JSON.parse(user)));
+        log(profile)
     }, [])
 
     return (<>
@@ -169,7 +165,7 @@ const AccountScreen = ({navigation, route}) => {
                     </View>
                 <ScrollView>
                     <View style={styles.rowContainerStyle}>
-                        <ProfileAvtar textStyle={styles.avtarTextStyles} image={image} name={profile.fullname || profile.username} customStyles={styles.avtarStyles} />
+                        <ProfileAvtar textStyle={styles.avtarTextStyles} image={profile.image} name={profile.fullname || profile.username} customStyles={styles.avtarStyles} />
                         <View style={styles.profileTextContainer}>
                             <Text numberOfLines={1} ellipsizeMode='tail' style={styles.profileHeaderStyle}>{profile.fullname || profile.username}</Text>
                             <Text numberOfLines={2} ellipsizeMode='tail' style={styles.profileText}>{profile.about}</Text>

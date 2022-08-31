@@ -5,18 +5,21 @@ import {
   Text,
   ScrollView,
   Animated,
-  Keyboard,
+  Keyboard, StatusBar, ToastAndroid,
   TouchableOpacity, StyleSheet,
   Dimensions, TouchableHighlight,
   KeyboardAvoidingView,
 } from 'react-native';
  
 import AsyncStorage from '@react-native-community/async-storage';
+import Snackbar from 'react-native-snackbar';
 import TopNavigation from '../../components/TopNavigation';
+import Loader from '../../components/Loader';
 
 import { log, showAlert } from '../../config';
-import { colors, fontSizes, headerFontSize, APP_NAME, ERRORS, PLACEHOLDERS } from '../../common';
+import { colors, ENDPOINTS, APP_NAME, ERRORS, PLACEHOLDERS } from '../../common';
 import { showFocusColor, AnimColor, showOriginColor, validateEmail } from '../../utils';
+import { HTTP } from '../../services';
 import { styles } from '../styles';
  
 // import Loader from './Components/Loader';
@@ -42,7 +45,8 @@ const SignupScreen = ({navigation}) => {
     username: '',
     email: '',
     password: '',
-  })
+  });
+  const [loading, setLoading] = useState(false);
  
   const passwordInputRef = createRef();
 
@@ -69,7 +73,31 @@ const SignupScreen = ({navigation}) => {
     }
 
     if (errors) return;
+    processRegisteration();
   };
+
+  const processRegisteration = async () => {
+    setLoading(true);
+    try {
+      let { payload } = await HTTP.post(ENDPOINTS.register, userInput);
+      if (payload) {
+        setLoading(false);
+        navigation.navigate('LoginScreen', { message: payload.message });
+      }
+    } catch (err) {
+      if (Platform.OS === 'android') {
+        ToastAndroid.show(err.status ? err.status.message : err, Snackbar.LENGTH_SHORT);
+      } else {
+        Snackbar.show({
+          text: err.status ? err.status.message : err,
+          duration: Snackbar.LENGTH_SHORT,
+          textColor: colors.white,
+          backgroundColor: colors.black,
+        });
+      }
+    }
+    setLoading(false);
+  }
 
   const handleOnChange = (value, field) => {
     setUserInput(prevState => ({...prevState, [field]: value}));
@@ -102,8 +130,10 @@ const SignupScreen = ({navigation}) => {
   }, [])
  
   return (
+    <>
+    <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
     <View style={styles.mainBody}>
-
+      {loading ? <Loader animating={loading} color={colors.white} /> : ''}
       <TopNavigation name={'Sign up'} customStyles={{display}} />
 
       <View style={{...pageStyles.headerContainer, display }}>
@@ -181,7 +211,7 @@ const SignupScreen = ({navigation}) => {
                     <View style={styles.SectionStyle}>
                         <AnimatedTextInput
                             style={{...styles.inputStyle, borderColor: errors.password ? colors.red : AnimColor(interpolatedColor3, 'transparent')}}
-                            onChangeText={(UserPassword) => setUserPassword(UserPassword)}
+                            onChangeText={(UserPassword) => handleOnChange(UserPassword, "password")}
                             onFocus={() => {
                               showFocusColor(interpolatedColor3);
                               handleErrors(null, 'password');
@@ -217,6 +247,7 @@ const SignupScreen = ({navigation}) => {
             </View>
       </ScrollView>
     </View>
+    </>
   );
 };
 export default SignupScreen;
