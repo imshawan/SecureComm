@@ -1,12 +1,12 @@
 // import Realm from "realm";
 import { BSON } from "realm";
-import { Message } from "./schemas";
+import { Messages, Rooms } from "./schemas";
 
 export const getMessagesByRoomId = async (roomId) => {
-    const message = await Message();
-    let messages = message.objects("Messages").filtered(`roomId = '${roomId}'`).sorted("createdAt");
+    const message = await Messages();
+    let messageList = message.objects("Messages").filtered(`roomId = '${roomId}'`).sorted("createdAt");
     message.close();
-    return messages;
+    return messageList;
 }
 
 export const writeMessage = async (message, realm) => {
@@ -17,3 +17,12 @@ export const writeMessage = async (message, realm) => {
         });
     });
 }
+
+export const listMyRooms = async () => {
+    const rooms = await Rooms();
+    let roomsList = rooms.objects("Rooms").sorted("lastActive");
+    rooms.close();
+    return roomsList;
+}
+
+export const storeNewRoom = async () => {}

@@ -23,7 +23,7 @@ const roomSchema = {
     primaryKey: "_id",
 }
 
-export const Message = async () => {
+export const Messages = async () => {
     return await Realm.open({
         schema: [messageSchema],
       });
