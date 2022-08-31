@@ -147,7 +147,6 @@ const AccountScreen = ({navigation, route}) => {
     useState(() => {
         isAuthenticated();
         AsyncStorage.getItem('user').then(user => setProfile(JSON.parse(user)));
-        log(profile)
     }, [])
 
     return (<>
