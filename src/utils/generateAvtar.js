@@ -19,7 +19,6 @@ const stringToColor = (string) => {
   }
   
 const stringAvatar = (name, count=2) => {
-  console.log(name)
     return {
       backgroundColor: stringToColor(name),
       text: `${name.split(' ')[0][0]}${name.split(' ')[1] && count === 2 ? name.split(' ')[1][0] : name.split('')[1]}`.toUpperCase(),
