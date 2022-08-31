@@ -2,7 +2,7 @@ export const LOGS = false;
 
 export const APP_NAME = 'SecureComm';
 
-export const APP_REMOTE_HOST = 'https://d9f2-2401-4900-1c3b-d9c9-496e-ef90-b8e8-38e5.in.ngrok.io';
+export const APP_REMOTE_HOST = 'https://04ba-2401-4900-1c3b-d9c9-147-5b0c-a644-e967.in.ngrok.io';
 
 export const HEADER_HEIGHT = 65;
 export const TOUCHABLE_TAP = {
@@ -10,15 +10,18 @@ export const TOUCHABLE_TAP = {
     onReleaseDuration: 200
 };
 
+const API_VERSION = 'v1';
+
 export const ENDPOINTS = {
-    logIn: '/api/v1/auth/signin',
-    register: '/api/v1/auth/register',
+    logIn: '/api/' + API_VERSION +'/auth/signin',
+    register: '/api/' + API_VERSION +'/auth/register',
 
-    forgotPassword: '/api/v1/auth/password/forgot',
-    resetPassword: '/api/v1/auth/password/reset',
-    changePassword: '/api/v1/auth/password/change',
+    forgotPassword: '/api/' + API_VERSION +'/auth/password/forgot',
+    resetPassword: '/api/' + API_VERSION +'/auth/password/reset',
+    changePassword: '/api/' + API_VERSION +'/auth/password/change',
 
-    checkAuthentication: '/api/v1/users/authentication',
+    checkAuthentication: '/api/' + API_VERSION +'/users/authentication',
+    getUsersByUsername: '/api/' + API_VERSION +'/users/username',
 };
 
 export const dummyJSON = [

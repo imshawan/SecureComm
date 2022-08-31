@@ -7,10 +7,12 @@ const HEADERS = {
   }
 
 export const HTTP = {
-    get: async (uri) => {
+    get: async (uri, queryParams={}) => {
+        const params = new URLSearchParams(queryParams);
+
         return new Promise((resolve, reject) => {
             axios.request({
-                url: APP_REMOTE_HOST + uri,
+                url: APP_REMOTE_HOST + uri + '?' + params.toString(),
                 method: 'GET',
                 data: {},
                 headers: HEADERS
