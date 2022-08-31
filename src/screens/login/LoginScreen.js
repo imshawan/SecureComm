@@ -76,6 +76,7 @@ const LoginScreen = ({navigation}) => {
       let { payload } = await HTTP.post(ENDPOINTS.logIn, userInput);
       if (payload) {
         await AsyncStorage.setItem('authToken', payload.token);
+        await AsyncStorage.setItem('user', JSON.stringify(payload.user));
       }
       setAuthToken(payload.token);
       navigation.navigate('Home');

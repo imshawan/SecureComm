@@ -6,6 +6,9 @@ import { ListItem } from "@rneui/themed";
 import ProfileAvtar from "../components/ProfileAvtar";
 
 import { colors, HEADER_HEIGHT, fontSizes } from '../common';
+import { processLogOut, isAuthenticated } from "../utils";
+import AsyncStorage from "@react-native-community/async-storage";
+import { log } from "../config";
 
 
 const styles = StyleSheet.create({
@@ -58,6 +61,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: '100%',
         marginHorizontal: 12,
+        marginVertical: 15
     },
     avtarStyles: {
         height: 90,
@@ -130,16 +134,25 @@ const styles = StyleSheet.create({
 
 const AccountScreen = ({navigation, route}) => {
     const [profile, setProfile] = useState({
-        name: 'Shawan Mandal',
-        designation: 'DeepTech Software Developer, fascinated by up and coming technologies'
+        username: 'Shawan Mandal',
+        about: 'DeepTech Software Developer, fascinated by up and coming technologies'
     });
-    const [expanded, setExpanded] = useState(false);
    
     const image = 'https://images.pexels.com/photos/38537/woodland-road-falling-leaf-natural-38537.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
     const props = {
         style: styles.coverImageStyle,
         source: {uri: image},
     }
+    
+    const processLogOut = async () => {
+        await AsyncStorage.clear();
+        navigation.navigate('LoginScreen');
+    }
+
+    useState(() => {
+        isAuthenticated();
+        AsyncStorage.getItem('user').then(user => log(user));
+    }, [])
 
     return (<>
             <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
@@ -156,10 +169,10 @@ const AccountScreen = ({navigation, route}) => {
                     </View>
                 <ScrollView>
                     <View style={styles.rowContainerStyle}>
-                        <ProfileAvtar textStyle={styles.avtarTextStyles} image={image} name={profile.name} customStyles={styles.avtarStyles} />
+                        <ProfileAvtar textStyle={styles.avtarTextStyles} image={image} name={profile.fullname || profile.username} customStyles={styles.avtarStyles} />
                         <View style={styles.profileTextContainer}>
-                            <Text numberOfLines={1} ellipsizeMode='tail' style={styles.profileHeaderStyle}>{profile.name}</Text>
-                            <Text numberOfLines={2} ellipsizeMode='tail' style={styles.profileText}>{profile.designation}</Text>
+                            <Text numberOfLines={1} ellipsizeMode='tail' style={styles.profileHeaderStyle}>{profile.fullname || profile.username}</Text>
+                            <Text numberOfLines={2} ellipsizeMode='tail' style={styles.profileText}>{profile.about}</Text>
                         </View>
                     </View>
                     <View style={styles.profileContainer}>
@@ -168,6 +181,14 @@ const AccountScreen = ({navigation, route}) => {
                             style={styles.buttonStyle}
                         >
                             <Text style={styles.buttonTextStyle}>View Profile</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            activeOpacity={0.5}
+                            onPress={processLogOut}
+                            style={{...styles.buttonStyle, marginLeft: 20}}
+                        >
+                            <Text style={styles.buttonTextStyle}>Sign out</Text>
                         </TouchableOpacity>
                     </View>
                     

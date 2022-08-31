@@ -17,6 +17,8 @@ export const ENDPOINTS = {
     forgotPassword: '/api/v1/auth/password/forgot',
     resetPassword: '/api/v1/auth/password/reset',
     changePassword: '/api/v1/auth/password/change',
+
+    checkAuthentication: '/api/v1/users/authentication',
 };
 
 export const dummyJSON = [
