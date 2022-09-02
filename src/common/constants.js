@@ -2,7 +2,7 @@ export const LOGS = false;
 
 export const APP_NAME = 'SecureComm';
 
-export const APP_REMOTE_HOST = 'https://04ba-2401-4900-1c3b-d9c9-147-5b0c-a644-e967.in.ngrok.io';
+export const APP_REMOTE_HOST = 'https://6b4e-2401-4900-1c3b-b18d-fd2f-e9e4-ce90-6669.in.ngrok.io';
 
 export const HEADER_HEIGHT = 65;
 export const TOUCHABLE_TAP = {
@@ -22,6 +22,8 @@ export const ENDPOINTS = {
 
     checkAuthentication: '/api/' + API_VERSION +'/users/authentication',
     getUsersByUsername: '/api/' + API_VERSION +'/users/username',
+
+    createRoom: '/api/' + API_VERSION +'/rooms/create',
 };
 
 export const dummyJSON = [

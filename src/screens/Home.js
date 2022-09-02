@@ -11,6 +11,9 @@ import { log } from '../config';
 import { colors, dummyJSON } from '../common';
 import { APP_REMOTE_HOST } from '../common';
 
+import { listMyRooms } from '../database';
+import { getLoggedInUser } from '../utils';
+
 const styles = StyleSheet.create({
     container: {
         backgroundColor: colors.white,
@@ -19,16 +22,24 @@ const styles = StyleSheet.create({
 })
 
 const Home = ({navigation}) => {
+    const [roomList, setRoomList] = useState([]);
+    const [currentUser, setCurrentUser] = useState({});
+
     const socketIO = io(APP_REMOTE_HOST, {
         transports: ['websocket']
     });
     let userName = 'Pinky Paul';
 
     useEffect(() => {
+        getLoggedInUser().then(usr => setCurrentUser(usr));
+
+        listMyRooms().then(rooms => {
+            setRoomList(rooms)
+        });
 
         socketIO.on('connect', () =>{
             log('Connected to remote server!')
-            socketIO.emit('join-room', {room: userName })
+            socketIO.emit('join-room', {room: userName})
         });
 
         
@@ -70,7 +81,16 @@ const Home = ({navigation}) => {
             <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
             <HeaderComponent />
             <ScrollView>
-                {dummyJSON.map((item, index) => { return (<List name={item.name} key={index} id={item.id} message={item.msg} />) })}
+                {roomList.map((item) => { 
+                        let memberDetails = JSON.parse(item.memberDetails);
+                        let chatUser = memberDetails.find(el => el._id != currentUser._id);
+                        chatUser = Object.values(chatUser||{})[0] || {};
+                        let name = [chatUser.firstname, chatUser.lastname].join(' ') || chatUser.username;
+
+                        return (
+                            <List name={name} key={item._id} message={'@' + chatUser.username} />
+                        );
+                    })}
             </ScrollView>
 
             <SpeedDial

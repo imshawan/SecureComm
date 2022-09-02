@@ -3,24 +3,26 @@ import Realm from "realm";
 const messageSchema = {
     name: "Messages",
     properties: {
-        _id: "objectId",
+        _id: "string",
         content: "string",
         sender: "string",
         roomId: "int",
         createdAt: "string",
-    },
-    primaryKey: "_id",
+    }
 };
 
-const roomSchema = {
+export const roomSchema = {
     name: "Rooms",
     properties: {
-        _id: "objectId",
-        members: "array",
+        _id: "string",
+        members: "string",
         roomId: "int",
-        creator: "string"
-    },
-    primaryKey: "_id",
+        creator: "string",
+        lastActive: "string",
+        createdAt: "string",
+        name: "string",
+        memberDetails: "string",
+    }
 }
 
 export const Messages = async () => {
@@ -32,5 +34,6 @@ export const Messages = async () => {
 export const Rooms = async () => {
     return await Realm.open({
         schema: [roomSchema],
+        schemaVersion: 1,
       });
 }

@@ -4,10 +4,13 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { TextInput } from 'react-native-paper';
 
 import { List } from '../../components/chat';
+import Loader from '../../components/Loader';
 
 import { log } from '../../config';
 import { colors, HEADER_HEIGHT, fontSizes, ENDPOINTS } from '../../common';
 import { HTTP } from '../../services';
+import { getLoggedInUser } from '../../utils';
+import { storeNewRoom, Rooms } from '../../database';
 
 
 const styles = StyleSheet.create({
@@ -42,14 +45,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         fontSize: fontSizes.extraLarge, 
         marginLeft: 5, 
-        // fontWeight: 'bold',
         fontFamily: 'SF-Pro-Rounded-Bold',
         lineHeight: fontSizes.extraLarge + 5,
         color: colors.black,
     },
     headerContent: {
         flexDirection: 'row', 
-        // paddingHorizontal: 25,
         marginBottom: 8
     },
     touchControlStyle: {
@@ -77,6 +78,7 @@ const styles = StyleSheet.create({
 
 const NewChatScreen = ({navigation, route}) => {
     const [apiResponse, setApiResponse] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const handleSearch = async (query) => {
         if (!query || (query && query.length < 3)) return setApiResponse([]);
@@ -88,8 +90,24 @@ const NewChatScreen = ({navigation, route}) => {
         }
     }
 
+    const userCardOnClick = async (selectedUser) => {
+        setLoading(true);
+        let {_id} = await getLoggedInUser();
+        let payload = {
+            members: [_id, selectedUser._id]
+        }
+        let room = await HTTP.post(ENDPOINTS.createRoom, payload);
+        if (room.payload) {
+            let realmObj = await Rooms();
+            await storeNewRoom(room.payload, realmObj);
+            realmObj.close();
+        }
+        setLoading(false);
+    }
+
     return (<>
             <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
+            {loading ? <Loader animating={loading} color={colors.white} /> : ''}
             <View style={styles.container}>
                 <View style={styles.headerContainer}>
 
@@ -114,7 +132,7 @@ const NewChatScreen = ({navigation, route}) => {
                 <ScrollView>
                     {apiResponse.map((item, index) => { 
                             let name = [item.firstname, item.lastname].join(' ') || item.username;
-                            return (<List name={name} key={item._id} message={`@${item.username}`} />);
+                            return (<List name={name} callback={() => userCardOnClick(item)} key={item._id} message={`@${item.username}`} />);
                         })}
                 </ScrollView>
 

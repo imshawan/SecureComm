@@ -16,3 +16,8 @@ export const isAuthenticated = async () => {
         return false;
     }
 }
+
+export const getLoggedInUser = async () => {
+    let userData = await AsyncStorage.getItem('user');
+    return JSON.parse(userData || {});
+}
