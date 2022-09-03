@@ -103,9 +103,8 @@ const NewChatScreen = ({navigation, route}) => {
         if (room.payload) {
             let realmObj = await Rooms();
             await storeNewRoom(room.payload, realmObj);
-            realmObj.close();
-
             dispatch(roomActions.addRoomToStore(room.payload));
+            // realmObj.close();
         }
         setLoading(false);
     }

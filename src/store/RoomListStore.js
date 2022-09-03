@@ -10,10 +10,17 @@ const roomsSlice = createSlice({
     initialState: roomsInitialState,
     reducers: {
         initRooms(state, action) {
-           state.roomList = action.payload;
+            state.roomList = action.payload;
         },
         addRoomToStore(state, action) {
-           state.roomList = [...state.roomList, {...action.payload}]
+            let found = (state.roomList || []).find(item => item._id == action.payload._id);
+            if (!found) {
+                state.roomList = [...state.roomList, {
+                    ...action.payload
+                }]
+            } else {
+                state.roomList = state.roomList;
+            }
         },
     }
 });
