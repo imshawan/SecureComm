@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView, StatusBar } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { TextInput } from 'react-native-paper';
+import { useDispatch } from 'react-redux';
+import { roomActions } from '../../store/RoomListStore';
 
 import { List } from '../../components/chat';
 import Loader from '../../components/Loader';
@@ -79,6 +81,7 @@ const styles = StyleSheet.create({
 const NewChatScreen = ({navigation, route}) => {
     const [apiResponse, setApiResponse] = useState([]);
     const [loading, setLoading] = useState(false);
+    const dispatch = useDispatch();
 
     const handleSearch = async (query) => {
         if (!query || (query && query.length < 3)) return setApiResponse([]);
@@ -101,6 +104,8 @@ const NewChatScreen = ({navigation, route}) => {
             let realmObj = await Rooms();
             await storeNewRoom(room.payload, realmObj);
             realmObj.close();
+
+            dispatch(roomActions.addRoomToStore(room.payload));
         }
         setLoading(false);
     }

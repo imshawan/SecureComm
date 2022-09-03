@@ -12,7 +12,8 @@ import { useColorScheme } from 'react-native';
 
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { Provider as PaperProvider } from 'react-native-paper';
-
+import { Provider } from "react-redux";
+import Store from './src/store';
 import { PublicRoutes, PrivateRoutes } from './src/Router';
 
 const App = () => {
@@ -23,9 +24,11 @@ const App = () => {
   };
 
   return (
-    <PaperProvider>
-      <PublicRoutes />
-    </PaperProvider>
+    <Provider store={Store}>
+      <PaperProvider>
+        <PublicRoutes />
+      </PaperProvider>
+    </Provider>
   );
 };
 

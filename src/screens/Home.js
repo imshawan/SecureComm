@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, ScrollView, StatusBar, BackHandler, Alert } from "react-native";
 import { SpeedDial } from '@rneui/themed';
-
 import { io } from 'socket.io-client';
+import { useSelector, useDispatch } from 'react-redux';
+import { roomActions } from '../store/RoomListStore';
 
 import HeaderComponent from "../components/HeaderComponent";
 import { List } from "../components/chat";
@@ -22,8 +23,9 @@ const styles = StyleSheet.create({
 })
 
 const Home = ({navigation}) => {
-    const [roomList, setRoomList] = useState([]);
     const [currentUser, setCurrentUser] = useState({});
+    const roomList = useSelector(state => state.rooms.roomList);
+    const dispatch = useDispatch();
 
     const socketIO = io(APP_REMOTE_HOST, {
         transports: ['websocket']
@@ -34,7 +36,9 @@ const Home = ({navigation}) => {
         getLoggedInUser().then(usr => setCurrentUser(usr));
 
         listMyRooms().then(rooms => {
-            setRoomList(rooms)
+            if (rooms && rooms.length) {
+                dispatch(roomActions.initRooms(rooms));
+            }
         });
 
         socketIO.on('connect', () =>{
@@ -82,15 +86,18 @@ const Home = ({navigation}) => {
             <HeaderComponent />
             <ScrollView>
                 {roomList.map((item) => { 
-                        let memberDetails = JSON.parse(item.memberDetails);
-                        let chatUser = memberDetails.find(el => el._id != currentUser._id);
-                        chatUser = Object.values(chatUser||{})[0] || {};
-                        let name = [chatUser.firstname, chatUser.lastname].join(' ') || chatUser.username;
+                    let {memberDetails} = item;
+                    if (typeof memberDetails == 'string') {
+                        memberDetails = JSON.parse(memberDetails);
+                    }
+                    let chatUser = memberDetails.find(el => el._id != currentUser._id);
+                    chatUser = Object.values(chatUser||{})[0] || {};
+                    let name = [chatUser.firstname, chatUser.lastname].join(' ') || chatUser.username;
 
-                        return (
-                            <List name={name} key={item._id} message={'@' + chatUser.username} />
-                        );
-                    })}
+                    return (
+                        <List name={name} key={item._id} message={'@' + chatUser.username} />
+                    );
+                })}
             </ScrollView>
 
             <SpeedDial

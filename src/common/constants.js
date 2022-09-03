@@ -2,7 +2,7 @@ export const LOGS = false;
 
 export const APP_NAME = 'SecureComm';
 
-export const APP_REMOTE_HOST = 'https://6b4e-2401-4900-1c3b-b18d-fd2f-e9e4-ce90-6669.in.ngrok.io';
+export const APP_REMOTE_HOST = 'https://730a-2401-4900-1c3a-7565-c30-c7df-8c0c-dfaa.in.ngrok.io';
 
 export const HEADER_HEIGHT = 65;
 export const TOUCHABLE_TAP = {
