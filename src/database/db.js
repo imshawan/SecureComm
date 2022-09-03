@@ -27,19 +27,23 @@ export const listMyRooms = async () => {
 }
 
 export const storeNewRoom = async (room, realm) => {
+    let _id = String(room._id);
     let members = Array.isArray(room.members) ? room.members.join(':') : room.members;
     let creator = JSON.stringify(room.creator);
     let memberDetails = JSON.stringify(room.memberDetails);
 
     realm.write(() => {
-        realm.create("Rooms", {
-            ...room,
-            _id: String(room._id),
-            lastActive: String(room.lastActive),
-            createdAt: String(room.createdAt),
-            members,
-            creator,
-            memberDetails,
-        });
+        let document = realm.objects("Rooms").filtered(`_id = '${_id}'`);
+        if (!document || !document.length) {
+            realm.create("Rooms", {
+                ...room,
+                _id,
+                lastActive: String(room.lastActive),
+                createdAt: String(room.createdAt),
+                members,
+                creator,
+                memberDetails,
+            });
+        }
     });
 }
