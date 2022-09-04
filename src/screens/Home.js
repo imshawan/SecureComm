@@ -58,20 +58,14 @@ const Home = ({navigation}) => {
         socketIO.on('connect_failed', function() {
             log("Sorry, there seems to be an issue with the connection!");
          })
-
+         
         const backHandler = BackHandler.addEventListener("hardwareBackPress", function () {
-            Alert.alert("Hold on!", "Are you sure exit?", [
-                {
-                  text: "Cancel",
-                  onPress: () => null,
-                  style: "cancel"
-                },
-                { text: "YES", onPress: () => {
-                    BackHandler.exitApp();
-                    socketIO.emit('leave-room', {room: userName })
-                } }
-              ]);
-              return true;
+            socketIO.emit('leave-room', {room: userName });
+            log(navigation.getParent())
+            if (!navigation.getParent()) {
+                BackHandler.exitApp();
+            } else navigation.goBack();
+            return true;
         });
     
         return () => backHandler.remove();

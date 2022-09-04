@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView, StatusBar } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView, StatusBar, BackHandler } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { List } from "../components/chat";
@@ -65,6 +65,15 @@ const styles = StyleSheet.create({
 const SearchScreen = ({navigation}) => {
     const [value, setValue] = useState("");
     const [clicked, setClicked] = useState(false);
+
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener("hardwareBackPress", function () {
+            navigation.goBack();
+            return true;
+        });
+    
+        return () => backHandler.remove();
+    }, []);
 
     return (
         <View style={styles.container}>

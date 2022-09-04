@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView, StatusBar } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView, StatusBar, BackHandler } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { TextInput } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
@@ -108,6 +108,15 @@ const NewChatScreen = ({navigation, route}) => {
         }
         setLoading(false);
     }
+
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener("hardwareBackPress", function () {
+            navigation.goBack();
+            return true;
+        });
+    
+        return () => backHandler.remove();
+    }, []);
 
     return (<>
             <StatusBar barStyle='dark-content' backgroundColor={colors.white} />

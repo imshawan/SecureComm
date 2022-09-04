@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, StatusBar, TouchableOpacity, Image, ScrollView } from "react-native";
+import { View, Text, StyleSheet, StatusBar, TouchableOpacity, Image, ScrollView, BackHandler } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { ListItem } from "@rneui/themed";
 
@@ -147,6 +147,14 @@ const AccountScreen = ({navigation, route}) => {
     useState(() => {
         isAuthenticated();
         AsyncStorage.getItem('user').then(user => setProfile(JSON.parse(user)));
+
+        const backHandler = BackHandler.addEventListener("hardwareBackPress", function () {
+            navigation.goBack();
+            return true;
+        });
+    
+        return () => backHandler.remove();
+
     }, [])
 
     return (<>
