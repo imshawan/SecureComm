@@ -3,7 +3,7 @@ import { View, StyleSheet, ScrollView, StatusBar, BackHandler, Alert } from "rea
 import { SpeedDial } from '@rneui/themed';
 import { io } from 'socket.io-client';
 import { useSelector, useDispatch } from 'react-redux';
-import { roomActions } from '../store/RoomListStore';
+import { roomActions } from '../store/roomListStore';
 import { currentUserActions } from '../store/userStore';
 
 import HeaderComponent from "../components/HeaderComponent";

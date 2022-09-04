@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { roomsReducer } from "./RoomListStore";
+import { roomsReducer } from "./roomListStore";
 import { currentUserReducer } from "./userStore";
 
 const Store = configureStore({

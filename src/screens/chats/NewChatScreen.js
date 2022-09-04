@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity, ScrollView, StatusBar, BackHa
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { TextInput } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
-import { roomActions } from '../../store/RoomListStore';
+import { roomActions } from '../../store/roomListStore';
 
 import { List } from '../../components/chat';
 import Loader from '../../components/Loader';
