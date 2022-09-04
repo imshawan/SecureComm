@@ -4,6 +4,7 @@ import { SpeedDial } from '@rneui/themed';
 import { io } from 'socket.io-client';
 import { useSelector, useDispatch } from 'react-redux';
 import { roomActions } from '../store/RoomListStore';
+import { currentUserActions } from '../store/userStore';
 
 import HeaderComponent from "../components/HeaderComponent";
 import { List } from "../components/chat";
@@ -23,10 +24,11 @@ const styles = StyleSheet.create({
 })
 
 const Home = ({navigation}) => {
-    const [currentUser, setCurrentUser] = useState({});
     const [loading, setLoading] = useState(false);
 
     const roomList = useSelector(state => state.rooms.roomList);
+    const currentUser = useSelector(state => state.user.currentUser);
+
     const dispatch = useDispatch();
 
     const socketIO = io(APP_REMOTE_HOST, {
@@ -35,11 +37,11 @@ const Home = ({navigation}) => {
     let userName = 'Pinky Paul';
 
     const userCardOnClick = async (card) => {
-        navigation.navigate('ViewScreen', JSON.parse(JSON.stringify(card)));
+        navigation.navigate('ChatScreen', JSON.parse(JSON.stringify(card)));
     }
 
     useEffect(() => {
-        getLoggedInUser().then(usr => setCurrentUser(usr));
+        getLoggedInUser().then(usr => dispatch(currentUserActions.setCurrentUser(usr)));
 
         listMyRooms().then(rooms => {
             if (rooms && rooms.length) {

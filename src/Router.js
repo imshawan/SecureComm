@@ -11,7 +11,7 @@
  import EnterOtpScreen from './screens/forgotPassword/EnterOtpScreen';
  import Home from './screens/Home';
  import SearchScreen from './screens/SearchScreen';
- import ViewScreen from './screens/chats/ViewScreen';
+ import ChatScreen from './screens/chats/ChatScreen';
  import NewChatScreen from './screens/chats/NewChatScreen';
  import AccountScreen from './screens/AccountScreen';
  
@@ -53,7 +53,7 @@
 
           <Stack.Screen name="Home" component={Home} options={{headerShown: false}}/>
           <Stack.Screen name="SearchScreen" component={SearchScreen} options={{headerShown: false}}/>
-          <Stack.Screen name="ViewScreen" component={ViewScreen} options={{headerShown: false}}/>
+          <Stack.Screen name="ChatScreen" component={ChatScreen} options={{headerShown: false}}/>
           <Stack.Screen name="NewChatScreen" component={NewChatScreen} options={{headerShown: false}}/>
           <Stack.Screen name="AccountScreen" component={AccountScreen} options={{headerShown: false}}/>
 
@@ -79,7 +79,7 @@
 
           <Stack.Screen name="Home" component={Home} options={{headerShown: false}}/>
           <Stack.Screen name="SearchScreen" component={SearchScreen} options={{headerShown: false}}/>
-          <Stack.Screen name="ViewScreen" component={ViewScreen} options={{headerShown: false}}/>
+          <Stack.Screen name="ChatScreen" component={ChatScreen} options={{headerShown: false}}/>
           <Stack.Screen name="NewChatScreen" component={NewChatScreen} options={{headerShown: false}}/>
           <Stack.Screen name="AccountScreen" component={AccountScreen} options={{headerShown: false}}/>
 

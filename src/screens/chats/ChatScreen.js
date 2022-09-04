@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity, StatusBar, FlatList, BackHand
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { io } from 'socket.io-client';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { Thread, ChatInput } from '../../components/chat';
 import ProfileAvtar from '../../components/ProfileAvtar';
@@ -73,9 +74,11 @@ const styles = StyleSheet.create({
 
 
 
-const ViewScreen = ({navigation, route}) => {
+const ChatScreen = ({navigation, route}) => {
     const [message, setMessage] = useState("");
-    const [messages, setMessages] = useState(dummyChat);
+    const [messages, setMessages] = useState([]);
+
+    const currentUser = useSelector(state => state.user.currentUser);
     
     const { chatUser, currentRoom } = route.params;
     const { roomId } = currentRoom;
@@ -88,10 +91,10 @@ const ViewScreen = ({navigation, route}) => {
     const sendMessage = () => {
         if (!message) return;
         setMessages(prevState => ([{
-            name: fullname, message, id: messages.length + 1
+            name: fullname, message, id: generateUUID(), _id: currentUser._id
         }, ...prevState]));
         
-       socketIO.emit('message:send', {name: fullname, message, room: roomId})
+       socketIO.emit('message:send', {name: fullname, message, room: roomId, _id: currentUser._id})
 
         setMessage('')
     }
@@ -111,6 +114,7 @@ const ViewScreen = ({navigation, route}) => {
 
         
         socketIO.on('message:receive', (socket) => {
+            log(socket)
             setMessages(prevState => ([{
                 ...socket, id: messages.length + 1
             }, ...prevState]));
@@ -153,8 +157,8 @@ const ViewScreen = ({navigation, route}) => {
                 <FlatList 
                     data={messages}
                     renderItem={({item}) => (
-                        <View key={item.id} style={{flexDirection: 'row', justifyContent: item.name == fullname ? 'flex-start' : 'flex-end'}}>
-                            <Thread key={item.id} name={item.name} message={item.message} customStyles={item.name == fullname ? styles.receiverThreadStyles : styles.senderThreadStyles}/>
+                        <View key={item.id} style={{flexDirection: 'row', justifyContent: item._id != currentUser._id ? 'flex-start' : 'flex-end'}}>
+                            <Thread key={item.id} name={item.name} message={item.message} customStyles={item._id != currentUser._id ? styles.receiverThreadStyles : styles.senderThreadStyles}/>
                         </View>
                     )}
                     style={{scaleY: -1}}
@@ -173,4 +177,4 @@ const ViewScreen = ({navigation, route}) => {
     )
 };
 
-export default ViewScreen;
+export default ChatScreen;

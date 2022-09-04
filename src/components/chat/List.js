@@ -59,7 +59,7 @@ export const List = ({name, message, id, callback}) => {
         if (typeof callback === 'function') {
             callback();
         } else {
-            navigation.navigate('ViewScreen', {
+            navigation.navigate('ChatScreen', {
                 id, name
             });
         }

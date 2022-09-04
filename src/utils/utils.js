@@ -30,6 +30,6 @@ export const validateEmail = (email) => {
       );
   };
 
-export const generateUUID = (string) => {
+export const generateUUID = (string='') => {
     return string.toLowerCase() + '-' + Date.now();
 }
