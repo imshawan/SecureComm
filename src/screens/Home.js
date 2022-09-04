@@ -12,8 +12,8 @@ import { log } from '../config';
 import { colors, dummyJSON } from '../common';
 import { APP_REMOTE_HOST } from '../common';
 
-import { listMyRooms } from '../database';
 import { getLoggedInUser } from '../utils';
+import { storeNewRoom, Rooms, listMyRooms } from '../database';
 
 const styles = StyleSheet.create({
     container: {
@@ -24,6 +24,8 @@ const styles = StyleSheet.create({
 
 const Home = ({navigation}) => {
     const [currentUser, setCurrentUser] = useState({});
+    const [loading, setLoading] = useState(false);
+
     const roomList = useSelector(state => state.rooms.roomList);
     const dispatch = useDispatch();
 
@@ -31,6 +33,10 @@ const Home = ({navigation}) => {
         transports: ['websocket']
     });
     let userName = 'Pinky Paul';
+
+    const userCardOnClick = async (card) => {
+        navigation.navigate('ViewScreen', JSON.parse(JSON.stringify(card)));
+    }
 
     useEffect(() => {
         getLoggedInUser().then(usr => setCurrentUser(usr));
@@ -61,7 +67,6 @@ const Home = ({navigation}) => {
          
         const backHandler = BackHandler.addEventListener("hardwareBackPress", function () {
             socketIO.emit('leave-room', {room: userName });
-            log(navigation.getParent())
             if (!navigation.getParent()) {
                 BackHandler.exitApp();
             } else navigation.goBack();
@@ -89,7 +94,7 @@ const Home = ({navigation}) => {
                     let name = [chatUser.firstname, chatUser.lastname].join(' ') || chatUser.username;
 
                     return (
-                        <List name={name} key={item._id} message={'@' + chatUser.username} />
+                        <List name={name} callback={() => userCardOnClick({currentRoom: item, chatUser})} key={item._id} message={`@${chatUser.username}`} />
                     );
                 })}
             </ScrollView>

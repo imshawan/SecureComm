@@ -77,25 +77,27 @@ const ViewScreen = ({navigation, route}) => {
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState(dummyChat);
     
+    const { chatUser, currentRoom } = route.params;
+    const { roomId } = currentRoom;
+    let fullname = [chatUser.firstname, chatUser.lastname].join(' ') || chatUser.username;
+
     const socketIO = io(APP_REMOTE_HOST, {
         transports: ['websocket']
     });
-    const { id, name } = route.params;
-    let userName = 'Shawan Mandal';
     
     const sendMessage = () => {
         if (!message) return;
         setMessages(prevState => ([{
-            name: userName, message, id: messages.length + 1
+            name: fullname, message, id: messages.length + 1
         }, ...prevState]));
         
-       socketIO.emit('message:send', {name: userName, message, room: name =='Pinky Paul' ? 56 : 6})
+       socketIO.emit('message:send', {name: fullname, message, room: roomId})
 
         setMessage('')
     }
 
     const goBack = () => {
-        socketIO.emit('leave-room', {room: name =='Pinky Paul' ? 56 : 6 });
+        socketIO.emit('leave-room', {room: roomId });
         navigation.goBack();
         return true;
     }
@@ -104,7 +106,7 @@ const ViewScreen = ({navigation, route}) => {
 
         socketIO.on('connect', () =>{
             log('Connected to remote server!')
-            socketIO.emit('join-room', {room: name =='Pinky Paul' ? 56 : 6 })
+            socketIO.emit('join-room', {room: roomId })
         });
 
         
@@ -113,7 +115,6 @@ const ViewScreen = ({navigation, route}) => {
                 ...socket, id: messages.length + 1
             }, ...prevState]));
         })
-
         
 
         socketIO.on('error', (err) => log(err));
@@ -138,10 +139,10 @@ const ViewScreen = ({navigation, route}) => {
                             <View style={styles.touchControlStyle}>
                                 <Icon name="arrow-left" size={fontSizes.large} style={styles.backNavStyle}/>
                             </View>
-                            <ProfileAvtar name={name} />
+                            <ProfileAvtar name={fullname} />
                         </TouchableOpacity>
                         <View>
-                            <Text style={styles.headerTextStyle}>{name}</Text>
+                            <Text style={styles.headerTextStyle}>{fullname}</Text>
                             <Text style={styles.activeTimeStyle} numberOfLines={1} ellipsizeMode='tail'>{'Last online 2 min ago'}</Text>
                         </View>
                     </View>
@@ -152,8 +153,8 @@ const ViewScreen = ({navigation, route}) => {
                 <FlatList 
                     data={messages}
                     renderItem={({item}) => (
-                        <View key={item.id} style={{flexDirection: 'row', justifyContent: item.name == name ? 'flex-start' : 'flex-end'}}>
-                            <Thread key={item.id} name={item.name} message={item.message} customStyles={item.name == name ? styles.receiverThreadStyles : styles.senderThreadStyles}/>
+                        <View key={item.id} style={{flexDirection: 'row', justifyContent: item.name == fullname ? 'flex-start' : 'flex-end'}}>
+                            <Thread key={item.id} name={item.name} message={item.message} customStyles={item.name == fullname ? styles.receiverThreadStyles : styles.senderThreadStyles}/>
                         </View>
                     )}
                     style={{scaleY: -1}}
