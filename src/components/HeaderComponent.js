@@ -42,7 +42,11 @@ const styles = StyleSheet.create({
         marginTop: 2
     },
     touchControlStyle: {
-        marginHorizontal: 10,
+        marginLeft: 5,
+        height: 35,
+        width: 35,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     iconStyles: {
         color: colors.black
