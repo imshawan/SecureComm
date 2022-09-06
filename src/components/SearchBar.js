@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, TextInput, Text, View, Keyboard, TouchableOpacity } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { colors, fontSizes } from "../common";
+import { colors, fontSizes, SEARCHBAR_HEIGHT } from "../common";
 
 
 const styles = StyleSheet.create({
@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
       alignItems: "center",
       flexDirection: "row",
       width: "92%",
-      height: 50
+      height: SEARCHBAR_HEIGHT
   
     },
     searchBarUnClicked: {
@@ -37,10 +37,10 @@ const styles = StyleSheet.create({
       width: "90%",
     },
     buttonStyle: {
-        padding: 12,
+        padding: 11,
         paddingLeft: 10,
         borderWidth: 0,
-        height: 50,
+        height: SEARCHBAR_HEIGHT,
         alignItems: 'center',
     },
     buttonTextStyle: {

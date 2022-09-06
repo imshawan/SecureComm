@@ -5,6 +5,7 @@ export const APP_NAME = 'SecureComm';
 export const APP_REMOTE_HOST = 'https://apps.imshawan.dev';
 
 export const HEADER_HEIGHT = 65;
+export const SEARCHBAR_HEIGHT = 45;
 export const TOUCHABLE_TAP = {
     onTapDuration: 100,
     onReleaseDuration: 200
