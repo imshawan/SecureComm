@@ -37,22 +37,23 @@ const styles = StyleSheet.create({
     headerTextStyle: {
         flexDirection: 'row',
         fontSize: fontSizes.extraLarge, 
-        marginLeft: 5, 
+        // marginLeft: 5, 
         // fontWeight: 'bold',
         color: colors.black,
         fontFamily: 'SF-Pro-Rounded-Bold',
-        lineHeight: fontSizes.extraLarge + 5
+        lineHeight: fontSizes.extraLarge + 5,
     },
     headerContent: {
         flexDirection: 'row', 
         paddingHorizontal: 25,
-        marginBottom: 8
+        // marginBottom: 8
     },
     touchControlStyle: {
-        marginRight: 14,
+        // marginRight: 14,
         marginLeft: 0,
         paddingLeft: 0,
-        marginTop: -2
+        marginTop: -2,
+        width: 40,
     },
     iconStyles: {
         color: colors.black
@@ -60,8 +61,10 @@ const styles = StyleSheet.create({
     rowContainerStyle: {
         flexDirection: 'row',
         width: '100%',
-        marginHorizontal: 12,
-        marginVertical: 15
+        paddingHorizontal: 12,
+        paddingVertical: 15,
+        borderBottomWidth: 1,
+        borderBottomColor: colors.grey,
     },
     avtarStyles: {
         height: 90,
@@ -159,17 +162,18 @@ const AccountScreen = ({navigation, route}) => {
 
     return (<>
             <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
-                <View style={styles.container}>
-                    <View style={styles.headerContainer}>
-                        <View style={styles.headerContent}>
-                            <View style={styles.headerRow}>
-                                <TouchableOpacity style={styles.touchControlStyle} onPress={() => navigation.goBack()}>
-                                    <Icon name="arrow-left" style={styles.iconStyles} size={fontSizes.large} />
-                                </TouchableOpacity>
-                                <Text style={styles.headerTextStyle}>Account</Text>
-                            </View>
+            <View style={styles.container}>
+                <View style={styles.headerContainer}>
+                    <View style={styles.headerContent}>
+                        <View style={styles.headerRow}>
+                            <TouchableOpacity style={styles.touchControlStyle} onPress={() => navigation.goBack()}>
+                                <Icon name="arrow-left" style={styles.iconStyles} size={fontSizes.large} />
+                            </TouchableOpacity>
+                            <Text style={styles.headerTextStyle}>Account</Text>
                         </View>
                     </View>
+                </View>
+
                 <ScrollView>
                     <View style={styles.rowContainerStyle}>
                         <ProfileAvtar textStyle={styles.avtarTextStyles} image={profile.image} name={profile.fullname || profile.username} customStyles={styles.avtarStyles} />
@@ -177,19 +181,19 @@ const AccountScreen = ({navigation, route}) => {
                             <Text numberOfLines={1} ellipsizeMode='tail' style={styles.profileHeaderStyle}>{profile.fullname || profile.username}</Text>
                             <Text numberOfLines={2} ellipsizeMode='tail' style={styles.profileText}>{profile.about}</Text>
                         </View>
+                        <View style={{
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}>
+                            <Icon name="chevron-right" style={styles.iconStyles} size={fontSizes.large} />
+                        </View>
                     </View>
                     <View style={styles.profileContainer}>
-                        <TouchableOpacity
-                            activeOpacity={0.5}
-                            style={styles.buttonStyle}
-                        >
-                            <Text style={styles.buttonTextStyle}>View Profile</Text>
-                        </TouchableOpacity>
 
                         <TouchableOpacity
                             activeOpacity={0.5}
                             onPress={processLogOut}
-                            style={{...styles.buttonStyle, marginLeft: 20}}
+                            style={{...styles.buttonStyle}}
                         >
                             <Text style={styles.buttonTextStyle}>Sign out</Text>
                         </TouchableOpacity>
