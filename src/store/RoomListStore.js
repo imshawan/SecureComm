@@ -13,6 +13,7 @@ const roomsSlice = createSlice({
             state.roomList = action.payload;
         },
         addRoomToStore(state, action) {
+
             let found = (state.roomList || []).find(item => item._id == action.payload._id);
             if (!found) {
                 state.roomList = [...state.roomList, {

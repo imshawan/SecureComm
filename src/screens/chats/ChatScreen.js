@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { io } from 'socket.io-client';
 import { useSelector, useDispatch } from 'react-redux';
+import { messageActions } from '../../store/messagesStore';
 
 import { Thread, ChatInput } from '../../components/chat';
 import ProfileAvtar from '../../components/ProfileAvtar';
@@ -73,34 +74,38 @@ const styles = StyleSheet.create({
 });
 
 
+const socketIO = io(APP_REMOTE_HOST, {
+    transports: ['websocket']
+});
 
 const ChatScreen = ({navigation, route}) => {
-    const [message, setMessage] = useState("");
-    const [messages, setMessages] = useState([]);
-
-    const currentUser = useSelector(state => state.user.currentUser);
-    
     const { chatUser, currentRoom } = route.params;
-    const { roomId } = currentRoom;
+
+    const [message, setMessage] = useState("");
+    const [roomId, setRoomId] = useState(currentRoom.roomId);
+
+    const dispatch = useDispatch();
+    const currentUser = useSelector(state => state.user.currentUser);
+    const messages = useSelector(state => state.messages.messageList);
+    
     let fullname = [chatUser.firstname, chatUser.lastname].join(' ') || chatUser.username;
 
-    const socketIO = io(APP_REMOTE_HOST, {
-        transports: ['websocket']
-    });
-    
+    log(roomId)    
     const sendMessage = () => {
         if (!message) return;
-        setMessages(prevState => ([{
-            name: fullname, message, id: generateUUID(), _id: currentUser._id
-        }, ...prevState]));
+        let payload = {
+            name: fullname, message, id: generateUUID(), _id: currentUser._id, room: roomId
+        }
+        setMessage('');
         
-       socketIO.emit('message:send', {name: fullname, message, room: roomId, _id: currentUser._id})
-
-        setMessage('')
+        dispatch(messageActions.addMessageToStore(payload));
+        
+        socketIO.emit('message:send', payload);
     }
 
     const goBack = () => {
         socketIO.emit('leave-room', {room: roomId });
+        dispatch(messageActions.clearMessages())
         navigation.goBack();
         return true;
     }
@@ -109,30 +114,24 @@ const ChatScreen = ({navigation, route}) => {
 
         socketIO.on('connect', () =>{
             log('Connected to remote server!')
-            socketIO.emit('join-room', {room: roomId })
+            socketIO.emit('join-room', {room: roomId})
         });
 
-        
         socketIO.on('message:receive', (socket) => {
             log(socket)
-            setMessages(prevState => ([{
-                ...socket, id: messages.length + 1
-            }, ...prevState]));
+            dispatch(messageActions.addMessageToStore({...socket, id: generateUUID()}));
         })
-        
-
-        socketIO.on('error', (err) => log(err));
-        
-        socketIO.on('connect_failed', function() {
-            log("Sorry, there seems to be an issue with the connection!");
-         })
-
+    
         const backHandler = BackHandler.addEventListener("hardwareBackPress", goBack);
     
-        return () => backHandler.remove();
+        return () => {
+            backHandler.remove();
+            socketIO.removeListener('message:receive');
+            // socketIO.emit('end');
+        }
     
         
-    }, [])
+    }, [roomId])
 
     return (<>
             <StatusBar barStyle='dark-content' backgroundColor={colors.white} />

@@ -91,7 +91,7 @@ const Home = ({navigation}) => {
                     if (typeof memberDetails == 'string') {
                         memberDetails = JSON.parse(memberDetails);
                     }
-                    let chatUser = memberDetails.find(el => el._id != currentUser._id);
+                    let chatUser = memberDetails.find(el => el && Object.keys(el)[0] != currentUser._id);
                     chatUser = Object.values(chatUser||{})[0] || {};
                     let name = [chatUser.firstname, chatUser.lastname].join(' ') || chatUser.username;
 

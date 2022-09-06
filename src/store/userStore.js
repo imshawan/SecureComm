@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { log } from "../config";
 
 const currentUserInitialState = {
-    currentUser: []
+    currentUser: {}
 }
 
 const currentUserSlice = createSlice({
