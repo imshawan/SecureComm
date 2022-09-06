@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
         marginLeft: 0,
         paddingLeft: 0,
         marginTop: -2,
-        width: 40,
+        width: 35,
     },
     iconStyles: {
         color: colors.black

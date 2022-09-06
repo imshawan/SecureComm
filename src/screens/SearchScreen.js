@@ -53,9 +53,10 @@ const styles = StyleSheet.create({
         marginBottom: 8
     },
     touchControlStyle: {
-        marginRight: 14,
+        // marginRight: 14,
         marginLeft: 0,
         paddingLeft: 0,
+        width: 30,
     },
     iconStyles: {
         color: colors.black
