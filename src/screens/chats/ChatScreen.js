@@ -102,9 +102,17 @@ const ChatScreen = ({navigation, route}) => {
     // log(isFocused)    
     const sendMessage = () => {
         if (!message) return;
+
         let payload = {
-            name: fullname, message, id: generateUUID(), _id: currentUser._id, room: roomId
-        }
+            name: fullname, 
+            message, 
+            id: generateUUID(), 
+            _id: currentUser._id, 
+            room: roomId, 
+            createdAt: new Date(Date.now()).toISOString(),
+            status: "sent",
+        };
+
         setMessage('');
         
         dispatch(messageActions.addMessageToStore(payload));
@@ -113,7 +121,7 @@ const ChatScreen = ({navigation, route}) => {
     }
 
     const goBack = () => {
-        socketIO.emit('leave-room', {room: roomId });
+        socketIO.emit('leave-room', {room: roomId});
         dispatch(messageActions.clearMessages())
         navigation.goBack();
         return true;

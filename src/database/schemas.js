@@ -3,9 +3,10 @@ import Realm from "realm";
 const messageSchema = {
     name: "Messages",
     properties: {
+        id: "string",
         _id: "string",
-        content: "string",
-        sender: "string",
+        name: "string",
+        message: "string",
         roomId: "int",
         createdAt: "string",
     }
@@ -22,6 +23,8 @@ export const roomSchema = {
         createdAt: "string",
         name: "string",
         memberDetails: "string",
+        latestMessage: "string?",
+        unreadMessageCount: "int?",
     }
 }
 

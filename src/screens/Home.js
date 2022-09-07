@@ -34,7 +34,6 @@ const Home = ({navigation}) => {
     const socketIO = io(APP_REMOTE_HOST, {
         transports: ['websocket']
     });
-    let userName = 'Pinky Paul';
 
     const userCardOnClick = async (card) => {
         navigation.navigate('ChatScreen', JSON.parse(JSON.stringify(card)));
@@ -50,35 +49,28 @@ const Home = ({navigation}) => {
         });
 
         socketIO.on('connect', () =>{
-            log('Connected to remote server!')
-            socketIO.emit('join-room', {room: userName})
+            log('Connected to remote server with userId ' + currentUser._id)
+            socketIO.emit('join-room', {room: currentUser._id})
         });
 
         
         socketIO.on('message:receive', (socket) => {
-            // alert(JSON.stringify(socket))
+            alert(JSON.stringify(socket))
         })
-
-        
-
-        socketIO.on('error', (err) => log(err));
-        
-        socketIO.on('connect_failed', function() {
-            log("Sorry, there seems to be an issue with the connection!");
-         })
          
-        const backHandler = BackHandler.addEventListener("hardwareBackPress", function () {
-            socketIO.emit('leave-room', {room: userName });
-            if (!navigation.getParent()) {
-                BackHandler.exitApp();
-            } else navigation.goBack();
-            return true;
-        });
+        // const backHandler = BackHandler.addEventListener("hardwareBackPress", function () {
+        //     socketIO.emit('leave-room', {room: userName });
+        //     if (!navigation.getParent()) {
+        //         BackHandler.exitApp();
+        //     } else navigation.goBack();
+        //     return true;
+        // });
     
-        return () => backHandler.remove();
+        // return () => backHandler.remove();
+        return () => socketIO.removeListener('message:receive');
 
         
-    }, [])
+    }, [currentUser._id])
 
     return (
         <View style={styles.container}>
