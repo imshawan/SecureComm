@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView, StatusBar, BackHandler } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { List } from "../components/chat";
 import SearchBar from '../components/SearchBar';
@@ -66,6 +67,22 @@ const styles = StyleSheet.create({
 const SearchScreen = ({navigation}) => {
     const [value, setValue] = useState("");
     const [clicked, setClicked] = useState(false);
+    const [results, setResults] = useState([]);
+
+    const roomList = useSelector(state => state.rooms.roomList);
+
+    const userCardOnClick = async (card) => {
+        navigation.navigate('ChatScreen', JSON.parse(JSON.stringify(card)));
+    }
+
+    useEffect(() => {
+        if (!value || (value && value.length < 3)) return;
+
+        let results = (roomList).filter(item => new RegExp(value).test(item.name));
+        setResults(results);
+        log(results)
+
+    }, [value])
 
     useEffect(() => {
         const backHandler = BackHandler.addEventListener("hardwareBackPress", function () {
@@ -75,6 +92,7 @@ const SearchScreen = ({navigation}) => {
     
         return () => backHandler.remove();
     }, []);
+
 
     return (
         <View style={styles.container}>
@@ -102,13 +120,19 @@ const SearchScreen = ({navigation}) => {
             </View>
             
             <ScrollView>
-                {dummyJSON.map((item, index) => { 
-                    if (item.name && new RegExp(value).test(item.name)) {
-                        return (<List name={item.name} key={item.id} id={item.id} message={item.msg} />)
+                {results.map(item => {
+                    let {memberDetails} = item;
+                    if (typeof memberDetails == 'string') {
+                        memberDetails = JSON.parse(memberDetails);
                     }
-                    else {
-                        return (<View key={'empty'}></View>)
-                    } })}
+                    let chatUser = memberDetails.find(el => el && Object.keys(el)[0] != currentUser._id);
+                    chatUser = Object.values(chatUser||{})[0] || {};
+                    let name = [chatUser.firstname, chatUser.lastname].join(' ') || chatUser.username;
+
+                    return (
+                        <List name={name} callback={() => userCardOnClick({currentRoom: item, chatUser})} key={item._id} message={`@${chatUser.username}`} />
+                    );
+                })}
             </ScrollView>
         </View>
     )

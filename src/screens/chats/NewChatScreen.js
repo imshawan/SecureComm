@@ -98,7 +98,8 @@ const NewChatScreen = ({navigation, route}) => {
         setLoading(true);
         let {_id} = await getLoggedInUser();
         let payload = {
-            members: [_id, selectedUser._id]
+            members: [_id, selectedUser._id],
+            name: [selectedUser.firstname, selectedUser.lastname].join(' '),
         }
         let room = await HTTP.post(ENDPOINTS.createRoom, payload);
         if (room.payload) {
