@@ -47,3 +47,11 @@ export const storeNewRoom = async (room, realm) => {
         }
     });
 }
+
+export const clearCurrentRooms = async () => {
+    const rooms = await Rooms();
+    rooms.write(() => {
+        roomsObj = rooms.objects("Rooms");
+        rooms.delete(roomsObj);
+    });
+}
