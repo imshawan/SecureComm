@@ -23,6 +23,9 @@ const roomsSlice = createSlice({
                 state.roomList = state.roomList;
             }
         },
+        clearRooms(state) {
+            state.roomList = [];
+        },
     }
 });
 

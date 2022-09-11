@@ -48,6 +48,8 @@ const Home = ({navigation}) => {
             }
         });
 
+        if (!currentUser || !currentUser._id) return;
+
         socketIO.on('connect', () =>{
             log('Connected to remote server with userId ' + currentUser._id)
             socketIO.emit('join-room', {room: currentUser._id})

@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
 const NewChatScreen = ({navigation, route}) => {
     const [apiResponse, setApiResponse] = useState([]);
     const [loading, setLoading] = useState(false);
+
     const dispatch = useDispatch();
 
     const handleSearch = async (query) => {

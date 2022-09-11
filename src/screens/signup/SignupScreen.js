@@ -179,6 +179,7 @@ const SignupScreen = ({navigation}) => {
                             placeholder={PLACEHOLDERS.createUsername}
                             placeholderTextColor={errors.username ? colors.red : AnimColor(interpolatedColor1, colors.placeholderColor)}
                             keyboardType="default"
+                            autoCapitalize="none"
                             underlineColorAndroid="#f000"
                             returnKeyType="next"
                         />
@@ -223,7 +224,6 @@ const SignupScreen = ({navigation}) => {
                             ref={passwordInputRef}
                             onSubmitEditing={Keyboard.dismiss}
                             blurOnSubmit={false}
-                            secureTextEntry={true}
                             underlineColorAndroid="#f000"
                             returnKeyType="next"
                         />

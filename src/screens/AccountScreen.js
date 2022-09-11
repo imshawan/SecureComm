@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, StatusBar, TouchableOpacity, Image, ScrollView, BackHandler } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useSelector, useDispatch } from 'react-redux';
 import { ListItem } from "@rneui/themed";
-
 import ProfileAvtar from "../components/ProfileAvtar";
 
 import { colors, HEADER_HEIGHT, fontSizes } from '../common';
 import { isAuthenticated } from "../utils";
 import AsyncStorage from "@react-native-community/async-storage";
 import { log } from "../config";
+import { clearCurrentRooms } from "../database";
+import { roomActions } from '../store/roomListStore';
 
 
 const styles = StyleSheet.create({
@@ -85,11 +87,12 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
     profileHeaderStyle: {
-        fontSize: fontSizes.extraLarge + 2, 
+        fontSize: fontSizes.large + 2, 
         // fontWeight: 'bold',
         color: colors.black,
         fontFamily: 'SF-Pro-Rounded-Bold',
-        lineHeight: fontSizes.extraLarge + 2,
+        lineHeight: fontSizes.large + 2,
+        width: '90%'
     },
     profileText: {
         textAlign: 'left',
@@ -136,15 +139,22 @@ const styles = StyleSheet.create({
 
 const AccountScreen = ({navigation, route}) => {
     const [profile, setProfile] = useState({
-        username: 'Shawan Mandal',
-        about: 'DeepTech Software Developer, fascinated by up and coming technologies'
+        username: '',
+        about: ''
     });
+    const dispatch = useDispatch();
    
     const image = 'https://images.pexels.com/photos/38537/woodland-road-falling-leaf-natural-38537.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
     
     const processLogOut = async () => {
+        await clearCurrentRooms();
         await AsyncStorage.clear();
+        dispatch(roomActions.clearRooms());
         navigation.navigate('LoginScreen');
+    }
+
+    const getFullname = () => {
+        return [profile.firstname, profile.lastname].join(' ') || profile.username;
     }
 
     useState(() => {
@@ -176,10 +186,11 @@ const AccountScreen = ({navigation, route}) => {
 
                 <ScrollView>
                     <View style={styles.rowContainerStyle}>
-                        <ProfileAvtar textStyle={styles.avtarTextStyles} image={profile.image} name={profile.fullname || profile.username} customStyles={styles.avtarStyles} />
+                        <ProfileAvtar textStyle={styles.avtarTextStyles} image={profile.image} name={getFullname()} customStyles={styles.avtarStyles} />
                         <View style={styles.profileTextContainer}>
-                            <Text numberOfLines={1} ellipsizeMode='tail' style={styles.profileHeaderStyle}>{profile.fullname || profile.username}</Text>
-                            <Text numberOfLines={2} ellipsizeMode='tail' style={styles.profileText}>{profile.about}</Text>
+                            <Text numberOfLines={1} ellipsizeMode='tail' style={styles.profileHeaderStyle}>{getFullname()}</Text>
+                            <Text numberOfLines={2} ellipsizeMode='tail' style={styles.profileText}>@{profile.username}</Text>
+                            {/* <Text numberOfLines={2} ellipsizeMode='tail' style={styles.profileText}>{profile.about}</Text> */}
                         </View>
                         <View style={{
                             alignItems: 'center',
