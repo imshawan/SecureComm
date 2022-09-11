@@ -67,9 +67,12 @@ const styles = StyleSheet.create({
 const SearchScreen = ({navigation}) => {
     const [value, setValue] = useState("");
     const [clicked, setClicked] = useState(false);
-    const [results, setResults] = useState([]);
-
+    
     const roomList = useSelector(state => state.rooms.roomList);
+    const currentUser = useSelector(state => state.user.currentUser);
+    const recentRooms = useSelector(state => state.rooms.recentRooms);
+    
+    const [results, setResults] = useState(recentRooms);
 
     const userCardOnClick = async (card) => {
         navigation.navigate('ChatScreen', JSON.parse(JSON.stringify(card)));
@@ -79,8 +82,11 @@ const SearchScreen = ({navigation}) => {
         if (!value || (value && value.length < 3)) return;
 
         let results = (roomList).filter(item => new RegExp(value).test(item.name));
-        setResults(results);
-        log(results)
+        if (results.length) {
+            setResults(results);
+        } else {
+            setResults(recentRooms)
+        }
 
     }, [value])
 
@@ -108,7 +114,7 @@ const SearchScreen = ({navigation}) => {
                     </View>
                 </View>
 
-                <View>
+                <View style={{marginTop: 5}}>
                     <SearchBar
                         value={value}
                         setValue={setValue}

@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import { log } from "../config";
 
 const roomsInitialState = {
-    roomList: []
+    roomList: [],
+    recentRooms: [],
 }
 
 const roomsSlice = createSlice({
@@ -26,6 +27,12 @@ const roomsSlice = createSlice({
         clearRooms(state) {
             state.roomList = [];
         },
+        addToRecent(state, action) {
+            if (state.recentRooms.length > 6) {
+                state.recentRooms.length = 5;
+            }
+            state.recentRooms = [...new Set([...state.recentRooms, {...action.payload.currentRoom}])];
+        }
     }
 });
 

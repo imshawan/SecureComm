@@ -36,7 +36,9 @@ const Home = ({navigation}) => {
     });
 
     const userCardOnClick = async (card) => {
-        navigation.navigate('ChatScreen', JSON.parse(JSON.stringify(card)));
+        card = JSON.parse(JSON.stringify(card));
+        dispatch(roomActions.addToRecent(card));
+        navigation.navigate('ChatScreen', card);
     }
 
     useEffect(() => {
