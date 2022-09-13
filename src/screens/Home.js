@@ -42,7 +42,14 @@ const Home = ({navigation}) => {
     }
 
     useEffect(() => {
-        getLoggedInUser().then(usr => dispatch(currentUserActions.setCurrentUser(usr)));
+        getLoggedInUser().then(usr => {
+            if (currentUser._id != usr._id) {
+                dispatch(currentUserActions.setCurrentUser(usr));
+            }
+        });
+    }, [])
+
+    useEffect(() => {
 
         listMyRooms().then(rooms => {
             if (rooms && rooms.length) {
@@ -58,7 +65,7 @@ const Home = ({navigation}) => {
         });
 
         
-        socketIO.on('message:receive', (socket) => {
+        socketIO.on('global:message:receive', (socket) => {
             alert(JSON.stringify(socket))
         })
          

@@ -79,14 +79,16 @@ const styles = StyleSheet.create({
 // });
 
 const ChatScreen = ({navigation, route}) => {
-    const { chatUser, currentRoom } = route.params;
+    const { chatUser, currentRoom, isNew } = route.params;
 
     const [message, setMessage] = useState("");
     const [roomId, setRoomId] = useState(currentRoom.roomId);
     const [socketIO, setSocket] = useState(null);
+    const [isNewRoom, setIsNewRoom] = useState(isNew)
 
     const isFocused = useIsFocused();
     const dispatch = useDispatch();
+
     const currentUser = useSelector(state => state.user.currentUser);
     const messages = useSelector(state => state.messages.messageList);
     
@@ -118,6 +120,11 @@ const ChatScreen = ({navigation, route}) => {
         dispatch(messageActions.addMessageToStore(payload));
         
         socketIO.emit('message:send', payload);
+        
+        if (isNewRoom) {
+            socketIO.emit('global:message:send', {chatUser: currentUser, currentRoom, message: payload, room: chatUser._id});
+            setIsNewRoom(false);
+        }
     }
 
     const goBack = () => {

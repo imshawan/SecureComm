@@ -14,6 +14,8 @@ import {
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Snackbar from 'react-native-snackbar';
+import { useSelector, useDispatch } from 'react-redux';
+import { currentUserActions } from '../../store/userStore';
 import TopNavigation from '../../components/TopNavigation';
 import Loader from '../../components/Loader';
 
@@ -52,6 +54,7 @@ const LoginScreen = ({navigation, route}) => {
   const [loading, setLoading] = useState(false)
  
   const passwordInputRef = createRef();
+  const dispatch = useDispatch();
 
   const handleSubmitPress = async () => {
     Keyboard.dismiss();
@@ -78,8 +81,11 @@ const LoginScreen = ({navigation, route}) => {
         await AsyncStorage.setItem('authToken', payload.token);
         await AsyncStorage.setItem('user', JSON.stringify(payload.user));
       }
+      
       setAuthToken(payload.token);
+      dispatch(currentUserActions.setCurrentUser(payload.user));
       navigation.navigate('Home');
+
     } catch (err) {
       if (Platform.OS === 'android') {
         ToastAndroid.show(err, Snackbar.LENGTH_SHORT);
