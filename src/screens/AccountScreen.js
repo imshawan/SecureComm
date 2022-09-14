@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, StatusBar, TouchableOpacity, Image, ScrollView, BackHandler } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector, useDispatch } from 'react-redux';
-import { ListItem } from "@rneui/themed";
-import ProfileAvtar from "../components/ProfileAvtar";
-
-import { colors, HEADER_HEIGHT, fontSizes } from '../common';
-import { isAuthenticated } from "../utils";
 import AsyncStorage from "@react-native-community/async-storage";
+
+import ProfileAvtar from "../components/ProfileAvtar";
+import DialogBox from "../components/DialogBox";
+import { colors, HEADER_HEIGHT, fontSizes, DIALOG_LABELS, BUTTONS } from '../common';
+import { isAuthenticated } from "../utils";
 import { log } from "../config";
 import { clearCurrentRooms } from "../database";
 import { roomActions } from '../store/roomListStore';
@@ -64,9 +64,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: '100%',
         paddingHorizontal: 12,
-        paddingVertical: 15,
-        borderBottomWidth: 1,
-        borderBottomColor: colors.grey,
+        paddingVertical: 10,
     },
     avtarStyles: {
         height: 90,
@@ -117,7 +115,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 50,
-        width: 120,
+        width: 180,
         elevation: 5,
         shadowColor: colors.brandColor,
         shadowOffset: {
@@ -142,12 +140,15 @@ const AccountScreen = ({navigation, route}) => {
         username: '',
         about: ''
     });
+    const [visible, setVisible] = useState(false);
+
     const dispatch = useDispatch();
    
     const image = 'https://images.pexels.com/photos/38537/woodland-road-falling-leaf-natural-38537.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
     
     const processLogOut = async () => {
         await clearCurrentRooms();
+        setVisible(false);
         await AsyncStorage.clear();
         dispatch(roomActions.clearRooms());
         navigation.navigate('LoginScreen');
@@ -184,6 +185,16 @@ const AccountScreen = ({navigation, route}) => {
                     </View>
                 </View>
 
+                <DialogBox
+                    title={DIALOG_LABELS.areYouSure}
+                    body={DIALOG_LABELS.removeAccount}
+                    visible={visible}
+                    setVisible={setVisible}
+                    action1Text={BUTTONS.signOut}
+                    action2Text={BUTTONS.close}
+                    action1={processLogOut}
+                />
+
                 <ScrollView>
                     <View style={styles.rowContainerStyle}>
                         <ProfileAvtar textStyle={styles.avtarTextStyles} image={profile.image} name={getFullname()} customStyles={styles.avtarStyles} />
@@ -203,10 +214,10 @@ const AccountScreen = ({navigation, route}) => {
 
                         <TouchableOpacity
                             activeOpacity={0.5}
-                            onPress={processLogOut}
+                            onPress={() => setVisible(true)}
                             style={{...styles.buttonStyle}}
                         >
-                            <Text style={styles.buttonTextStyle}>Sign out</Text>
+                            <Text style={styles.buttonTextStyle}>{BUTTONS.removeAccount}</Text>
                         </TouchableOpacity>
                     </View>
                     

@@ -20,3 +20,14 @@ export const PLACEHOLDERS = {
     createPassword: 'Create Password',
     confirmPassword: 'Confirm Password',
 };
+
+export const DIALOG_LABELS = {
+    areYouSure: 'Are you sure to perform this action?',
+    removeAccount: 'This action will remove your account from this device and your data will be lost. However your account won\'t be deleted',
+}
+
+export const BUTTONS = {
+    close: 'Close',
+    signOut: 'Sign out',
+    removeAccount: 'Remove account'
+}
