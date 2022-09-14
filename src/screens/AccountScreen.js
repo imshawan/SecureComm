@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, StatusBar, TouchableOpacity, Image, ScrollView,
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector, useDispatch } from 'react-redux';
 import AsyncStorage from "@react-native-community/async-storage";
+import { View as AnimatableView } from 'react-native-animatable';
 
 import ProfileAvtar from "../components/ProfileAvtar";
 import DialogBox from "../components/DialogBox";
