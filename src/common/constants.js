@@ -10,6 +10,7 @@ export const TOUCHABLE_TAP = {
     onTapDuration: 100,
     onReleaseDuration: 200
 };
+export const BASE_ANIMATION_DURATION = 300;
 
 const API_VERSION = 'v1';
 

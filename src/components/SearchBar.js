@@ -1,7 +1,8 @@
 import React from "react";
 import { StyleSheet, TextInput, Text, View, Keyboard, TouchableOpacity } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { colors, fontSizes, SEARCHBAR_HEIGHT } from "../common";
+import { View as AnimatedView } from 'react-native-animatable';
+import { colors, fontSizes, SEARCHBAR_HEIGHT, BASE_ANIMATION_DURATION } from "../common";
 
 
 const styles = StyleSheet.create({
@@ -79,7 +80,7 @@ const SearchBar = ({clicked, value, setValue, setClicked}) => {
       </View>
       
       {clicked && (
-        <View>
+        <AnimatedView animation={'fadeInRight'} duration={BASE_ANIMATION_DURATION}>
             <TouchableOpacity
                 style={styles.buttonStyle}
                 activeOpacity={0.5}
@@ -89,7 +90,7 @@ const SearchBar = ({clicked, value, setValue, setClicked}) => {
                 }}>
                 <Text style={styles.buttonTextStyle}>Cancel</Text>
             </TouchableOpacity>
-        </View>
+        </AnimatedView>
       )}
     </View>
   );
