@@ -10,12 +10,11 @@ import {
   Dimensions, TouchableHighlight,
   KeyboardAvoidingView,
 } from 'react-native';
- 
-import AsyncStorage from '@react-native-community/async-storage';
-import TopNavigation from '../../components/TopNavigation';
 
+
+import PageHeader from '../../components/PageHeaderComponent';
 import { log, showAlert } from '../../config';
-import { colors, fontSizes, headerFontSize, ERRORS, PLACEHOLDERS } from '../../common';
+import { colors, fontSizes, headerFontSize, ERRORS, PLACEHOLDERS, BASE_ANIMATION_DURATION } from '../../common';
 import { showFocusColor, AnimColor, showOriginColor, validateEmail } from '../../utils';
 import { styles } from '../styles';
  
@@ -120,22 +119,9 @@ const EnterOtpScreen = ({navigation, route}) => {
  
   return (
     <View style={styles.mainBody}>
-      <TopNavigation name={'Reset'} customStyles={{display}} />
-      <View style={{...pageStyles.headerContainer, display }}>
-          <TouchableHighlight
-            style = {{
-              borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
-              width: Dimensions.get('window').width,
-              height: Dimensions.get('window').width,
-              backgroundColor: colors.brandColor,
-              justifyContent: 'center',
-              alignItems: 'center',
-              position: 'relative',
-            }}
-          >
-              <View />
-          </TouchableHighlight>
-      </View>
+      
+      {display === 'flex' ? <PageHeader name={'Reset'} /> : <></>}
+
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{

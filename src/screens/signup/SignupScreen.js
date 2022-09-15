@@ -13,7 +13,7 @@ import {
  
 import AsyncStorage from '@react-native-community/async-storage';
 import Snackbar from 'react-native-snackbar';
-import TopNavigation from '../../components/TopNavigation';
+import PageHeader from '../../components/PageHeaderComponent';
 import Loader from '../../components/Loader';
 
 import { log, showAlert } from '../../config';
@@ -134,23 +134,7 @@ const SignupScreen = ({navigation}) => {
     <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
     <View style={styles.mainBody}>
       {loading ? <Loader animating={loading} color={colors.white} /> : ''}
-      <TopNavigation name={'Sign up'} customStyles={{display}} />
-
-      <View style={{...pageStyles.headerContainer, display }}>
-          <TouchableHighlight
-              style = {{
-                borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
-                width: Dimensions.get('window').width,
-                height: Dimensions.get('window').width,
-                backgroundColor: colors.brandColor,
-                justifyContent: 'center',
-                alignItems: 'center',
-                position: 'relative',
-              }}
-            >
-                <View />
-          </TouchableHighlight>
-      </View>
+      {display === 'flex' ? <PageHeader name={'Sign up'} /> : <></>}
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{

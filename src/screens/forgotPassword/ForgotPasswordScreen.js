@@ -12,7 +12,7 @@ import {
 } from 'react-native';
  
 import AsyncStorage from '@react-native-community/async-storage';
-import TopNavigation from '../../components/TopNavigation';
+import PageHeader from '../../components/PageHeaderComponent';
 
 import { log, showAlert } from '../../config';
 import { colors, fontSizes, headerFontSize, ERRORS, PLACEHOLDERS } from '../../common';
@@ -107,26 +107,7 @@ const ForgotPasswordScreen = ({navigation}) => {
  
   return (
     <View style={styles.mainBody}>
-      <TopNavigation name={'Reset'} customStyles={{display}} />
-      <View style={{...pageStyles.headerContainer, display }}>
-          <TouchableHighlight
-              style = {{
-                borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
-                width: Dimensions.get('window').width,
-                height: Dimensions.get('window').width,
-                backgroundColor: colors.brandColor,
-                justifyContent: 'center',
-                alignItems: 'center',
-                position: 'relative',
-              }}
-            >
-                <View style={styles.backNav}>
-                 
-                    
-
-                </View>
-          </TouchableHighlight>
-      </View>
+      {display === 'flex' ? <PageHeader name={'Reset'} /> : <></>}
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{
