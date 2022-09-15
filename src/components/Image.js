@@ -1,5 +1,5 @@
 import React from "react";
-import { Animated, View, StyleSheet } from "react-native";
+import { Animated, StyleSheet } from "react-native";
 
 const generateImageStyles = ({height, width}) => {
     return StyleSheet.create({
