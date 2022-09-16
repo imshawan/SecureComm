@@ -13,7 +13,8 @@
  import SearchScreen from './screens/SearchScreen';
  import ChatScreen from './screens/chats/ChatScreen';
  import NewChatScreen from './screens/chats/NewChatScreen';
- import AccountScreen from './screens/AccountScreen';
+ import ProfileScreen from './screens/ProfileScreen';
+ import SettingsScreen from './screens/SettingsScreen';
  
  
  const Stack = createStackNavigator();
@@ -55,7 +56,8 @@
           <Stack.Screen name="SearchScreen" component={SearchScreen} options={{headerShown: false}}/>
           <Stack.Screen name="ChatScreen" component={ChatScreen} options={{headerShown: false}}/>
           <Stack.Screen name="NewChatScreen" component={NewChatScreen} options={{headerShown: false}}/>
-          <Stack.Screen name="AccountScreen" component={AccountScreen} options={{headerShown: false}}/>
+          <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{headerShown: false}}/>
+          <Stack.Screen name="SettingsScreen" component={SettingsScreen} options={{headerShown: false}}/>
 
            </Stack.Navigator>
        </NavigationContainer>
@@ -81,7 +83,7 @@
           <Stack.Screen name="SearchScreen" component={SearchScreen} options={{headerShown: false}}/>
           <Stack.Screen name="ChatScreen" component={ChatScreen} options={{headerShown: false}}/>
           <Stack.Screen name="NewChatScreen" component={NewChatScreen} options={{headerShown: false}}/>
-          <Stack.Screen name="AccountScreen" component={AccountScreen} options={{headerShown: false}}/>
+          <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{headerShown: false}}/>
 
         </ Stack.Navigator>
       </NavigationContainer>

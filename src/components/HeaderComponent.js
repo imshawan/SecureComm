@@ -72,7 +72,11 @@ const HeaderComponent = ({image, name}) => {
                     <Icon name="search" style={styles.iconStyles} size={fontSizes.large} />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.touchControlStyle} onPress={() => navigation.navigate('AccountScreen')}>
+                <TouchableOpacity style={styles.touchControlStyle} onPress={() => navigation.navigate('ProfileScreen')}>
+                    <Icon name="user" style={styles.iconStyles} size={fontSizes.large} />
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.touchControlStyle} onPress={() => navigation.navigate('SettingsScreen')}>
                     <Icon name="cog" style={styles.iconStyles} size={fontSizes.large} />
                 </TouchableOpacity>
 
