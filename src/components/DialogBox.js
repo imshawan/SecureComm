@@ -6,7 +6,8 @@ import { log } from '../config';
 
 const styles = StyleSheet.create({
     dialogContainer: {
-        width: '85%'
+        width: '85%',
+        borderRadius: 15
     },
     titleTextStyle: {
         color: colors.black,

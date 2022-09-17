@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     headerContainer: {
-        backgroundColor: colors.white,
+        backgroundColor: '#8b97b0',
         paddingVertical: 12,
         flexDirection: 'column',
         height: HEADER_HEIGHT - 10,
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
         fontSize: fontSizes.extraLarge, 
         // marginLeft: 5, 
         // fontWeight: 'bold',
-        color: colors.black,
+        color: colors.white,
         fontFamily: 'SF-Pro-Rounded-Bold',
         lineHeight: fontSizes.extraLarge + 5,
     },
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
         width: 35,
     },
     iconStyles: {
-        color: colors.black
+        color: colors.white
     },
     rowContainerStyle: {
         flex: 1,
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     backgroundObject: {
-        height: 230, 
+        height: 180, 
         backgroundColor: '#8b97b0', 
         width: '100%', 
         borderBottomLeftRadius: 25, 
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     avtarStyles: {
-        height: 130,
+        height: 120,
         width: 110,
         borderRadius: 10,
         paddingVertical: 10,
@@ -118,8 +118,8 @@ const styles = StyleSheet.create({
         fontFamily: 'SF-Pro-Rounded-Bold',
         color: colors.black,
         lineHeight: fontSizes.large,
-        marginTop: 10,
-        marginBottom: 4
+        // marginTop: 10,
+        marginBottom: 4,
     },
     usernameText: {
         fontFamily: 'SF-Pro-Rounded-Regular',
@@ -128,18 +128,35 @@ const styles = StyleSheet.create({
         color: colors.lightBlack
     },
     statusContainer: {
-        height: 40,
+        flexDirection: 'row',
+        height: 50,
         backgroundColor: '#e9f1fe',
-        marginTop: 20,
+        marginTop: 10,
         marginRight: 10,
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
         width: '100%'
     },
-    statusContainerText: {
-        textTransform: 'uppercase',
-        color: colors.black
+    detailsContainer: {
+        width: '30%',
+        height: '80%',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    detailsHeadText: {
+        // marginTop: 3,
+        fontFamily: 'SF-Pro-Rounded-Regular',
+        color: colors.lightBlack,
+        fontSize: fontSizes.small,
+        lineHeight: fontSizes.small,
+    },
+    detailsSubText: {
+        marginTop: 4,
+        fontFamily: 'SF-Pro-Rounded-Bold',
+        color: colors.black,
+        fontSize: fontSizes.medium,
+        lineHeight: fontSizes.medium
     },
     profileButtonsContainer: {
         flexDirection: 'row',
@@ -171,6 +188,7 @@ const styles = StyleSheet.create({
         minHeight: 100,
         borderRadius: 15,
         marginBottom: 20,
+        marginTop: 20,
     },
     cardInnerChipps: {
         margin: 15,
@@ -190,29 +208,96 @@ const styles = StyleSheet.create({
     cardContentText: {
         paddingHorizontal: 15,
         fontSize: fontSizes.medium,
+        fontFamily: 'SF-Pro-Rounded-Regular',
         paddingBottom: 15,
-        color: colors.black
+        color: colors.black,
+        lineHeight: fontSizes.medium + 6,
     },
+    aboutSectionHeaderContainer: {
+        flexDirection: 'column',
+        width: '90%',
+        alignSelf: 'center',
+        marginBottom: 20,
+    },
+    aboutSectionHeaderText: {
+        fontSize: fontSizes.large,
+        color: colors.black,
+        fontFamily: 'SF-Pro-Rounded-Bold',
+        lineHeight: fontSizes.large
+    },
+    aboutSectionSubHeaderText: {
+        fontSize: fontSizes.medium,
+        color: colors.black,
+        fontFamily: 'SF-Pro-Rounded-Regular',
+        lineHeight: fontSizes.medium + 5
+    },
+    individualListCard: {
+        backgroundColor: '#e9f1fe',
+        minHeight: 60,
+        marginBottom: 10,
+        marginTop: 0
+    },
+    individualListContainer: {
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 13,
+    },
+    individualListTextContainer: {
+        paddingHorizontal: 12
+    },
+    individualListHead: {
+        fontSize: fontSizes.medium,
+        fontFamily: 'SF-Pro-Rounded-Bold',
+        color: colors.black,
+        lineHeight: fontSizes.medium,
+        marginBottom: 5,
+    },
+    individualListSubtext: {
+        fontSize: fontSizes.medium,
+        fontFamily: 'SF-Pro-Rounded-Regular',
+        color: colors.lightBlack,
+        lineHeight: fontSizes.medium
+    },
+    individualListIcon: {
+        color: colors.black,
+        marginLeft: 15,
+        width: 30,
+    }
 });
+
+
+const ProfileChipContent = ({header, subHeader}) => {
+    return (
+        <View style={styles.detailsContainer}>
+            <Text numberOfLines={1} ellipsizeMode='tail' style={styles.detailsHeadText}>{header}</Text>
+            <Text numberOfLines={1} ellipsizeMode='tail' style={styles.detailsSubText}>{subHeader}</Text>
+        </View>
+    );
+}
+
+const IndividualList = ({header, subHeader, icon}) => {
+    return (
+            <View style={{...styles.individualListContainer}}>
+                <Icon name={icon} style={styles.individualListIcon} size={30} />
+                <View style={styles.individualListTextContainer}>
+                    <Text numberOfLines={1} ellipsizeMode='tail' style={styles.individualListHead}>{header}</Text>
+                    <Text numberOfLines={1} ellipsizeMode='tail' style={styles.individualListSubtext}>{subHeader}</Text>
+                </View>
+            </View>
+    );
+}
 
 const AccountScreen = ({navigation, route}) => {
     const [profile, setProfile] = useState({
         username: '',
-        about: ''
+        about: '',
+        fullname: ''
     });
-    const [visible, setVisible] = useState(false);
 
     const dispatch = useDispatch();
    
     const image = 'https://images.pexels.com/photos/38537/woodland-road-falling-leaf-natural-38537.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
-    
-    const processLogOut = async () => {
-        await clearCurrentRooms();
-        setVisible(false);
-        await AsyncStorage.clear();
-        dispatch(roomActions.clearRooms());
-        navigation.navigate('LoginScreen');
-    }
 
     const getFullname = () => {
         return [profile.firstname, profile.lastname].join(' ') || profile.username;
@@ -232,7 +317,7 @@ const AccountScreen = ({navigation, route}) => {
     }, [])
 
     return (<>
-            <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
+            <StatusBar barStyle='light-content' backgroundColor={"#8b97b0"} />
             <View style={styles.container}>
                 <View style={styles.headerContainer}>
                     <View style={styles.headerContent}>
@@ -240,22 +325,13 @@ const AccountScreen = ({navigation, route}) => {
                             <TouchableOpacity style={styles.touchControlStyle} onPress={() => navigation.goBack()}>
                                 <Icon name="arrow-left" style={styles.iconStyles} size={fontSizes.large} />
                             </TouchableOpacity>
-                            <Text style={styles.headerTextStyle}>Account</Text>
+                            <Text style={styles.headerTextStyle}>Profile</Text>
                         </View>
                     </View>
                 </View>
 
-                <DialogBox
-                    title={DIALOG_LABELS.areYouSure}
-                    body={DIALOG_LABELS.removeAccount}
-                    visible={visible}
-                    setVisible={setVisible}
-                    action1Text={BUTTONS.signOut}
-                    action2Text={BUTTONS.close}
-                    action1={processLogOut}
-                />
 
-                <ScrollView>
+                <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={styles.backgroundObject} />
 
                     <View style={styles.rowContainerStyle}>
@@ -264,10 +340,12 @@ const AccountScreen = ({navigation, route}) => {
                                 <View style={{flexDirection: "row", alignItems: 'center', width: '90%'}}>
                                     <ProfileAvtar image={image} customStyles={styles.avtarStyles} textStyle={styles.avtarTextStyles} name={getFullname()} />
                                     <View style={styles.profileRightContainer}>
-                                        <Text numberOfLines={2} ellipsizeMode='tail' style={styles.profileNameText}>{getFullname()}</Text>
+                                        <Text numberOfLines={2} ellipsizeMode='tail' style={getFullname().length > 15 ? {...styles.profileNameText, height: 40} : styles.profileNameText}>{getFullname()}</Text>
                                         <Text numberOfLines={1} ellipsizeMode='tail' style={styles.usernameText} >{'@' + profile.username}</Text>
-                                        <View style={styles.statusContainer}>
-                                            <Text style={styles.statusContainerText}>Online</Text>
+                                        <View style={getFullname().length <= 15 ? {...styles.statusContainer, marginTop: 30} : styles.statusContainer}>
+                                            <ProfileChipContent header={'Status'} subHeader={'Online'} />
+                                            <ProfileChipContent header={'Age'} subHeader={'24'} />
+                                            <ProfileChipContent header={'Location'} subHeader={'India'} />
                                         </View>
                                     </View>
                                 </View>
@@ -284,28 +362,37 @@ const AccountScreen = ({navigation, route}) => {
                         </View>
 
                     </View>
+
+                    <View style={styles.aboutSectionHeaderContainer}>
+                        <Text style={styles.aboutSectionHeaderText}>More information about</Text>
+                        <Text style={styles.aboutSectionSubHeaderText}>{getFullname()}</Text>
+                    </View>
+
+                    <View style={{...styles.cardStyle, ...styles.individualListCard}}>
+                        <IndividualList header={'Location'} subHeader={'Margherita, Assam, India'} icon={'location-arrow'}/>
+                    </View>
+
+                    <View style={{...styles.cardStyle, ...styles.individualListCard}}>
+                        <IndividualList header={'Email'} subHeader={'hello@imshawan.dev'} icon={'envelope-o'} />
+                    </View>
+
                     <View style={styles.cardStyle}>
                         <View style={styles.cardInnerChipps}>
                             <Text numberOfLines={1} ellipsizeMode='tail' style={styles.chippsTextStyle}>About me</Text>
                         </View>
-                        <Text style={styles.cardContentText}>{profile.about}{profile.about}{profile.about}{getFullname()}</Text>
+                        <Text style={styles.cardContentText}>
+                            {`Create super-engaging Instagram captions with this AI powered Instagram caption generator. This free AI powered Instagram caption generator will create the perfect caption for your photo and help you get more likes, followers and comments.`}
+                            {getFullname()}
+                        </Text>
                     </View>
 
-                    <View style={{...styles.cardStyle, backgroundColor: '#313a5670'}}>
+                    {/* <View style={{...styles.cardStyle, backgroundColor: '#313a5670'}}>
                         <View style={{...styles.cardInnerChipps, backgroundColor: '#313a56'}}>
                             <Text numberOfLines={1} ellipsizeMode='tail' style={styles.chippsTextStyle}>About me</Text>
                         </View>
                         <Text style={styles.cardContentText}>{profile.about}{profile.about}{profile.about}</Text>
-                    </View>
+                    </View> */}
                     
-
-                        {/* <TouchableOpacity
-                            activeOpacity={0.5}
-                            onPress={() => setVisible(true)}
-                            style={{...styles.buttonStyle}}
-                        >
-                            <Text style={styles.buttonTextStyle}>{BUTTONS.removeAccount}</Text>
-                        </TouchableOpacity> */}
                  
                     
                 </ScrollView>

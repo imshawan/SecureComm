@@ -15,9 +15,11 @@ import AsyncStorage from '@react-native-community/async-storage';
 import PageHeader from '../../components/PageHeaderComponent';
 
 import { log, showAlert } from '../../config';
-import { colors, fontSizes, headerFontSize, ERRORS, PLACEHOLDERS } from '../../common';
+import { colors, fontSizes, headerFontSize, ERRORS, PLACEHOLDERS, LABELS } from '../../common';
 import { showFocusColor, AnimColor, showOriginColor, validateEmail } from '../../utils';
 import { styles } from '../styles';
+
+const { FORGOT_PASSWORD_SCREEN } = LABELS
  
 // import Loader from './Components/Loader';
 
@@ -119,8 +121,8 @@ const ForgotPasswordScreen = ({navigation}) => {
             
             <View>
             
-                <Text style={styles.headTextStyle}>No worries, we got you covered</Text>
-                <Text style={styles.subTextStyle}>Please enter the email associated with your account.</Text>
+                <Text style={styles.headTextStyle}>{FORGOT_PASSWORD_SCREEN.header}</Text>
+                <Text style={styles.subTextStyle}>{FORGOT_PASSWORD_SCREEN.subText}</Text>
                 <KeyboardAvoidingView enabled>
                     <View style={styles.SectionStyle}>
                         <AnimatedTextInput
