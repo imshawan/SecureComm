@@ -59,9 +59,9 @@ const styles = StyleSheet.create({
         color: colors.black
     },
     sectionHeading: {
-        marginVertical: 20,
+        marginVertical: 16,
         flexDirection: 'row',
-        height: 52,
+        height: 46,
         width: '90%',
         alignSelf: 'center',
     },
@@ -78,12 +78,13 @@ const styles = StyleSheet.create({
         color: colors.white,
     },
     sectionHeadingText: {
-        marginLeft: 15
+        marginLeft: 15,
+        alignSelf: 'center'
     },
     sectionHeadingTextMain: {
-        fontSize: fontSizes.large,
+        fontSize: fontSizes.large - 2,
         fontFamily: 'SF-Pro-Rounded-Bold',
-        lineHeight: fontSizes.large + 5,
+        lineHeight: fontSizes.large,
         color: colors.black
     },
     sectionHeadingSubtext: {
@@ -95,15 +96,15 @@ const styles = StyleSheet.create({
     },
     cardStyle: {
         flexDirection: 'column',
-        backgroundColor: '#e9f1fe',
+        backgroundColor: colors.lightestBlue,
         width: '90%',
         alignSelf: 'center',
         borderRadius: 15,
-        marginBottom: 5,
+        // marginBottom: 5,
     },
     individualList: {
         flexDirection: 'row',
-        height: 70,
+        height: 60,
         borderBottomWidth: 1,
         borderBottomColor: colors.grey,
         alignItems: 'center'
@@ -123,7 +124,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     individualListTextContainer: {
-        width: '85%'
+        width: '85%',
+        alignSelf: 'center'
     },
     individualListHead: {
         fontSize: fontSizes.regular,
@@ -165,7 +167,7 @@ const IndividualList = ({border=1, header, subHeader, onClicked}) => {
                     <Text numberOfLines={1} ellipsizeMode='tail' style={styles.individualListHead}>{header}</Text>
                     <Text numberOfLines={1} ellipsizeMode='tail' style={styles.individualListSubtext}>{subHeader}</Text>
                 </View>
-                <Icon name="chevron-right" style={styles.individualListIcon} size={fontSizes.large} /> 
+                <Icon name="chevron-right" style={styles.individualListIcon} size={fontSizes.regular} /> 
             </View>
         </TouchableOpacity>
     );
@@ -226,7 +228,7 @@ const SettingsScreen = ({navigation, route}) => {
                                         <Text numberOfLines={1} ellipsizeMode='tail' style={styles.individualListHead}>{'Shawan Mandal'}</Text>
                                         <Text numberOfLines={1} ellipsizeMode='tail' style={styles.individualListSubtext}>{'Backend developer at DT'}</Text>
                                     </View>
-                                    <Icon name="chevron-right" style={styles.individualListIcon} size={fontSizes.large} />
+                                    <Icon name="chevron-right" style={styles.individualListIcon} size={fontSizes.regular} />
                                 </View>
                             </TouchableOpacity>
                             <IndividualList header={'Email'} subHeader={'hello@imshawan.dev'} />

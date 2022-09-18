@@ -39,14 +39,17 @@ const styles = StyleSheet.create({
     },
     controlStyle: {
         flexDirection: 'row',
-        marginTop: 2
+        marginTop: 2,
+        marginRight: 6
     },
     touchControlStyle: {
-        marginLeft: 5,
+        marginLeft: 4,
         height: 35,
         width: 35,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderRadius: 35,
+        backgroundColor: '#e9f1fe'
     },
     iconStyles: {
         color: colors.black

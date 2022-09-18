@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     backgroundObject: {
-        height: 180, 
+        height: 160, 
         backgroundColor: '#8b97b0', 
         width: '100%', 
         borderBottomLeftRadius: 25, 
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         alignContent: 'center',
-        marginTop: -40
+        marginTop: -30
     },
     profileContainer: {
         flexDirection: 'column',
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     statusContainer: {
         flexDirection: 'row',
         height: 50,
-        backgroundColor: '#e9f1fe',
+        backgroundColor: colors.lightestBlue,
         marginTop: 10,
         marginRight: 10,
         borderRadius: 10,
@@ -182,36 +182,38 @@ const styles = StyleSheet.create({
     },
     cardStyle: {
         flexDirection: 'column',
-        backgroundColor: '#00543770',
         width: '90%',
         alignSelf: 'center',
-        minHeight: 100,
         borderRadius: 15,
-        marginBottom: 20,
-        marginTop: 20,
+        backgroundColor: colors.lightestBlue,
+        minHeight: 60,
+        marginBottom: 10,
+        marginTop: 0,
     },
     cardInnerChipps: {
-        margin: 15,
-        backgroundColor: '#005437',
+        marginTop: 5,
+        // backgroundColor: colors.white,
         height: 32,
-        borderRadius: 5,
-        width: 95
+        // borderRadius: 5,
+        // width: 95,
     },
     chippsTextStyle: {
-        paddingHorizontal: 12,
-        paddingVertical: 9,
-        fontSize: fontSizes.regular,
+        paddingHorizontal: 15,
+        paddingTop: 9,
+        fontSize: fontSizes.medium,
         fontFamily: 'SF-Pro-Rounded-Bold',
-        color: colors.white,
-        lineHeight: fontSizes.regular,
+        color: colors.black,
+        lineHeight: fontSizes.medium,
+        // backgroundColor: 'red'
     },
     cardContentText: {
         paddingHorizontal: 15,
         fontSize: fontSizes.medium,
         fontFamily: 'SF-Pro-Rounded-Regular',
         paddingBottom: 15,
-        color: colors.black,
-        lineHeight: fontSizes.medium + 6,
+        color: colors.lightBlack,
+        lineHeight: fontSizes.medium + 4,
+        marginTop: -4,
     },
     aboutSectionHeaderContainer: {
         flexDirection: 'column',
@@ -231,11 +233,15 @@ const styles = StyleSheet.create({
         fontFamily: 'SF-Pro-Rounded-Regular',
         lineHeight: fontSizes.medium + 5
     },
-    individualListCard: {
-        backgroundColor: '#e9f1fe',
-        minHeight: 60,
+    individualListStyle: {
+        flexDirection: 'column',
+        width: '90%',
+        alignSelf: 'center',
+        borderRadius: 10,
+        backgroundColor: colors.lightestBlue,
+        minHeight: 45,
         marginBottom: 10,
-        marginTop: 0
+        marginTop: 0,
     },
     individualListContainer: {
         width: '100%',
@@ -244,7 +250,8 @@ const styles = StyleSheet.create({
         marginTop: 13,
     },
     individualListTextContainer: {
-        paddingHorizontal: 12
+        paddingRight: 2,
+        width: '86%'
     },
     individualListHead: {
         fontSize: fontSizes.medium,
@@ -255,7 +262,7 @@ const styles = StyleSheet.create({
     },
     individualListSubtext: {
         fontSize: fontSizes.medium,
-        fontFamily: 'SF-Pro-Rounded-Regular',
+        fontFamily: 'SF-Pro-Rounded-Bold',
         color: colors.lightBlack,
         lineHeight: fontSizes.medium
     },
@@ -278,13 +285,15 @@ const ProfileChipContent = ({header, subHeader}) => {
 
 const IndividualList = ({header, subHeader, icon}) => {
     return (
+        <TouchableOpacity activeOpacity={0.5} style={styles.individualListStyle}>
             <View style={{...styles.individualListContainer}}>
-                <Icon name={icon} style={styles.individualListIcon} size={30} />
+                <Icon name={icon} style={styles.individualListIcon} size={20} />
                 <View style={styles.individualListTextContainer}>
-                    <Text numberOfLines={1} ellipsizeMode='tail' style={styles.individualListHead}>{header}</Text>
+                    {/* <Text numberOfLines={1} ellipsizeMode='tail' style={styles.individualListHead}>{header}</Text> */}
                     <Text numberOfLines={1} ellipsizeMode='tail' style={styles.individualListSubtext}>{subHeader}</Text>
                 </View>
             </View>
+        </TouchableOpacity>
     );
 }
 
@@ -368,20 +377,19 @@ const AccountScreen = ({navigation, route}) => {
                         <Text style={styles.aboutSectionSubHeaderText}>{getFullname()}</Text>
                     </View>
 
-                    <View style={{...styles.cardStyle, ...styles.individualListCard}}>
-                        <IndividualList header={'Location'} subHeader={'Margherita, Assam, India'} icon={'location-arrow'}/>
-                    </View>
+                    
 
-                    <View style={{...styles.cardStyle, ...styles.individualListCard}}>
-                        <IndividualList header={'Email'} subHeader={'hello@imshawan.dev'} icon={'envelope-o'} />
-                    </View>
+                    <IndividualList subHeader={'Backend developer at DT'} icon={'briefcase'}/>
 
+                    <IndividualList subHeader={'Margherita, Assam, India'} icon={'location-arrow'}/>
+
+                    <IndividualList subHeader={'hello@imshawan.dev'} icon={'envelope'} />
                     <View style={styles.cardStyle}>
                         <View style={styles.cardInnerChipps}>
-                            <Text numberOfLines={1} ellipsizeMode='tail' style={styles.chippsTextStyle}>About me</Text>
+                            <Text numberOfLines={1} ellipsizeMode='tail' style={styles.chippsTextStyle}>Bio</Text>
                         </View>
                         <Text style={styles.cardContentText}>
-                            {`Create super-engaging Instagram captions with this AI powered Instagram caption generator. This free AI powered Instagram caption generator will create the perfect caption for your photo and help you get more likes, followers and comments.`}
+                            {`Create super-engaging Instagram captions with this AI powered Instagram caption generator.`}
                             {getFullname()}
                         </Text>
                     </View>
