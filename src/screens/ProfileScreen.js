@@ -213,13 +213,14 @@ const styles = StyleSheet.create({
         paddingBottom: 15,
         color: colors.lightBlack,
         lineHeight: fontSizes.medium + 4,
-        marginTop: -4,
+        // marginTop: -4,
+        paddingTop: 15
     },
     aboutSectionHeaderContainer: {
         flexDirection: 'column',
         width: '90%',
         alignSelf: 'center',
-        marginBottom: 20,
+        marginBottom: 10,
     },
     aboutSectionHeaderText: {
         fontSize: fontSizes.large,
@@ -262,7 +263,7 @@ const styles = StyleSheet.create({
     },
     individualListSubtext: {
         fontSize: fontSizes.medium,
-        fontFamily: 'SF-Pro-Rounded-Bold',
+        fontFamily: 'SF-Pro-Rounded-Regular',
         color: colors.lightBlack,
         lineHeight: fontSizes.medium
     },
@@ -377,22 +378,21 @@ const AccountScreen = ({navigation, route}) => {
                         <Text style={styles.aboutSectionSubHeaderText}>{getFullname()}</Text>
                     </View>
 
-                    
+                    <View style={styles.cardStyle}>
+                        {/* <View style={styles.cardInnerChipps}>
+                            <Text numberOfLines={1} ellipsizeMode='tail' style={styles.chippsTextStyle}>Bio</Text>
+                        </View> */}
+                        <Text style={styles.cardContentText}>
+                            {`Create super-engaging Instagram captions with this AI powered Instagram caption generator.`}
+                            {getFullname()}
+                        </Text>
+                    </View>
 
                     <IndividualList subHeader={'Backend developer at DT'} icon={'briefcase'}/>
 
                     <IndividualList subHeader={'Margherita, Assam, India'} icon={'location-arrow'}/>
 
                     <IndividualList subHeader={'hello@imshawan.dev'} icon={'envelope'} />
-                    <View style={styles.cardStyle}>
-                        <View style={styles.cardInnerChipps}>
-                            <Text numberOfLines={1} ellipsizeMode='tail' style={styles.chippsTextStyle}>Bio</Text>
-                        </View>
-                        <Text style={styles.cardContentText}>
-                            {`Create super-engaging Instagram captions with this AI powered Instagram caption generator.`}
-                            {getFullname()}
-                        </Text>
-                    </View>
 
                     {/* <View style={{...styles.cardStyle, backgroundColor: '#313a5670'}}>
                         <View style={{...styles.cardInnerChipps, backgroundColor: '#313a56'}}>
