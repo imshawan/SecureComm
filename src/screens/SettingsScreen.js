@@ -232,7 +232,7 @@ const SettingsScreen = ({navigation, route}) => {
                                 </View>
                             </TouchableOpacity>
                             <IndividualList header={'Email'} subHeader={'hello@imshawan.dev'} />
-                            <IndividualList header={'Location'} subHeader={'Margherita, Assam, India'} />
+                            <IndividualList onClicked={() => navigation.navigate('LocationScreen')} header={'Location'} subHeader={'Margherita, Assam, India'} />
                             <IndividualList border={0} header={'Phone'} subHeader={'+91 7002508690'} />
                         </View>
                     </View>

@@ -15,6 +15,7 @@
  import NewChatScreen from './screens/chats/NewChatScreen';
  import ProfileScreen from './screens/ProfileScreen';
  import SettingsScreen from './screens/SettingsScreen';
+ import LocationScreen from './screens/settings/Location';
  
  
  const Stack = createStackNavigator();
@@ -58,6 +59,8 @@
           <Stack.Screen name="NewChatScreen" component={NewChatScreen} options={{headerShown: false}}/>
           <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{headerShown: false}}/>
           <Stack.Screen name="SettingsScreen" component={SettingsScreen} options={{headerShown: false}}/>
+
+          <Stack.Screen name="LocationScreen" component={LocationScreen} options={{headerShown: false}}/>
 
            </Stack.Navigator>
        </NavigationContainer>

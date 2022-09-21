@@ -17,5 +17,6 @@ export const colors = {
     placeholderColor: '#666666',
     blue: 'blue',
     subText: '#666666',
+    inputBackground: '#eceef5'
   };
   

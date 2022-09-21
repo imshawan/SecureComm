@@ -28,8 +28,8 @@ export const DIALOG_LABELS = {
 }
 
 export const BUTTONS = {
-    close: 'Close',
-    signOut: 'Sign out',
+    close: 'Cancel',
+    signOut: 'Remove',
     removeAccount: 'Remove account'
 }
 
