@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from "react-native";
-import { colors, fontSizes } from "../../common";
+import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { colors, fontSizes, fontFamily } from "../../common";
 import { log } from "../../config";
 
 const styles = StyleSheet.create({
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     selectItemText: {
         color: colors.black,
         fontSize: fontSizes.regular,
-        fontFamily: 'SF-Pro-Rounded-Regular',
+        fontFamily: fontFamily.regular,
     },
 });
 

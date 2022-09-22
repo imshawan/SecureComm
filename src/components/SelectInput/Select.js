@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dialog } from '@rneui/themed';
 
 import IndividualListItem from "./IndividualListItem";
-import { colors, fontSizes } from "../../common";
+import { colors, fontSizes, fontFamily } from "../../common";
 import { log } from "../../config";
 
 
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     value: {
         color: colors.black,
         fontSize: fontSizes.medium,
-        fontFamily: 'SF-Pro-Rounded-Bold',
+        fontFamily: fontFamily.bold,
         lineHeight: fontSizes.medium,
     },
     dropdownIcon: {
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     titleTextStyle: {
         color: colors.black,
         fontSize: fontSizes.extraLarge,
-        fontFamily: 'SF-Pro-Rounded-Bold',
+        fontFamily: fontFamily.bold,
         lineHeight: fontSizes.extraLarge + 6,
         marginBottom: 20
     },

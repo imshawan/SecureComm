@@ -10,3 +10,8 @@ export const fontSizes = {
 
 export const appHeaderSize = 28;
 export const headerFontSize = 40;
+
+export const fontFamily = {
+  bold: 'SF-Pro-Rounded-Bold',
+  regular: 'SF-Pro-Rounded-Regular'
+}

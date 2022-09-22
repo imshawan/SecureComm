@@ -66,6 +66,16 @@ const FORGOT_PASSWORD_SCREEN = {
     subText: 'Please enter the email associated with your account and we\'ll send an email with the instructions to reset your password'
 };
 
+const LOCATION_EDIT_SCREEN = {
+    title: 'Location',
+    header: 'Select your country',
+    subHeader: 'and region',
+
+    country: 'Country',
+    region: 'Region',
+}
+
 export const LABELS = {
-    FORGOT_PASSWORD_SCREEN
+    FORGOT_PASSWORD_SCREEN,
+    LOCATION_EDIT_SCREEN,
 };

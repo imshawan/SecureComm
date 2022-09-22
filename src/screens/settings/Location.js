@@ -3,10 +3,11 @@ import { View, StyleSheet, StatusBar, TouchableOpacity, Text } from 'react-nativ
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Select from '../../components/SelectInput/Select';
-import { colors, IMAGES, HEADER_HEIGHT, fontSizes, appHeaderSize } from '../../common';
+import { colors, IMAGES, HEADER_HEIGHT, fontSizes, appHeaderSize, LABELS, fontFamily } from '../../common';
 import { DATA } from '../../data';
 import { log } from '../../config';
 
+const { LOCATION_EDIT_SCREEN } = LABELS;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.white,
@@ -35,7 +36,7 @@ headerContainer: {
       flexDirection: 'row',
       fontSize: fontSizes.extraLarge, 
       color: colors.black,
-      fontFamily: 'SF-Pro-Rounded-Bold',
+      fontFamily: fontFamily.bold,
       lineHeight: fontSizes.extraLarge + 5,
   },
   headerContent: {
@@ -59,13 +60,13 @@ headerContainer: {
   sectionHeading: {
     color: colors.black,
     fontSize: appHeaderSize,
-    fontFamily: 'SF-Pro-Rounded-Bold',
+    fontFamily: fontFamily.bold,
     lineHeight: appHeaderSize + 5,
   },
   sectionSubHeading: {
     color: colors.black,
     fontSize: fontSizes.regular,
-    fontFamily: 'SF-Pro-Rounded-Regular',
+    fontFamily: fontFamily.regular,
     lineHeight: fontSizes.regular + 5
   },
   formContainer: {
@@ -76,12 +77,12 @@ headerContainer: {
   formLabel: {
     fontSize: fontSizes.regular, 
     color: colors.black,
-    fontFamily: 'SF-Pro-Rounded-Bold',
+    fontFamily: fontFamily.bold,
     lineHeight: fontSizes.regular + 5,
     marginVertical: 10
   },
   selectTextValue: {
-    fontFamily: 'SF-Pro-Rounded-Regular',
+    fontFamily: fontFamily.regular,
   },
 });
  
@@ -105,21 +106,21 @@ const LocationScreen = ({navigation}) => {
                       <TouchableOpacity style={styles.touchControlStyle} onPress={() => navigation.goBack()}>
                           <Icon name="arrow-left" style={styles.iconStyles} size={fontSizes.large} />
                       </TouchableOpacity>
-                      <Text style={styles.headerTextStyle}>Location</Text>
+                      <Text style={styles.headerTextStyle}>{LOCATION_EDIT_SCREEN.title}</Text>
                   </View>
               </View>
           </View>
           
           <View style={styles.sectionHeadingContainer}>
-            <Text style={styles.sectionHeading}>Select your country</Text>
-            <Text style={styles.sectionSubHeading}>and region</Text>
+            <Text style={styles.sectionHeading}>{LOCATION_EDIT_SCREEN.header}</Text>
+            <Text style={styles.sectionSubHeading}>{LOCATION_EDIT_SCREEN.subHeader}</Text>
           </View>
 
           <View style={styles.formContainer}>
-            <Text style={styles.formLabel}>Country</Text>
+            <Text style={styles.formLabel}>{LOCATION_EDIT_SCREEN.country}</Text>
             <Select data={DATA.countryList} textStyle={styles.selectTextValue} onChange={(val) => handleOnChange('country', val)} currentValue={state.country} />
 
-            <Text style={styles.formLabel}>Region</Text>
+            <Text style={styles.formLabel}>{LOCATION_EDIT_SCREEN.region}</Text>
             <Select textStyle={styles.selectTextValue} onChange={(val) => handleOnChange('region', val)} currentValue={state.region} />
 
           </View>
