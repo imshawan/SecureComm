@@ -2,9 +2,10 @@ import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, StatusBar, TouchableOpacity, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import Select from '../../components/Select';
-
+import Select from '../../components/SelectInput/Select';
 import { colors, IMAGES, HEADER_HEIGHT, fontSizes, appHeaderSize } from '../../common';
+import { DATA } from '../../data';
+import { log } from '../../config';
 
 const styles = StyleSheet.create({
   container: {
@@ -85,7 +86,14 @@ headerContainer: {
 });
  
 const LocationScreen = ({navigation}) => {
-  const [country, setCountry] = useState("");
+  const [state, setState] = useState({
+    country: {name: 'India'},
+    region: {name: 'Assam'}
+  });
+
+  const handleOnChange = (field, value) => {
+    setState(prevState => ({...prevState, [field]: value}));
+  }
  
   return (
     <>
@@ -109,10 +117,10 @@ const LocationScreen = ({navigation}) => {
 
           <View style={styles.formContainer}>
             <Text style={styles.formLabel}>Country</Text>
-            <Select textStyle={styles.selectTextValue} currentValue={'India'} />
+            <Select data={DATA.countryList} textStyle={styles.selectTextValue} onChange={(val) => handleOnChange('country', val)} currentValue={state.country} />
 
-            <Text style={styles.formLabel}>State</Text>
-            <Select textStyle={styles.selectTextValue} currentValue={'Assam'} />
+            <Text style={styles.formLabel}>Region</Text>
+            <Select textStyle={styles.selectTextValue} onChange={(val) => handleOnChange('region', val)} currentValue={state.region} />
 
           </View>
 
