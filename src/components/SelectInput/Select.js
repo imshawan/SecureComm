@@ -44,7 +44,8 @@ const styles = StyleSheet.create({
         fontSize: fontSizes.extraLarge,
         fontFamily: fontFamily.bold,
         lineHeight: fontSizes.extraLarge + 6,
-        marginBottom: 20
+        marginBottom: 20,
+        alignSelf: 'center'
     },
     listContainer: {
 
@@ -83,7 +84,7 @@ const FullScreenDialog = ({title, visible, setVisible, data=[], setSelected}) =>
     );
 }
 
-const Select = ({data, currentValue, onChange, textStyle={}}) => {
+const Select = ({data, currentValue, onChange, textStyle={}, listTitle}) => {
     const [visible, setVisible] = useState(false);
     const [selected, setSelected] = useState(currentValue);
 
@@ -91,15 +92,18 @@ const Select = ({data, currentValue, onChange, textStyle={}}) => {
         onChange(selected);
     }, [selected])
 
+    useEffect(() => {
+        setSelected(currentValue)
+    }, [currentValue])
+
     return (
         <>
             <FullScreenDialog 
-                title={'Country list'} 
+                title={listTitle} 
                 visible={visible} 
                 setVisible={setVisible} 
                 data={data}
                 setSelected={setSelected}
-                
             />
             <TouchableOpacity style={styles.touchable} onPress={() => setVisible(true)}>
                 <View style={styles.valueContainer}>

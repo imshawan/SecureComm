@@ -68,11 +68,17 @@ const FORGOT_PASSWORD_SCREEN = {
 
 const LOCATION_EDIT_SCREEN = {
     title: 'Location',
-    header: 'Select your country',
-    subHeader: 'and region',
+    header: 'Update your current',
+    subHeader: 'country and region',
 
     country: 'Country',
     region: 'Region',
+    city: 'City',
+
+    countryList: 'Select Country',
+    regionList: 'Select Region',
+
+    enterCity: 'Your current city name (optional)'
 }
 
 export const LABELS = {

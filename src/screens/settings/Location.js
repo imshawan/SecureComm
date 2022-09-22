@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, StatusBar, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, StatusBar, TouchableOpacity, Text, TextInput, Keyboard } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Select from '../../components/SelectInput/Select';
-import { colors, IMAGES, HEADER_HEIGHT, fontSizes, appHeaderSize, LABELS, fontFamily } from '../../common';
+import { colors, HEADER_HEIGHT, fontSizes, appHeaderSize, LABELS, fontFamily } from '../../common';
+import { styles as defaultStyles } from '../styles';
 import { DATA } from '../../data';
 import { log } from '../../config';
 
@@ -55,7 +56,7 @@ headerContainer: {
   sectionHeadingContainer: {
     width: '90%',
     alignSelf: 'center',
-    marginTop: 20
+    marginTop: 12
   },
   sectionHeading: {
     color: colors.black,
@@ -67,7 +68,8 @@ headerContainer: {
     color: colors.black,
     fontSize: fontSizes.regular,
     fontFamily: fontFamily.regular,
-    lineHeight: fontSizes.regular + 5
+    lineHeight: fontSizes.regular + 5,
+    marginTop: 4
   },
   formContainer: {
     width: '90%',
@@ -79,13 +81,35 @@ headerContainer: {
     color: colors.black,
     fontFamily: fontFamily.bold,
     lineHeight: fontSizes.regular + 5,
-    marginVertical: 10
+    marginTop: 12,
+    marginBottom: 5
   },
   selectTextValue: {
     fontFamily: fontFamily.regular,
   },
+  sectionStyle: {
+    position: 'relative',
+    flexDirection: 'row',
+    height: 40,
+  },
+  inputStyle: {
+    flex: 1,
+    color: colors.placeholderColor,
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderRadius: 10,
+    height: 50,
+    fontSize: fontSizes.medium,
+    backgroundColor: colors.inputBackground,
+  },
+  buttonStyle: {
+    marginLeft: 0,
+    marginRight: 0,
+    marginTop: 40
+  },
 });
  
+
 const LocationScreen = ({navigation}) => {
   const [state, setState] = useState({
     country: {name: 'India'},
@@ -95,6 +119,17 @@ const LocationScreen = ({navigation}) => {
   const handleOnChange = (field, value) => {
     setState(prevState => ({...prevState, [field]: value}));
   }
+
+  const handleSubmitPress = () => {
+    Keyboard.dismiss();
+    log(state);
+  }
+
+  useEffect(() => {
+    if (state.country.states && state.country.states.length) {
+      setState(prevState => ({...prevState, region: state.country.states[0]}));
+    }
+  }, [state.country])
  
   return (
     <>
@@ -118,10 +153,41 @@ const LocationScreen = ({navigation}) => {
 
           <View style={styles.formContainer}>
             <Text style={styles.formLabel}>{LOCATION_EDIT_SCREEN.country}</Text>
-            <Select data={DATA.countryList} textStyle={styles.selectTextValue} onChange={(val) => handleOnChange('country', val)} currentValue={state.country} />
+
+            <Select data={DATA.countryList} 
+              textStyle={styles.selectTextValue} 
+              listTitle={LOCATION_EDIT_SCREEN.countryList}
+              onChange={(val) => handleOnChange('country', val)} 
+              currentValue={state.country} />
 
             <Text style={styles.formLabel}>{LOCATION_EDIT_SCREEN.region}</Text>
-            <Select textStyle={styles.selectTextValue} onChange={(val) => handleOnChange('region', val)} currentValue={state.region} />
+            <Select data={state.country.states || []} 
+              textStyle={styles.selectTextValue}
+              listTitle={LOCATION_EDIT_SCREEN.regionList} 
+              onChange={(val) => handleOnChange('region', val)} 
+              currentValue={state.region} />
+
+
+            <Text style={styles.formLabel}>{LOCATION_EDIT_SCREEN.city}</Text>
+            <View style={styles.sectionStyle}>
+              <TextInput
+                style={styles.inputStyle}
+                onChangeText={(Usercity) => handleOnChange('city', Usercity)}
+                placeholder={LOCATION_EDIT_SCREEN.enterCity}
+                placeholderTextColor={colors.placeholderColor}
+                keyboardType="default"
+                blurOnSubmit={false}
+                underlineColorAndroid="#f000"
+                returnKeyType="next"
+                />
+            </View>
+
+            <TouchableOpacity
+              style={{...defaultStyles.buttonStyle, ...styles.buttonStyle}}
+              activeOpacity={0.5}
+              onPress={handleSubmitPress}>
+                <Text style={defaultStyles.buttonTextStyle}>UPDATE</Text>
+            </TouchableOpacity>
 
           </View>
 
