@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         marginRight: 6
     },
     touchControlStyle: {
-        marginLeft: 4,
+        marginLeft: 8,
         height: 35,
         width: 35,
         justifyContent: 'center',
