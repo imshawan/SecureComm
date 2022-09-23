@@ -73,9 +73,9 @@ const FORGOT_PASSWORD_SCREEN = {
 };
 
 const LOCATION_EDIT_SCREEN = {
-    title: 'Location',
-    header: 'Update your current',
-    subHeader: 'country and region',
+    title: 'Country and region',
+    header: 'Tell us where are you from',
+    subHeader: 'this helps people to know you better',
 
     country: 'Country',
     region: 'Region',

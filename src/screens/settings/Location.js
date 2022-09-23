@@ -60,16 +60,16 @@ headerContainer: {
   },
   sectionHeading: {
     color: colors.black,
-    fontSize: appHeaderSize,
+    fontSize: fontSizes.extraLarge,
     fontFamily: fontFamily.bold,
-    lineHeight: appHeaderSize + 5,
+    lineHeight: fontSizes.extraLarge + 5,
   },
   sectionSubHeading: {
     color: colors.black,
-    fontSize: fontSizes.regular,
+    fontSize: fontSizes.medium,
     fontFamily: fontFamily.regular,
-    lineHeight: fontSizes.regular + 5,
-    marginTop: 4
+    lineHeight: fontSizes.medium + 5,
+    marginTop: 2
   },
   formContainer: {
     width: '90%',
@@ -186,7 +186,7 @@ const LocationScreen = ({navigation}) => {
               style={{...defaultStyles.buttonStyle, ...styles.buttonStyle}}
               activeOpacity={0.5}
               onPress={handleSubmitPress}>
-                <Text style={defaultStyles.buttonTextStyle}>UPDATE</Text>
+                <Text style={defaultStyles.buttonTextStyle}>SAVE</Text>
             </TouchableOpacity>
 
           </View>

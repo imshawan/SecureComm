@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
         fontSize: fontSizes.medium,
         fontFamily: fontFamily.bold,
         lineHeight: fontSizes.medium,
+        alignSelf: 'center',
     },
     dropdownIcon: {
         color: colors.black,
