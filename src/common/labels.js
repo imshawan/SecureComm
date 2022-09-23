@@ -61,6 +61,12 @@ export const SETTINGS = {
     }
 }
 
+const HOME_SCREEN = {
+    noConversations: 'No Conversations',
+    newConversationText: 'You haven\'t made any conversations yet, \n start a new conversation.',
+
+}
+
 const FORGOT_PASSWORD_SCREEN = {
     header: 'No worries, we got you covered',
     subText: 'Please enter the email associated with your account and we\'ll send an email with the instructions to reset your password'
@@ -84,4 +90,5 @@ const LOCATION_EDIT_SCREEN = {
 export const LABELS = {
     FORGOT_PASSWORD_SCREEN,
     LOCATION_EDIT_SCREEN,
+    HOME_SCREEN,
 };

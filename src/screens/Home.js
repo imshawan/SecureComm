@@ -3,14 +3,16 @@ import { View, StyleSheet, ScrollView, StatusBar, BackHandler, Alert } from "rea
 import { SpeedDial } from '@rneui/themed';
 import { io } from 'socket.io-client';
 import { useSelector, useDispatch } from 'react-redux';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { roomActions } from '../store/roomListStore';
 import { currentUserActions } from '../store/userStore';
 
 import HeaderComponent from "../components/HeaderComponent";
+import EmptyComponent from '../components/EmptyComponent';
 import { List } from "../components/chat";
 
 import { log } from '../config';
-import { colors, dummyJSON } from '../common';
+import { colors, LABELS } from '../common';
 import { APP_REMOTE_HOST } from '../common';
 
 import { getLoggedInUser } from '../utils';
@@ -20,7 +22,10 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: colors.white,
         flex: 1
-    }
+    },
+    iconStyles: {
+        color: colors.lightestGrey
+    },
 })
 
 const Home = ({navigation}) => {
@@ -88,7 +93,7 @@ const Home = ({navigation}) => {
 
             <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
             <HeaderComponent />
-            <ScrollView>
+            { roomList.length ? (<ScrollView>
                 {roomList.map((item) => { 
                     let {memberDetails} = item;
                     if (typeof memberDetails == 'string') {
@@ -102,7 +107,11 @@ const Home = ({navigation}) => {
                         <List name={name} callback={() => userCardOnClick({currentRoom: item, chatUser})} key={item._id} message={`@${chatUser.username}`} />
                     );
                 })}
-            </ScrollView>
+            </ScrollView>) : <EmptyComponent 
+                                header={LABELS.HOME_SCREEN.noConversations} 
+                                subHeader={LABELS.HOME_SCREEN.newConversationText} 
+                                IconComponent={() => <Icon name={'commenting'} style={styles.iconStyles} size={90} />}
+                                /> }
 
             <SpeedDial
                 onOpen={() => navigation.navigate('NewChatScreen')}
