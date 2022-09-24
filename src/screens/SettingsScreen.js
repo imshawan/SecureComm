@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, StatusBar, TouchableOpacity, Image, ScrollView, BackHandler } from "react-native";
+import { View, Text, StyleSheet, StatusBar, TouchableOpacity, ScrollView } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector, useDispatch } from 'react-redux';
 import AsyncStorage from "@react-native-community/async-storage";
-import { View as AnimatableView } from 'react-native-animatable';
 
 import { clearCurrentRooms } from "../database";
 import { roomActions } from '../store/roomListStore';
 import ProfileAvtar from "../components/ProfileAvtar";
 import DialogBox from "../components/DialogBox";
-import { colors, HEADER_HEIGHT, fontSizes, DIALOG_LABELS, BUTTONS, SETTINGS, APP_NAME, LABELS } from '../common';
+import { colors, HEADER_HEIGHT, fontSizes, DIALOG_LABELS, BUTTONS, SETTINGS, APP_NAME, LABELS, fontFamily } from '../common';
 import { isAuthenticated } from "../utils";
 import { log } from "../config";
 
@@ -42,7 +41,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         fontSize: fontSizes.extraLarge, 
         color: colors.black,
-        fontFamily: 'SF-Pro-Rounded-Bold',
+        fontFamily: fontFamily.bold,
         lineHeight: fontSizes.extraLarge + 5,
     },
     headerContent: {
@@ -82,14 +81,14 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     sectionHeadingTextMain: {
-        fontSize: fontSizes.large - 2,
-        fontFamily: 'SF-Pro-Rounded-Bold',
+        fontSize: fontSizes.large - 3,
+        fontFamily: fontFamily.bold,
         lineHeight: fontSizes.large,
         color: colors.black
     },
     sectionHeadingSubtext: {
         fontSize: fontSizes.medium,
-        fontFamily: 'SF-Pro-Rounded-Regular',
+        fontFamily: fontFamily.regular,
         lineHeight: fontSizes.medium,
         color: colors.lightBlack,
         marginTop: 6
@@ -104,7 +103,7 @@ const styles = StyleSheet.create({
     },
     individualList: {
         flexDirection: 'row',
-        height: 60,
+        height: 55,
         borderBottomWidth: 1,
         borderBottomColor: colors.grey,
         alignItems: 'center'
@@ -128,15 +127,15 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     individualListHead: {
-        fontSize: fontSizes.regular,
-        fontFamily: 'SF-Pro-Rounded-Bold',
+        fontSize: fontSizes.regular - 1,
+        fontFamily: fontFamily.bold,
         color: colors.black,
-        lineHeight: fontSizes.regular,
+        lineHeight: fontSizes.regular - 1,
         marginBottom: 5,
     },
     individualListSubtext: {
         fontSize: fontSizes.medium,
-        fontFamily: 'SF-Pro-Rounded-Regular',
+        fontFamily: fontFamily.regular,
         color: colors.lightBlack,
         lineHeight: fontSizes.medium
     },
