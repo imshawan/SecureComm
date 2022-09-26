@@ -87,8 +87,24 @@ const LOCATION_EDIT_SCREEN = {
     enterCity: 'Your current city name (optional)'
 }
 
+const BASIC_PROFILE_EDIT = {
+    title: 'Basic info and profile',
+
+    firstname: 'Firstname',
+    firstnamePlaceholder: 'Enter your firstname',
+    lastname: 'Lastname',
+    lastnamePlaceholder: 'Enter your lastname',
+    about: 'About me',
+    aboutPlaceholder: 'Write something about yourself',
+    work: 'Work information',
+    workPlaceholder: 'Tell us what\'s your profession',
+
+    changePicture: 'Change profile picture',
+}
+
 export const LABELS = {
     FORGOT_PASSWORD_SCREEN,
     LOCATION_EDIT_SCREEN,
+    BASIC_PROFILE_EDIT,
     HOME_SCREEN,
 };

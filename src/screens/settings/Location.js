@@ -3,7 +3,7 @@ import { View, StyleSheet, StatusBar, TouchableOpacity, Text, TextInput, Keyboar
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Select from '../../components/SelectInput/Select';
-import { colors, HEADER_HEIGHT, fontSizes, appHeaderSize, LABELS, fontFamily } from '../../common';
+import { colors, HEADER_HEIGHT, fontSizes, LABELS, fontFamily } from '../../common';
 import { styles as defaultStyles } from '../styles';
 import { DATA } from '../../data';
 import { log } from '../../config';

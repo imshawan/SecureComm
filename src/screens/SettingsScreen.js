@@ -220,7 +220,7 @@ const SettingsScreen = ({navigation, route}) => {
                     <View>
                         <SectionHeading header={SETTINGS.profile.header} subHeader={SETTINGS.profile.subHeader} icon={'user-o'} />
                         <View style={styles.cardStyle}>
-                            <TouchableOpacity activeOpacity={0.3} style={styles.individualList}>
+                            <TouchableOpacity onPress={() => navigation.navigate('BasicProfileEdit')} activeOpacity={0.3} style={styles.individualList}>
                                 <ProfileAvtar customStyles={styles.individualListAvtar}/>
                                 <View style={styles.individualListContainer}>
                                     <View style={styles.individualListTextContainer}>
