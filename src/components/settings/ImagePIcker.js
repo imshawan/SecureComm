@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dialog } from '@rneui/themed';
+import ImagePicker from 'react-native-image-crop-picker';
 
 import { colors, HEADER_HEIGHT, fontSizes, LABELS, fontFamily } from '../../common';
 import { log } from '../../config';
@@ -56,8 +57,8 @@ const styles = StyleSheet.create({
     }
 })
 
-const ImagePicker = ({visible, setVisible}) => {
-    const toggleDialog = () => {
+const ImagePickerDialog = ({visible, setVisible}) => {
+  const toggleDialog = () => {
       setVisible(!visible);
     };
   
@@ -65,6 +66,27 @@ const ImagePicker = ({visible, setVisible}) => {
       setSelected(item);
       toggleDialog();
     }
+  
+  const openImagePicker = () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true
+    }).then(image => {
+      console.log(image);
+    }).catch((err) => log(err));
+  }
+
+  const openCamera = () => {
+    log('hiii')
+    ImagePicker.openCamera({
+      width: 300,
+      height: 400,
+      cropping: true,
+    }).then(image => {
+      console.log(image);
+    }).catch((err) => log(err));
+  }
 
     return (
           <Dialog
@@ -80,14 +102,14 @@ const ImagePicker = ({visible, setVisible}) => {
                 <View style={styles.controlSection}>
 
                   <View style={styles.controlItem}>
-                    <TouchableOpacity style={styles.iconContainer}>
+                    <TouchableOpacity style={styles.iconContainer} onPress={() => openImagePicker()}>
                       <Icon name="picture-o" style={styles.iconStyles} size={fontSizes.extraLarge} />
                     </TouchableOpacity>
                     <Text style={styles.controlItemText}>Gallery</Text>
                   </View>
 
                   <View style={styles.controlItem}>
-                    <TouchableOpacity style={styles.iconContainer}>
+                    <TouchableOpacity style={styles.iconContainer} onPress={() => openCamera()}>
                       <Icon name="camera" style={styles.iconStyles} size={fontSizes.extraLarge} />
                     </TouchableOpacity>
                     <Text style={styles.controlItemText}>Capture</Text>
@@ -109,4 +131,4 @@ const ImagePicker = ({visible, setVisible}) => {
       );
   }
 
-export default ImagePicker;
+export default ImagePickerDialog;

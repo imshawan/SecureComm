@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector, useDispatch } from 'react-redux';
 
 import ProfileAvtar from '../../components/ProfileAvtar';
-import ImagePicker from '../../components/settings/ImagePIcker';
+import ImagePickerDialog from '../../components/settings/ImagePIcker';
 
 import { currentUserActions } from '../../store/userStore';
 import { colors, HEADER_HEIGHT, fontSizes, LABELS, fontFamily } from '../../common';
@@ -193,7 +193,7 @@ const BasicProfileEdit = ({navigation}) => {
   return (
     <>
       <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
-      <ImagePicker visible={dialogVisible} setVisible={setDialogVisible} />
+      <ImagePickerDialog visible={dialogVisible} setVisible={setDialogVisible} />
       <View style={styles.container}>
           <View style={styles.headerContainer}>
               <View style={styles.headerContent}>
