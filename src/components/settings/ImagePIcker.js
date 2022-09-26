@@ -4,10 +4,18 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dialog } from '@rneui/themed';
 import ImagePicker from 'react-native-image-crop-picker';
 
-import { colors, HEADER_HEIGHT, fontSizes, LABELS, fontFamily } from '../../common';
+import { colors, HEADER_HEIGHT, fontSizes, LABELS, fontFamily, PROFILE_PICTURE_DIMENSIONS } from '../../common';
 import { log } from '../../config';
 
 const { BASIC_PROFILE_EDIT } = LABELS;
+const imagePickerOptions = {
+  width: PROFILE_PICTURE_DIMENSIONS.width,
+  height: PROFILE_PICTURE_DIMENSIONS.height,
+  cropping: true,
+  includeBase64: true,
+  useFrontCamera: true,
+  mediaType: 'photo'
+}
 
 const styles = StyleSheet.create({
     dialogContainer: {
@@ -57,7 +65,7 @@ const styles = StyleSheet.create({
     }
 })
 
-const ImagePickerDialog = ({visible, setVisible}) => {
+const ImagePickerDialog = ({visible, setVisible, onChange}) => {
   const toggleDialog = () => {
       setVisible(!visible);
   };
@@ -68,25 +76,24 @@ const ImagePickerDialog = ({visible, setVisible}) => {
   }
   
   const openImagePicker = () => {
-    ImagePicker.openPicker({
-      width: 300,
-      height: 400,
-      cropping: true
-    }).then(image => {
-      log(image);
+    ImagePicker.openPicker(imagePickerOptions).then(image => {
+      onChange('picture', `data:${image.mime};base64,${image.data}`);
+      toggleDialog();
     }).catch((err) => log(err));
   }
 
   const openCamera = () => {
-    ImagePicker.openCamera({
-      width: 300,
-      height: 400,
-      cropping: true,
-    }).then(image => {
-      log(image);
+    ImagePicker.openCamera(imagePickerOptions).then(image => {
+      onChange('picture', `data:${image.mime};base64,${image.data}`);
+      toggleDialog();
     }).catch((err) => {
       
     });
+  }
+
+  const removePicture = () => {
+    onChange('picture', '');
+    toggleDialog();
   }
 
     return (
@@ -117,7 +124,7 @@ const ImagePickerDialog = ({visible, setVisible}) => {
                   </View>
 
                   <View style={styles.controlItem}>
-                    <TouchableOpacity style={styles.iconContainer}>
+                    <TouchableOpacity style={styles.iconContainer} onPress={() => removePicture()}>
                       <Icon name="trash-o" style={styles.iconStyles} size={fontSizes.extraLarge} />
                     </TouchableOpacity>
                     <Text style={styles.controlItemText}>Remove</Text>

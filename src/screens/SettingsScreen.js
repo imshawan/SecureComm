@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     },
     individualList: {
         flexDirection: 'row',
-        height: 55,
+        height: 60,
         borderBottomWidth: 1,
         borderBottomColor: colors.grey,
         alignItems: 'center'
@@ -173,10 +173,8 @@ const IndividualList = ({border=1, header, subHeader, onClicked}) => {
 }
 
 const SettingsScreen = ({navigation, route}) => {
-    const [profile, setProfile] = useState({
-        username: '',
-        about: ''
-    });
+    const currentUser = useSelector(state => state.user.currentUser);
+
     const [visible, setVisible] = useState(false);
     const dispatch = useDispatch();
 
@@ -189,7 +187,7 @@ const SettingsScreen = ({navigation, route}) => {
     }
     
     const getFullname = () => {
-        return [profile.firstname, profile.lastname].join(' ') || profile.username;
+        return [currentUser.firstname, currentUser.lastname].join(' ') || currentUser.username;
     }
 
     return (<>
@@ -221,10 +219,10 @@ const SettingsScreen = ({navigation, route}) => {
                         <SectionHeading header={SETTINGS.profile.header} subHeader={SETTINGS.profile.subHeader} icon={'user-o'} />
                         <View style={styles.cardStyle}>
                             <TouchableOpacity onPress={() => navigation.navigate('BasicProfileEdit')} activeOpacity={0.3} style={styles.individualList}>
-                                <ProfileAvtar customStyles={styles.individualListAvtar}/>
+                                <ProfileAvtar name={getFullname()} image={currentUser.picture} customStyles={styles.individualListAvtar}/>
                                 <View style={styles.individualListContainer}>
                                     <View style={styles.individualListTextContainer}>
-                                        <Text numberOfLines={1} ellipsizeMode='tail' style={styles.individualListHead}>{'Shawan Mandal'}</Text>
+                                        <Text numberOfLines={1} ellipsizeMode='tail' style={styles.individualListHead}>{getFullname()}</Text>
                                         <Text numberOfLines={1} ellipsizeMode='tail' style={styles.individualListSubtext}>{'Backend developer at DT'}</Text>
                                     </View>
                                     <Icon name="chevron-right" style={styles.individualListIcon} size={fontSizes.regular} />

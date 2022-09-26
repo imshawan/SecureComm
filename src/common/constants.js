@@ -12,6 +12,11 @@ export const TOUCHABLE_TAP = {
 };
 export const BASE_ANIMATION_DURATION = 300;
 
+export const PROFILE_PICTURE_DIMENSIONS = {
+    height: 400,
+    width: 400,
+}
+
 const API_VERSION = 'v1';
 
 export const ENDPOINTS = {

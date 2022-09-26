@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, StatusBar, TouchableOpacity, Text, TextInput, Keyboard, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { View, StyleSheet, StatusBar, TouchableOpacity, Text, TextInput, Animated,
+  Keyboard, ScrollView, KeyboardAvoidingView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -8,6 +9,7 @@ import ImagePickerDialog from '../../components/settings/ImagePIcker';
 
 import { currentUserActions } from '../../store/userStore';
 import { colors, HEADER_HEIGHT, fontSizes, LABELS, fontFamily } from '../../common';
+import { showFocusColor, showOriginColor, AnimColor } from '../../utils';
 import { styles as defaultStyles } from '../styles';
 import { log } from '../../config';
 
@@ -57,23 +59,8 @@ headerContainer: {
   iconStyles: {
     color: colors.black
   },
-  sectionHeadingContainer: {
-    width: '90%',
-    alignSelf: 'center',
-    marginTop: 12
-  },
-  sectionHeading: {
-    color: colors.black,
-    fontSize: fontSizes.extraLarge,
-    fontFamily: fontFamily.bold,
-    lineHeight: fontSizes.extraLarge + 5,
-  },
-  sectionSubHeading: {
-    color: colors.black,
-    fontSize: fontSizes.medium,
-    fontFamily: fontFamily.regular,
-    lineHeight: fontSizes.medium + 5,
-    marginTop: 2
+  cameraIconStyle: {
+    color: colors.white,
   },
   formContainer: {
     width: '90%',
@@ -93,9 +80,9 @@ profilePictureContainer: {
     position: 'relative'
 },
 avtarStyles: {
-    height: 130,
-    width: 130,
-    borderRadius: 130,
+    height: 140,
+    width: 140,
+    borderRadius: 140,
 },
 avtarTextStyles: {
     alignItems: 'center',
@@ -114,13 +101,15 @@ selectTextValue: {
 },
 inputStyle: {
     flex: 1,
-    color: colors.placeholderColor,
+    color: colors.black,
     paddingLeft: 15,
     paddingRight: 15,
     borderRadius: 10,
     height: 50,
     fontSize: fontSizes.medium,
     backgroundColor: colors.inputBackground,
+    fontFamily: fontFamily.regular,
+    borderWidth: 1,
 },
 buttonStyle: {
     marginLeft: 0,
@@ -135,7 +124,7 @@ changePictureContainer: {
   position: 'absolute', 
   bottom: 0, 
   right: 5, 
-  backgroundColor: colors.inputBackground, 
+  backgroundColor: colors.brandColor, 
   height: 40, 
   width: 40, 
   alignItems: 'center',
@@ -146,24 +135,29 @@ changePictureContainer: {
 
 
 const Input = ({label, placeholder, value, onChange, inputStyle, multiline=false}) => {
+    const AnimatedInput = Animated.createAnimatedComponent(TextInput);
+    const interpolatedColor = new Animated.Value(0);
+
     return (
-        <>
+          <>
             <Text style={styles.formLabel}>{label}</Text>
             <View style={styles.sectionStyle}>
-              <TextInput
-                style={[styles.inputStyle, inputStyle]}
+              <AnimatedInput
+                style={[styles.inputStyle, inputStyle, {borderColor: AnimColor(interpolatedColor, 'transparent')}]}
                 onChangeText={onChange}
                 placeholder={placeholder}
-                placeholderTextColor={colors.placeholderColor}
+                placeholderTextColor={AnimColor(interpolatedColor, colors.placeholderColor)}
                 keyboardType="default"
                 value={value}
+                onFocus={() => showFocusColor(interpolatedColor)}
+                onBlur={() => showOriginColor(interpolatedColor)}
                 multiline={multiline}
                 blurOnSubmit={false}
                 underlineColorAndroid="#f000"
                 returnKeyType="next"
                 />
             </View>
-        </>
+          </>
     );
 }
 
@@ -187,13 +181,13 @@ const BasicProfileEdit = ({navigation}) => {
 
   const handleSubmitPress = () => {
     Keyboard.dismiss();
-    log(state);
+    dispatch(currentUserActions.setCurrentUser(state));
   }
  
   return (
     <>
       <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
-      <ImagePickerDialog visible={dialogVisible} setVisible={setDialogVisible} />
+      <ImagePickerDialog visible={dialogVisible} onChange={handleOnChange} setVisible={setDialogVisible} />
       <View style={styles.container}>
           <View style={styles.headerContainer}>
               <View style={styles.headerContent}>
@@ -217,9 +211,9 @@ const BasicProfileEdit = ({navigation}) => {
 
                         <View style={styles.profilePictureContainer}>
                             <TouchableOpacity activeOpacity={0.8} onPress={() => setDialogVisible(true)}>
-                                <ProfileAvtar customStyles={styles.avtarStyles} textStyle={styles.avtarTextStyles} />
+                                <ProfileAvtar image={state.picture} name={[state.firstname, state.lastname].join(' ')} customStyles={styles.avtarStyles} textStyle={styles.avtarTextStyles} />
                                 <View style={styles.changePictureContainer}>
-                                  <Icon style={styles.iconStyles} name="camera" size={fontSizes.large} />
+                                  <Icon style={styles.cameraIconStyle} name="camera" size={fontSizes.large} />
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -252,6 +246,13 @@ const BasicProfileEdit = ({navigation}) => {
                             placeholder={BASIC_PROFILE_EDIT.workPlaceholder}
                             onChange={(work) => handleOnChange('work', work)}
                             value={state.work}
+                        />
+
+                        <Input 
+                            label={BASIC_PROFILE_EDIT.organization}
+                            placeholder={BASIC_PROFILE_EDIT.organizationPlaceholder}
+                            onChange={(organization) => handleOnChange('organization', organization)}
+                            value={state.organization}
                         />
 
                         <TouchableOpacity
