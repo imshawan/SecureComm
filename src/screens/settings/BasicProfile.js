@@ -199,11 +199,6 @@ const BasicProfileEdit = ({navigation}) => {
                   </View>
               </View>
           </View>
-          
-          {/* <View style={styles.sectionHeadingContainer}>
-            <Text style={styles.sectionHeading}>{BASIC_PROFILE_EDIT.header}</Text>
-            <Text style={styles.sectionSubHeading}>{BASIC_PROFILE_EDIT.subHeader}</Text>
-          </View> */}
 
             <ScrollView keyboardShouldPersistTaps="handled">
                 <KeyboardAvoidingView enabled>
