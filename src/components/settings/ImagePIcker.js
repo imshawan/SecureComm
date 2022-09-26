@@ -60,12 +60,12 @@ const styles = StyleSheet.create({
 const ImagePickerDialog = ({visible, setVisible}) => {
   const toggleDialog = () => {
       setVisible(!visible);
-    };
+  };
   
   const handleItemSelect = (item) => {
       setSelected(item);
       toggleDialog();
-    }
+  }
   
   const openImagePicker = () => {
     ImagePicker.openPicker({
@@ -73,19 +73,20 @@ const ImagePickerDialog = ({visible, setVisible}) => {
       height: 400,
       cropping: true
     }).then(image => {
-      console.log(image);
+      log(image);
     }).catch((err) => log(err));
   }
 
   const openCamera = () => {
-    log('hiii')
     ImagePicker.openCamera({
       width: 300,
       height: 400,
       cropping: true,
     }).then(image => {
-      console.log(image);
-    }).catch((err) => log(err));
+      log(image);
+    }).catch((err) => {
+      
+    });
   }
 
     return (
