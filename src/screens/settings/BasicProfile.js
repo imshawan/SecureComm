@@ -1,15 +1,17 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, StatusBar, TouchableOpacity, Text, TextInput, Animated,
+import { View, StyleSheet, StatusBar, TouchableOpacity, Text, ToastAndroid,
   Keyboard, ScrollView, KeyboardAvoidingView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector, useDispatch } from 'react-redux';
+import Snackbar from 'react-native-snackbar';
 
 import ProfileAvtar from '../../components/ProfileAvtar';
 import ImagePickerDialog from '../../components/settings/ImagePIcker';
+import AnimatedTextInput from '../../components/AnimatedTextInput';
 
 import { currentUserActions } from '../../store/userStore';
-import { colors, HEADER_HEIGHT, fontSizes, LABELS, fontFamily } from '../../common';
-import { showFocusColor, showOriginColor, AnimColor } from '../../utils';
+import { colors, HEADER_HEIGHT, fontSizes, LABELS, fontFamily, ENDPOINTS } from '../../common';
+import { HTTP } from '../../services';
 import { styles as defaultStyles } from '../styles';
 import { log } from '../../config';
 
@@ -133,34 +135,6 @@ changePictureContainer: {
 },
 });
 
-
-const Input = ({label, placeholder, value, onChange, inputStyle, multiline=false}) => {
-    const AnimatedInput = Animated.createAnimatedComponent(TextInput);
-    const interpolatedColor = new Animated.Value(0);
-
-    return (
-          <>
-            <Text style={styles.formLabel}>{label}</Text>
-            <View style={styles.sectionStyle}>
-              <AnimatedInput
-                style={[styles.inputStyle, inputStyle, {borderColor: AnimColor(interpolatedColor, 'transparent')}]}
-                onChangeText={onChange}
-                placeholder={placeholder}
-                placeholderTextColor={AnimColor(interpolatedColor, colors.placeholderColor)}
-                keyboardType="default"
-                value={value}
-                onFocus={() => showFocusColor(interpolatedColor)}
-                onBlur={() => showOriginColor(interpolatedColor)}
-                multiline={multiline}
-                blurOnSubmit={false}
-                underlineColorAndroid="#f000"
-                returnKeyType="next"
-                />
-            </View>
-          </>
-    );
-}
-
 const BasicProfileEdit = ({navigation}) => {
   const [dialogVisible, setDialogVisible] = useState(false);
   const currentUser = useSelector(state => state.user.currentUser);
@@ -170,6 +144,7 @@ const BasicProfileEdit = ({navigation}) => {
     lastname: '',
     about: '',
     work: '',
+    organization: '',
     ...currentUser,
   });
 
@@ -179,9 +154,30 @@ const BasicProfileEdit = ({navigation}) => {
     setState(prevState => ({...prevState, [field]: value}));
   }
 
-  const handleSubmitPress = () => {
+  const handleSubmitPress = async () => {
     Keyboard.dismiss();
     dispatch(currentUserActions.setCurrentUser(state));
+
+    try {
+      let { payload } = await HTTP.put(ENDPOINTS.updateUserData, state);
+      if (payload) {
+        Snackbar.show({
+          text: "Update successfully",
+          duration: Snackbar.LENGTH_SHORT,
+          textColor: colors.white,
+          backgroundColor: colors.black,
+          numberOfLines: 4,
+        });
+      }
+    } catch (err) {
+      Snackbar.show({
+        text: err.status ? err.status.message : err,
+        duration: Snackbar.LENGTH_SHORT,
+        textColor: colors.white,
+        backgroundColor: colors.black,
+        numberOfLines: 4,
+      });
+    }
   }
  
   return (
@@ -213,40 +209,40 @@ const BasicProfileEdit = ({navigation}) => {
                             </TouchableOpacity>
                         </View>
 
-                        <Input 
+                        <AnimatedTextInput 
                             label={BASIC_PROFILE_EDIT.firstname}
                             placeholder={BASIC_PROFILE_EDIT.firstnamePlaceholder}
-                            onChange={(firstname) => handleOnChange('firstname', firstname)}
+                            onChange={(val) => handleOnChange('firstname', val)}
                             value={state.firstname}
                         />
 
-                        <Input 
+                        <AnimatedTextInput 
                             label={BASIC_PROFILE_EDIT.lastname}
                             placeholder={BASIC_PROFILE_EDIT.lastnamePlaceholder}
-                            onChange={(lastname) => handleOnChange('lastname', lastname)}
+                            onChange={(val) => handleOnChange('lastname', val)}
                             value={state.lastname}
                         />
 
-                        <Input 
+                        <AnimatedTextInput 
                             label={BASIC_PROFILE_EDIT.about}
                             placeholder={BASIC_PROFILE_EDIT.aboutPlaceholder}
-                            onChange={(about) => handleOnChange('about', about)}
+                            onChange={(val) => handleOnChange('about', val)}
                             value={state.about}
                             multiline={true}
-                            inputStyle={styles.about}
+                            AnimatedTextInputStyle={styles.about}
                         />
 
-                        <Input 
+                        <AnimatedTextInput 
                             label={BASIC_PROFILE_EDIT.work}
                             placeholder={BASIC_PROFILE_EDIT.workPlaceholder}
-                            onChange={(work) => handleOnChange('work', work)}
+                            onChange={(val) => handleOnChange('work', val)}
                             value={state.work}
                         />
 
-                        <Input 
+                        <AnimatedTextInput 
                             label={BASIC_PROFILE_EDIT.organization}
                             placeholder={BASIC_PROFILE_EDIT.organizationPlaceholder}
-                            onChange={(organization) => handleOnChange('organization', organization)}
+                            onChange={(val) => handleOnChange('organization', val)}
                             value={state.organization}
                         />
 
