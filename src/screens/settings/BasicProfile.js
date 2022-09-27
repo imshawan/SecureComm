@@ -179,7 +179,7 @@ const BasicProfileEdit = ({navigation}) => {
   const handleSubmitPress = async () => {
     Keyboard.dismiss();
     await updateProfile(ENDPOINTS.updateUserData, state);
-    dispatch(currentUserActions.setCurrentUser(state));
+    dispatch(currentUserActions.updateUserData(state));
   }
 
   useEffect(() => {

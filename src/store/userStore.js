@@ -15,6 +15,9 @@ const currentUserSlice = createSlice({
         updateProfilePicture(state, action) {
             state.currentUser = {...state.currentUser, picture: action.payload};
         },
+        updateUserData(state, action) {
+            state.currentUser = {...state.currentUser, ...action.payload};
+        }
     }
 });
 
