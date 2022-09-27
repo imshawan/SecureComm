@@ -30,6 +30,7 @@ export const ENDPOINTS = {
     checkAuthentication: '/api/' + API_VERSION +'/users/authentication',
     getUsersByUsername: '/api/' + API_VERSION +'/users/username',
     updateUserData: '/api/' + API_VERSION +'/users/update',
+    changePicture: '/api/' + API_VERSION +'/users/picture',
 
     createRoom: '/api/' + API_VERSION +'/rooms/create',
 };

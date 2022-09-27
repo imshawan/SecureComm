@@ -20,6 +20,9 @@ export const PLACEHOLDERS = {
     enterCode: 'Enter Code',
     createPassword: 'Create Password',
     confirmPassword: 'Confirm Password',
+
+    updatedSuccessfully: 'Updated successfully',
+    pleaseWait: 'Please wait'
 };
 
 export const DIALOG_LABELS = {

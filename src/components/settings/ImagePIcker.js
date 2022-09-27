@@ -77,14 +77,14 @@ const ImagePickerDialog = ({visible, setVisible, onChange}) => {
   
   const openImagePicker = () => {
     ImagePicker.openPicker(imagePickerOptions).then(image => {
-      onChange('picture', `data:${image.mime};base64,${image.data}`);
+      onChange(`data:${image.mime};base64,${image.data}`);
       toggleDialog();
     }).catch((err) => log(err));
   }
 
   const openCamera = () => {
     ImagePicker.openCamera(imagePickerOptions).then(image => {
-      onChange('picture', `data:${image.mime};base64,${image.data}`);
+      onChange(`data:${image.mime};base64,${image.data}`);
       toggleDialog();
     }).catch((err) => {
       
@@ -92,7 +92,7 @@ const ImagePickerDialog = ({visible, setVisible, onChange}) => {
   }
 
   const removePicture = () => {
-    onChange('picture', '');
+    onChange('');
     toggleDialog();
   }
 

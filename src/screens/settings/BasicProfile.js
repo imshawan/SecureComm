@@ -10,7 +10,7 @@ import ImagePickerDialog from '../../components/settings/ImagePIcker';
 import AnimatedTextInput from '../../components/AnimatedTextInput';
 
 import { currentUserActions } from '../../store/userStore';
-import { colors, HEADER_HEIGHT, fontSizes, LABELS, fontFamily, ENDPOINTS } from '../../common';
+import { colors, HEADER_HEIGHT, fontSizes, LABELS, fontFamily, ENDPOINTS, PLACEHOLDERS } from '../../common';
 import { HTTP } from '../../services';
 import { styles as defaultStyles } from '../styles';
 import { log } from '../../config';
@@ -138,8 +138,8 @@ changePictureContainer: {
 const BasicProfileEdit = ({navigation}) => {
   const [dialogVisible, setDialogVisible] = useState(false);
   const currentUser = useSelector(state => state.user.currentUser);
+  const [picture, setPicture] = useState(currentUser.picture || '');
   const [state, setState] = useState({
-    picture: '',
     firstname: '',
     lastname: '',
     about: '',
@@ -154,36 +154,46 @@ const BasicProfileEdit = ({navigation}) => {
     setState(prevState => ({...prevState, [field]: value}));
   }
 
-  const handleSubmitPress = async () => {
-    Keyboard.dismiss();
-    dispatch(currentUserActions.setCurrentUser(state));
+  const notifyUser = (message) => {
+    Snackbar.show({
+      text: message,
+      duration: Snackbar.LENGTH_SHORT,
+      textColor: colors.white,
+      backgroundColor: colors.black,
+      numberOfLines: 4,
+    });
+  }
 
+  const updateProfile = async (endpoint, data) => {
+    notifyUser(PLACEHOLDERS.pleaseWait);
     try {
-      let { payload } = await HTTP.put(ENDPOINTS.updateUserData, state);
+      let { payload } = await HTTP.put(endpoint, data);
       if (payload) {
-        Snackbar.show({
-          text: "Update successfully",
-          duration: Snackbar.LENGTH_SHORT,
-          textColor: colors.white,
-          backgroundColor: colors.black,
-          numberOfLines: 4,
-        });
+        notifyUser(payload.message || PLACEHOLDERS.updatedSuccessfully);
       }
     } catch (err) {
-      Snackbar.show({
-        text: err.status ? err.status.message : err,
-        duration: Snackbar.LENGTH_SHORT,
-        textColor: colors.white,
-        backgroundColor: colors.black,
-        numberOfLines: 4,
-      });
+      notifyUser(err.status ? err.status.message : err);
     }
   }
+
+  const handleSubmitPress = async () => {
+    Keyboard.dismiss();
+    await updateProfile(ENDPOINTS.updateUserData, state);
+    dispatch(currentUserActions.setCurrentUser(state));
+  }
+
+  useEffect(() => {
+    if (picture && picture != currentUser.picture) {
+      updateProfile(ENDPOINTS.changePicture, {picture}).then(() => {
+        dispatch(currentUserActions.updateProfilePicture(picture));
+      });
+    }
+  }, [picture])
  
   return (
     <>
       <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
-      <ImagePickerDialog visible={dialogVisible} onChange={handleOnChange} setVisible={setDialogVisible} />
+      <ImagePickerDialog visible={dialogVisible} onChange={setPicture} setVisible={setDialogVisible} />
       <View style={styles.container}>
           <View style={styles.headerContainer}>
               <View style={styles.headerContent}>
@@ -202,7 +212,7 @@ const BasicProfileEdit = ({navigation}) => {
 
                         <View style={styles.profilePictureContainer}>
                             <TouchableOpacity activeOpacity={0.8} onPress={() => setDialogVisible(true)}>
-                                <ProfileAvtar image={state.picture} name={[state.firstname, state.lastname].join(' ')} customStyles={styles.avtarStyles} textStyle={styles.avtarTextStyles} />
+                                <ProfileAvtar image={picture} name={[state.firstname, state.lastname].join(' ')} customStyles={styles.avtarStyles} textStyle={styles.avtarTextStyles} />
                                 <View style={styles.changePictureContainer}>
                                   <Icon style={styles.cameraIconStyle} name="camera" size={fontSizes.large} />
                                 </View>
