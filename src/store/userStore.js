@@ -2,7 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import { log } from "../config";
 
 const currentUserInitialState = {
-    currentUser: {}
+    currentUser: {
+        location: {}
+    }
 }
 
 const currentUserSlice = createSlice({
@@ -17,7 +19,10 @@ const currentUserSlice = createSlice({
         },
         updateUserData(state, action) {
             state.currentUser = {...state.currentUser, ...action.payload};
-        }
+        },
+        updateLocation(state, action) {
+            state.currentUser = {...state.currentUser, location: action.payload};
+        },
     }
 });
 

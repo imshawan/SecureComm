@@ -76,6 +76,7 @@ const FullScreenDialog = ({title, visible, setVisible, data=[], setSelected}) =>
                 <Text style={styles.titleTextStyle}>{title}</Text>
                 <FlatList data={data} 
                     // scrollEventThrottle={false}
+                    maxToRenderPerBatch={8}
                     showsVerticalScrollIndicator={false}
                     renderItem={({item}) => <IndividualListItem item={item} onSelect={() => handleItemSelect(item)}/>}/>
             </View>
@@ -90,7 +91,11 @@ const Select = ({data, currentValue, onChange, textStyle={}, listTitle}) => {
     const [selected, setSelected] = useState(currentValue);
 
     useEffect(() => {
-        onChange(selected);
+        if (Object.keys(selected).length) {
+            onChange(selected);
+        } else {
+            onChange({name: 'Select'})
+        }
     }, [selected])
 
     useEffect(() => {

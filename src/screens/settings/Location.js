@@ -1,9 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, StatusBar, TouchableOpacity, Text, TextInput, Keyboard } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import Snackbar from 'react-native-snackbar';
+import { useSelector, useDispatch } from 'react-redux';
+import { currentUserActions } from '../../store/userStore';
 import Select from '../../components/SelectInput/Select';
-import { colors, HEADER_HEIGHT, fontSizes, LABELS, fontFamily } from '../../common';
+import { colors, HEADER_HEIGHT, fontSizes, LABELS, fontFamily, PLACEHOLDERS, ENDPOINTS } from '../../common';
+import { HTTP } from '../../services';
 import { styles as defaultStyles } from '../styles';
 import { DATA } from '../../data';
 import { log } from '../../config';
@@ -111,18 +114,51 @@ headerContainer: {
  
 
 const LocationScreen = ({navigation}) => {
+  const currentUser = useSelector(state => state.user.currentUser);
   const [state, setState] = useState({
     country: {name: 'India'},
-    region: {name: 'Assam'}
+    region: {name: 'Assam'},
+    ...currentUser.location
   });
+
+  const dispatch = useDispatch();
+
+  const notifyUser = (message) => {
+    Snackbar.show({
+      text: message,
+      duration: Snackbar.LENGTH_SHORT,
+      textColor: colors.white,
+      backgroundColor: colors.black,
+      numberOfLines: 4,
+    });
+  }
+
+  const updateLocation = async (endpoint, data) => {
+    notifyUser(PLACEHOLDERS.pleaseWait);
+    
+    try {
+      delete data.country.timezones;
+      delete data.country.states;
+    } catch {}
+
+    try {
+      let { payload } = await HTTP.put(endpoint, {location: data});
+      if (payload) {
+        notifyUser(PLACEHOLDERS.updatedSuccessfully);
+      }
+    } catch (err) {
+      notifyUser(err.status ? err.status.message : err);
+    }
+  }
 
   const handleOnChange = (field, value) => {
     setState(prevState => ({...prevState, [field]: value}));
   }
 
-  const handleSubmitPress = () => {
+  const handleSubmitPress = async () => {
     Keyboard.dismiss();
-    log(state);
+    await updateLocation(ENDPOINTS.updateUserData, state);
+    dispatch(currentUserActions.updateLocation(state));
   }
 
   useEffect(() => {
