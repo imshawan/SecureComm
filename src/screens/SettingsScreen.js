@@ -190,6 +190,14 @@ const SettingsScreen = ({navigation, route}) => {
         return [currentUser.firstname, currentUser.lastname].join(' ') || currentUser.username;
     }
 
+    const getCurrentLocation = () => {
+        let {city} = currentUser.location;
+        if (typeof city == 'object') {
+            city = '';
+        }
+        return [currentUser.location.country.name, currentUser.location.region.name, city].join(', ');
+    }
+
     return (<>
             <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
             <View style={styles.container}>
@@ -223,13 +231,13 @@ const SettingsScreen = ({navigation, route}) => {
                                 <View style={styles.individualListContainer}>
                                     <View style={styles.individualListTextContainer}>
                                         <Text numberOfLines={1} ellipsizeMode='tail' style={styles.individualListHead}>{getFullname()}</Text>
-                                        <Text numberOfLines={1} ellipsizeMode='tail' style={styles.individualListSubtext}>{'Backend developer at DT'}</Text>
+                                        <Text numberOfLines={1} ellipsizeMode='tail' style={styles.individualListSubtext}>{[currentUser.work, currentUser.organization].join(' at ')}</Text>
                                     </View>
                                     <Icon name="chevron-right" style={styles.individualListIcon} size={fontSizes.regular} />
                                 </View>
                             </TouchableOpacity>
                             <IndividualList header={'Email'} subHeader={'hello@imshawan.dev'} />
-                            <IndividualList onClicked={() => navigation.navigate('LocationScreen')} header={'Location'} subHeader={'Margherita, Assam, India'} />
+                            <IndividualList onClicked={() => navigation.navigate('LocationScreen')} header={'Location'} subHeader={getCurrentLocation()} />
                             <IndividualList border={0} header={'Phone'} subHeader={'+91 7002508690'} />
                         </View>
                     </View>
