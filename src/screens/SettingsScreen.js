@@ -9,7 +9,6 @@ import { roomActions } from '../store/roomListStore';
 import ProfileAvtar from "../components/ProfileAvtar";
 import DialogBox from "../components/DialogBox";
 import { colors, HEADER_HEIGHT, fontSizes, DIALOG_LABELS, BUTTONS, SETTINGS, APP_NAME, LABELS, fontFamily } from '../common';
-import { isAuthenticated } from "../utils";
 import { log } from "../config";
 
 
@@ -236,9 +235,9 @@ const SettingsScreen = ({navigation, route}) => {
                                     <Icon name="chevron-right" style={styles.individualListIcon} size={fontSizes.regular} />
                                 </View>
                             </TouchableOpacity>
+                            {/* <IndividualList border={0} header={'Birthday'} subHeader={'18th July'} /> */}
                             <IndividualList header={'Email'} subHeader={'hello@imshawan.dev'} />
                             <IndividualList onClicked={() => navigation.navigate('LocationScreen')} header={'Location'} subHeader={getCurrentLocation()} />
-                            <IndividualList border={0} header={'Phone'} subHeader={'+91 7002508690'} />
                         </View>
                     </View>
                     
