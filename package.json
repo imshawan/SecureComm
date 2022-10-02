@@ -1,6 +1,8 @@
 {
   "name": "securecomm",
   "version": "1.0.1",
+  "author": "Shawan Mandal <hello@imshawan.dev>",
+  "description": "An open-source & cross-platform chat application for mobile devices",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -8,6 +10,10 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/imshawan/SecureComm.git"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.12.1",
