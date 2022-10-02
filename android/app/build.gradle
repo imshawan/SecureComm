@@ -1,6 +1,7 @@
 apply plugin: "com.android.application"
 
 import com.android.build.OutputFile
+import groovy.json.JsonSlurper
 
 /**
  * The react.gradle file registers a task for each build variant (e.g. bundleDebugJsAndAssets
@@ -129,6 +130,27 @@ def reactNativeArchitectures() {
     return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
 }
 
+/**
+* @author Shawan Mandal
+* Gets the version number from the package.json
+*/
+
+def getPackageVersionName() {
+    def inputFile = new File("../package.json")
+    def packageJson = new JsonSlurper().parseText(inputFile.text)
+    return packageJson["version"]
+}
+
+def versionNameString = getPackageVersionName()
+def versionCodeInt
+
+
+if (versionNameString.toList().count('.') < 2) {
+    versionCodeInt = versionNameString
+} else {
+    versionCodeInt = versionNameString.split('\\.')[0..-3].join('.')
+}
+
 android {
     ndkVersion rootProject.ext.ndkVersion
 
@@ -138,8 +160,8 @@ android {
         applicationId "com.securecomm"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode versionCodeInt.toInteger()
+        versionName versionNameString
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 
         vectorDrawables.useSupportLibrary = true
