@@ -140,7 +140,8 @@ const ABOUT_SCREEN = {
     version: {
         header: 'App version',
         text: APP_VERSION,
-    }
+    },
+    footer: 'Made with ❤️ in India'
 }
 
 export const LABELS = {

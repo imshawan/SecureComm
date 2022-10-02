@@ -137,6 +137,16 @@ headerContainer: {
     fontFamily: fontFamily.regular,
     fontSize: fontSizes.medium,
     lineHeight: fontSizes.regular + 5,
+  },
+  footer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10
+  },
+  footerText: {
+    color: colors.black,
+    fontFamily: fontFamily.bold,
+    fontSize: fontSizes.medium
   }
 });
  
@@ -203,6 +213,10 @@ const About = ({navigation}) => {
             <ListCard icon={'code'} header={ABOUT_SCREEN.dependencies.header} subHeader={ABOUT_SCREEN.dependencies.text} />
             <ListCard icon={'info'} header={ABOUT_SCREEN.version.header} subHeader={ABOUT_SCREEN.version.text} />
           </View>
+
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>{ABOUT_SCREEN.footer}</Text>
+        </View>
 
         </View>  
     </>
