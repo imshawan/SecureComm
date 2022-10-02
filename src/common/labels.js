@@ -1,4 +1,13 @@
-import { APP_NAME } from "./constants";
+import { APP_NAME, APP_VERSION } from "./constants";
+
+export const AUTHOR = {
+    name: 'Shawan Mandal',
+    contribution: 'Lead Developer and Designer',
+
+    facebook: 'https://www.facebook.com/shawan.sm/',
+    github: 'https://github.com/imshawan',
+    linkedin: 'https://www.linkedin.com/in/shawan-mandal',
+}
 
 export const ERRORS = {
     invalidEmail: 'Invalid email Id',
@@ -107,9 +116,37 @@ const BASIC_PROFILE_EDIT = {
     changePicture: 'Change profile picture',
 }
 
+const ABOUT_SCREEN = {
+    title: 'About',
+
+    software: 'About the Software',
+
+    github: {
+        header: 'Github',
+        text: 'Contribute to the project on GitHub',
+    },
+    report: {
+        header: 'Report',
+        text: 'Report bug and issues and make the app better'
+    },
+    share: {
+        header: 'Share',
+        text: 'Share this app with your friends and family'
+    },
+    dependencies: {
+        header: 'Open-source dependencies',
+        text: 'See all the various dependencies and open-source licenses used',
+    },
+    version: {
+        header: 'App version',
+        text: APP_VERSION,
+    }
+}
+
 export const LABELS = {
     FORGOT_PASSWORD_SCREEN,
     LOCATION_EDIT_SCREEN,
     BASIC_PROFILE_EDIT,
     HOME_SCREEN,
+    ABOUT_SCREEN,
 };

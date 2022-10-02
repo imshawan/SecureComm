@@ -1,6 +1,9 @@
+import {version} from '../../package.json';
+
 export const LOGS = false;
 
 export const APP_NAME = 'SecureComm';
+export const APP_VERSION = version;
 
 export const APP_REMOTE_HOST = 'https://apps.imshawan.dev';
 

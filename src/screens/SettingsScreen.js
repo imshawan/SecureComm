@@ -253,7 +253,7 @@ const SettingsScreen = ({navigation, route}) => {
                     <View>
                         <SectionHeading header={SETTINGS.about.header} subHeader={SETTINGS.about.subHeader} icon={'question-circle-o'} />
                         <View style={styles.cardStyle}>
-                            <IndividualList header={SETTINGS.menus.about} subHeader={SETTINGS.menus.aboutSubText} />
+                            <IndividualList onClicked={() => navigation.navigate('AboutScreen')} header={SETTINGS.menus.about} subHeader={SETTINGS.menus.aboutSubText} />
                             <IndividualList border={0} header={SETTINGS.menus.reachUs} subHeader={SETTINGS.menus.reachUsSubText} />
                         </View>
                     </View>

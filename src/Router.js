@@ -17,6 +17,7 @@
  import SettingsScreen from './screens/SettingsScreen';
  import LocationScreen from './screens/settings/Location';
  import BasicProfileEdit from './screens/settings/BasicProfile';
+ import About from './screens/settings/About';
  
  
  const Stack = createStackNavigator();
@@ -63,6 +64,7 @@
 
           <Stack.Screen name="LocationScreen" component={LocationScreen} options={{headerShown: false}}/>
           <Stack.Screen name="BasicProfileEdit" component={BasicProfileEdit} options={{headerShown: false}}/>
+          <Stack.Screen name="AboutScreen" component={About} options={{headerShown: false}}/>
 
            </Stack.Navigator>
        </NavigationContainer>
