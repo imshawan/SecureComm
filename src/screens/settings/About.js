@@ -138,6 +138,13 @@ headerContainer: {
     fontSize: fontSizes.medium,
     lineHeight: fontSizes.regular + 5,
   },
+  displayIconCustom: {
+    backgroundColor: colors.white, 
+    marginLeft: 0
+  },
+  displayIconCustomIcon: {
+    color: colors.black
+  },
   footer: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -162,7 +169,7 @@ const DisplayIcon = ({icon, link, customStyles={}, iconStyles={}}) => {
 const ListCard = ({header, subHeader, icon}) => {
     return (
         <TouchableOpacity activeOpacity={0.5} style={styles.listCard}>
-            <DisplayIcon icon={icon} customStyles={{backgroundColor: colors.white, marginLeft: 0}} iconStyles={{color: colors.black}}/>
+            <DisplayIcon icon={icon} customStyles={styles.displayIconCustom} iconStyles={styles.displayIconCustomIcon}/>
             <View style={styles.listText}>
                 <Text style={styles.listHeader}>{header}</Text>
                 <Text numberOfLines={2} ellipsizeMode='tail' style={styles.listSubText}>{subHeader}</Text>
