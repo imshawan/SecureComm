@@ -1,6 +1,5 @@
  import React from 'react';
  import { useSelector } from 'react-redux';
-
  import {NavigationContainer} from '@react-navigation/native';
  import {createStackNavigator} from '@react-navigation/stack';
  
@@ -8,7 +7,7 @@
  import SignupScreen from './screens/signup/SignupScreen';
  import ForgotPasswordScreen from './screens/forgotPassword/ForgotPasswordScreen';
  import EnterOtpScreen from './screens/forgotPassword/EnterOtpScreen';
- 
+
  import Home from './screens/Home';
  import SearchScreen from './screens/SearchScreen';
  import ChatScreen from './screens/chats/ChatScreen';
