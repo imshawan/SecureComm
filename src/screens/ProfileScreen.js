@@ -1,17 +1,15 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, StatusBar, TouchableOpacity, Image, ScrollView, BackHandler } from "react-native";
+import { View, Text, StyleSheet, StatusBar, TouchableOpacity, ScrollView, BackHandler } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector, useDispatch } from 'react-redux';
 import AsyncStorage from "@react-native-community/async-storage";
 import { View as AnimatableView } from 'react-native-animatable';
 
 import ProfileAvtar from "../components/ProfileAvtar";
-import DialogBox from "../components/DialogBox";
 import { colors, HEADER_HEIGHT, fontSizes, DIALOG_LABELS, BUTTONS } from '../common';
 import { isAuthenticated } from "../utils";
 import { log } from "../config";
-import { clearCurrentRooms } from "../database";
-import { roomActions } from '../store/roomListStore';
+import { currentUserActions } from '../store/userStore';
 
 
 const styles = StyleSheet.create({
@@ -299,32 +297,10 @@ const IndividualList = ({header, subHeader, icon}) => {
 }
 
 const AccountScreen = ({navigation, route}) => {
-    const [profile, setProfile] = useState({
-        username: '',
-        about: '',
-        fullname: ''
-    });
-
-    const dispatch = useDispatch();
-   
-    const image = 'https://images.pexels.com/photos/38537/woodland-road-falling-leaf-natural-38537.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
-
+    const profile = useSelector(state => state.user.currentUser);
     const getFullname = () => {
         return [profile.firstname, profile.lastname].join(' ') || profile.username;
     }
-
-    useState(() => {
-        isAuthenticated();
-        AsyncStorage.getItem('user').then(user => setProfile(JSON.parse(user)));
-
-        const backHandler = BackHandler.addEventListener("hardwareBackPress", function () {
-            navigation.goBack();
-            return true;
-        });
-    
-        return () => backHandler.remove();
-
-    }, [])
 
     return (<>
             <StatusBar barStyle='light-content' backgroundColor={"#8b97b0"} />
@@ -348,7 +324,7 @@ const AccountScreen = ({navigation, route}) => {
                         <View style={styles.profileSectionContainer}>
                             <View style={styles.profileContainer}>
                                 <View style={{flexDirection: "row", alignItems: 'center', width: '90%'}}>
-                                    <ProfileAvtar image={image} customStyles={styles.avtarStyles} textStyle={styles.avtarTextStyles} name={getFullname()} />
+                                    <ProfileAvtar image={profile.picture} customStyles={styles.avtarStyles} textStyle={styles.avtarTextStyles} name={getFullname()} />
                                     <View style={styles.profileRightContainer}>
                                         <Text numberOfLines={2} ellipsizeMode='tail' style={getFullname().length > 15 ? {...styles.profileNameText, height: 40} : styles.profileNameText}>{getFullname()}</Text>
                                         <Text numberOfLines={1} ellipsizeMode='tail' style={styles.usernameText} >{'@' + profile.username}</Text>

@@ -47,13 +47,6 @@ const Home = ({navigation}) => {
         navigation.navigate('ChatScreen', card);
     }
 
-    useEffect(() => {
-        getLoggedInUser().then(usr => {
-            if (currentUser._id != usr._id) {
-                dispatch(currentUserActions.setCurrentUser(usr));
-            }
-        });
-    }, [])
 
     useEffect(() => {
 
@@ -74,16 +67,7 @@ const Home = ({navigation}) => {
         socketIO.on('global:message:receive', (socket) => {
             alert(JSON.stringify(socket))
         })
-         
-        // const backHandler = BackHandler.addEventListener("hardwareBackPress", function () {
-        //     socketIO.emit('leave-room', {room: userName });
-        //     if (!navigation.getParent()) {
-        //         BackHandler.exitApp();
-        //     } else navigation.goBack();
-        //     return true;
-        // });
-    
-        // return () => backHandler.remove();
+
         return () => socketIO.removeListener('message:receive');
 
         

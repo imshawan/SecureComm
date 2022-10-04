@@ -90,15 +90,6 @@ const SearchScreen = ({navigation}) => {
 
     }, [value])
 
-    useEffect(() => {
-        const backHandler = BackHandler.addEventListener("hardwareBackPress", function () {
-            navigation.goBack();
-            return true;
-        });
-    
-        return () => backHandler.remove();
-    }, []);
-
 
     return (
         <View style={styles.container}>

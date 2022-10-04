@@ -11,7 +11,6 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
  
-import AsyncStorage from '@react-native-community/async-storage';
 import Snackbar from 'react-native-snackbar';
 import PageHeader from '../../components/PageHeaderComponent';
 import Loader from '../../components/Loader';
@@ -21,8 +20,6 @@ import { colors, ENDPOINTS, APP_NAME, ERRORS, PLACEHOLDERS } from '../../common'
 import { showFocusColor, AnimColor, showOriginColor, validateEmail } from '../../utils';
 import { HTTP } from '../../services';
 import { styles } from '../styles';
- 
-// import Loader from './Components/Loader';
 
 const pageStyles = StyleSheet.create({
   headerContainer: {
