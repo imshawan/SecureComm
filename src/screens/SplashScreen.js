@@ -1,6 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, StatusBar } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import React from 'react';
+import { StyleSheet, StatusBar } from 'react-native';
 import { View as AnimatedView } from 'react-native-animatable';
 import Image from '../components/Image';
 
@@ -15,18 +14,7 @@ const styles = StyleSheet.create({
   },
 });
  
-const SplashScreen = ({navigation}) => { 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setAnimating(false);
-  //     AsyncStorage.getItem('authToken').then((value) =>
-  //       navigation.navigate(
-  //         value === null ? 'LoginScreen' : 'Home'
-  //       ),
-  //     );
-  //   }, 2000);
-  // }, []);
- 
+const SplashScreen = () => { 
   return (
     <AnimatedView animation={'fadeIn'} duration={500} style={styles.container}>
         <StatusBar barStyle='light-content' backgroundColor={colors.brandColor} />
