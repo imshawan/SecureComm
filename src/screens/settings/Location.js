@@ -141,6 +141,10 @@ const LocationScreen = ({navigation}) => {
       delete data.country.states;
     } catch {}
 
+    if (data.country.region && data.country.region.name == 'Select') {
+      location.country.region.name = '';
+    }
+
     try {
       let { payload } = await HTTP.put(endpoint, {location: data});
       if (payload) {

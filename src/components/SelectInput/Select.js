@@ -88,7 +88,7 @@ const FullScreenDialog = ({title, visible, setVisible, data=[], setSelected}) =>
 
 const Select = ({data, currentValue, onChange, textStyle={}, listTitle}) => {
     const [visible, setVisible] = useState(false);
-    const [selected, setSelected] = useState(currentValue);
+    const [selected, setSelected] = useState(currentValue || {name: 'Select'});
 
     useEffect(() => {
         if (Object.keys(selected).length) {
