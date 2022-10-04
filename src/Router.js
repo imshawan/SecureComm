@@ -23,16 +23,16 @@
  
  const PublicRoutes = () => {
    return (
-       <NavigationContainer>
-         <Stack.Navigator initialRouteName="LoginScreen">
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="LoginScreen">
 
-           <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown: false}} />
-           <Stack.Screen name="SignupScreen" component={SignupScreen} options={{headerShown: false}} />
-           <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} options={{headerShown: false}} />
-           <Stack.Screen name="EnterOtpScreen" component={EnterOtpScreen} options={{headerShown: false}} />
+          <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown: false}} />
+          <Stack.Screen name="SignupScreen" component={SignupScreen} options={{headerShown: false}} />
+          <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} options={{headerShown: false}} />
+          <Stack.Screen name="EnterOtpScreen" component={EnterOtpScreen} options={{headerShown: false}} />
 
-           </Stack.Navigator>
-       </NavigationContainer>
+        </Stack.Navigator>
+      </NavigationContainer>
    );
  };
 
@@ -51,7 +51,7 @@
           <Stack.Screen name="BasicProfileEdit" component={BasicProfileEdit} options={{headerShown: false}} />
           <Stack.Screen name="AboutScreen" component={About} options={{headerShown: false}} />
 
-        </ Stack.Navigator>
+        </Stack.Navigator>
       </NavigationContainer>
   );
  }
