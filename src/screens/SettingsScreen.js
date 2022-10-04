@@ -6,6 +6,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 
 import { clearCurrentRooms } from "../database";
 import { roomActions } from '../store/roomListStore';
+import { applicationActions } from '../store/appStore';
 import ProfileAvtar from "../components/ProfileAvtar";
 import DialogBox from "../components/DialogBox";
 import { colors, HEADER_HEIGHT, fontSizes, DIALOG_LABELS, BUTTONS, SETTINGS, APP_NAME, LABELS, fontFamily } from '../common';
@@ -182,7 +183,8 @@ const SettingsScreen = ({navigation, route}) => {
         setVisible(false);
         await AsyncStorage.clear();
         dispatch(roomActions.clearRooms());
-        navigation.navigate('LoginScreen');
+        dispatch(applicationActions.clearAuthentication());
+        // navigation.navigate('LoginScreen');
     }
     
     const getFullname = () => {

@@ -127,7 +127,7 @@ const ABOUT_SCREEN = {
     },
     report: {
         header: 'Report',
-        text: 'Report bug and issues and make the app better'
+        text: 'Report bug and issues and make the application better'
     },
     share: {
         header: 'Share',

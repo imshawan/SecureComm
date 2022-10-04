@@ -16,6 +16,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Snackbar from 'react-native-snackbar';
 import { useSelector, useDispatch } from 'react-redux';
 import { currentUserActions } from '../../store/userStore';
+import { applicationActions } from '../../store/appStore';
 import PageHeader from '../../components/PageHeaderComponent';
 import Loader from '../../components/Loader';
 
@@ -84,7 +85,8 @@ const LoginScreen = ({navigation, route}) => {
       
       setAuthToken(payload.token);
       dispatch(currentUserActions.setCurrentUser(payload.user));
-      navigation.navigate('Home');
+      dispatch(applicationActions.setAuthenticated(true));
+      // navigation.navigate('Home');
 
     } catch (err) {
       if (Platform.OS === 'android') {

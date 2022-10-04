@@ -2,22 +2,27 @@ import { createSlice } from "@reduxjs/toolkit";
 import { log } from "../config";
 
 const applicationInitialState = {
-    application: {
-        isAuthenticated: false,
-        currentRoom: null,
-    }
+    isAuthenticated: false,
+    currentRoom: null,
+    loading: true,
 }
 
 const applicationSlice = createSlice({
     name: 'application',
     initialState: applicationInitialState,
     reducers: {
-        isAuthenticated(state, action) {
-            state.application.isAuthenticated = action.payload;
+        setAuthenticated(state, action) {
+            state.isAuthenticated = action.payload;
         },
         setCurrentRoom(state, action) {
-            state.application.currentRoom = action.payload;
+            state.currentRoom = action.payload;
         },
+        clearAuthentication(state){
+            state.isAuthenticated = false;
+        },
+        setLoading(state, action){
+            state.loading = action.payload;
+        }
     }
 });
 

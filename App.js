@@ -14,7 +14,7 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { Provider } from "react-redux";
 import Store from './src/store';
-import { PublicRoutes, PrivateRoutes } from './src/Router';
+import SecureComm from './src/Index';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -26,7 +26,7 @@ const App = () => {
   return (
     <Provider store={Store}>
       <PaperProvider>
-        <PublicRoutes />
+        <SecureComm />
       </PaperProvider>
     </Provider>
   );

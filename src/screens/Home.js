@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, ScrollView, StatusBar, BackHandler, Alert } from "react-native";
+import { View, StyleSheet, ScrollView, StatusBar } from "react-native";
+import { View as AnimatedView } from 'react-native-animatable';
 import { SpeedDial } from '@rneui/themed';
 import { io } from 'socket.io-client';
 import { useSelector, useDispatch } from 'react-redux';
@@ -89,7 +90,7 @@ const Home = ({navigation}) => {
     }, [currentUser._id])
 
     return (
-        <View style={styles.container}>
+        <AnimatedView animation={'fadeIn'} duration={600} style={styles.container}>
 
             <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
             <HeaderComponent />
@@ -123,7 +124,7 @@ const Home = ({navigation}) => {
                  
             </SpeedDial>
 
-        </View>
+        </AnimatedView>
     )
 };
 
