@@ -11,22 +11,21 @@ const SecureComm = () => {
     const applicationState = useSelector(state => state.application);
     const dispatch = useDispatch();
 
-    const hideSplashScreen = (value) => {
+    const hideSplashScreen = () => {
         if (applicationState.loading) {
-            dispatch(applicationActions.setLoading(!value));
+            dispatch(applicationActions.setLoading(false));
         }
     }
 
     const loadInitialState = async () => {
-        hideSplashScreen(false);
-
         let token = await getToken();
         if (token) {
             setAuthToken(token);
             let {payload} = await HTTP.post(ENDPOINTS.checkAuthentication, {});
             dispatch(applicationActions.setAuthenticated(payload.authenticated));
+            hideSplashScreen();
         } else {
-            setTimeout(() => hideSplashScreen(true), 1000);
+            setTimeout(() => hideSplashScreen(), 1000);
         }
     }
 
