@@ -33,7 +33,14 @@ const styles = StyleSheet.create({
 
 
 const AnimatedInput = Animated.createAnimatedComponent(TextInput);
-const AnimatedTextInput = ({label, placeholder, value, onChange, inputStyle, multiline=false}) => {
+const AnimatedTextInput = ({label, placeholder, value, onChange, inputStyle, multiline=false, disabled=false, error=false, onFocused}) => {
+    let props = {};
+    if (disabled) {
+        props = {
+            editable: false,
+            selectTextOnFocus: false,
+        }
+    }
     
     const interpolatedColor = new Animated.Value(0);
 
@@ -42,18 +49,24 @@ const AnimatedTextInput = ({label, placeholder, value, onChange, inputStyle, mul
             <Text style={styles.formLabel}>{label}</Text>
             <View style={styles.sectionStyle}>
               <AnimatedInput
-                style={[styles.inputStyle, inputStyle, {borderColor: AnimColor(interpolatedColor, 'transparent')}]}
+                style={[styles.inputStyle, inputStyle, {borderColor: error ? colors.red : AnimColor(interpolatedColor, 'transparent')}]}
                 onChangeText={onChange}
                 placeholder={placeholder}
                 placeholderTextColor={AnimColor(interpolatedColor, colors.placeholderColor)}
                 keyboardType="default"
                 defaultValue={value}
-                onFocus={() => showFocusColor(interpolatedColor)}
+                onFocus={() => {
+                    showFocusColor(interpolatedColor);
+                    if (typeof onFocused === 'function') {
+                        onFocused();
+                    }
+                }}
                 onBlur={() => showOriginColor(interpolatedColor)}
                 multiline={multiline}
                 blurOnSubmit={false}
                 underlineColorAndroid="#f000"
                 returnKeyType="next"
+                {...props}
                 />
             </View>
           </>

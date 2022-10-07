@@ -256,7 +256,7 @@ const SettingsScreen = ({navigation, route}) => {
                         <SectionHeading header={SETTINGS.about.header} subHeader={SETTINGS.about.subHeader} icon={'question-circle-o'} />
                         <View style={styles.cardStyle}>
                             <IndividualList onClicked={() => navigation.navigate('AboutScreen')} header={SETTINGS.menus.about} subHeader={SETTINGS.menus.aboutSubText} />
-                            <IndividualList border={0} header={SETTINGS.menus.reachUs} subHeader={SETTINGS.menus.reachUsSubText} />
+                            <IndividualList onClicked={() => navigation.navigate('ContactScreen')} border={0} header={SETTINGS.menus.reachUs} subHeader={SETTINGS.menus.reachUsSubText} />
                         </View>
                     </View>
 

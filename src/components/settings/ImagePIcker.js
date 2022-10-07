@@ -14,7 +14,11 @@ const imagePickerOptions = {
   cropping: true,
   includeBase64: true,
   useFrontCamera: true,
-  mediaType: 'photo'
+  mediaType: 'photo',
+  cropperStatusBarColor: colors.black,
+  cropperActiveWidgetColor: colors.brandColor,
+  cropperToolbarColor: colors.black,
+  cropperToolbarWidgetColor: colors.white,
 }
 
 const styles = StyleSheet.create({

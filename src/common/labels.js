@@ -11,12 +11,14 @@ export const AUTHOR = {
 
 export const ERRORS = {
     invalidEmail: 'Invalid email Id',
+    noEmail: 'Email Id is required',
     noUsernameOrEmailSupplied: 'Field cannot be empty',
     noPasswordSupplied: 'Password field cannot be empty',
     noUsernameSupplied: 'Username cannot be empty',
     noOtpSupplied: 'Please fill the OTP',
     noConfirmPassword: 'Please re-enter your password',
-    passwordsNoMatch: 'Passwords do not match'
+    passwordsNoMatch: 'Passwords do not match',
+    noMessage: 'Please write something for us',
 };
 
 export const PLACEHOLDERS = {
@@ -144,10 +146,17 @@ const ABOUT_SCREEN = {
     footer: 'Made with ❤️ in India'
 }
 
+const CONTACT_SCREEN = {
+    title: 'Reach us',
+    header: 'Send us your queries',
+    subHeader: 'and valuable thoughts'
+}
+
 export const LABELS = {
     FORGOT_PASSWORD_SCREEN,
     LOCATION_EDIT_SCREEN,
     BASIC_PROFILE_EDIT,
     HOME_SCREEN,
     ABOUT_SCREEN,
+    CONTACT_SCREEN,
 };
