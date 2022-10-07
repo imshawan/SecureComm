@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { View, StyleSheet, StatusBar, TouchableOpacity, Text, Keyboard } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector } from 'react-redux';
-import Snackbar from 'react-native-snackbar';
 
 import AnimatedTextInput from '../../components/AnimatedTextInput';
 import { currentUserActions } from '../../store/userStore';
