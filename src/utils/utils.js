@@ -1,3 +1,4 @@
+import Snackbar from 'react-native-snackbar';
 import  {Animated} from 'react-native';
 import { colors } from "../common";
 
@@ -33,3 +34,13 @@ export const validateEmail = (email) => {
 export const generateUUID = (string='') => {
     return string.toLowerCase() + '-' + Date.now();
 }
+
+export const notifyUser = (message) => {
+    Snackbar.show({
+      text: message,
+      duration: Snackbar.LENGTH_SHORT,
+      textColor: colors.white,
+      backgroundColor: colors.black,
+      numberOfLines: 4,
+    });
+  }

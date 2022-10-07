@@ -7,6 +7,7 @@ import Snackbar from 'react-native-snackbar';
 import AnimatedTextInput from '../../components/AnimatedTextInput';
 import { currentUserActions } from '../../store/userStore';
 import { colors, HEADER_HEIGHT, fontSizes, LABELS, fontFamily, ERRORS } from '../../common';
+import { notifyUser } from '../../utils';
 import { styles as defaultStyles } from '../styles';
 import { log } from '../../config';
 
@@ -154,16 +155,6 @@ const Contact = ({navigation}) => {
 
   const handleErrors = (errorMessage, field) => {
     setErrors(prevState => ({...prevState, [field]: errorMessage}));
-  }
-
-  const notifyUser = (message) => {
-    Snackbar.show({
-      text: message,
-      duration: Snackbar.LENGTH_SHORT,
-      textColor: colors.white,
-      backgroundColor: colors.black,
-      numberOfLines: 4,
-    });
   }
 
   const sendMessage = async (payload) => {
