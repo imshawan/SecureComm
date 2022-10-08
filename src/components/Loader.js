@@ -20,11 +20,11 @@ const styles = StyleSheet.create({
   }
 });
  
-const Loader = ({animating, color='#000', text='Please wait...'}) => {
+const Loader = ({visible, color='#000', text='Please wait...'}) => {
   return (
-    <Dialog isVisible={animating} overlayStyle={styles.container} animationType='fade' statusBarTranslucent>
+    <Dialog isVisible={visible} overlayStyle={styles.container} animationType='fade' statusBarTranslucent>
       <ActivityIndicator
-        animating={animating}
+        animating={visible}
         color={color}
         size="large"
         style={styles.activityIndicator}

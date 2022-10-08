@@ -10,8 +10,6 @@ import {
   Dimensions, TouchableHighlight,
   KeyboardAvoidingView,
 } from 'react-native';
- 
-import AsyncStorage from '@react-native-community/async-storage';
 import PageHeader from '../../components/PageHeaderComponent';
 
 import { log, showAlert } from '../../config';

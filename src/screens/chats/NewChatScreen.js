@@ -126,7 +126,7 @@ const NewChatScreen = ({navigation, route}) => {
 
     return (<>
             <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
-            {loading ? <Loader animating={loading} color={colors.white} /> : ''}
+            <Loader visible={loading} />
             <View style={styles.container}>
                 <View style={styles.headerContainer}>
 

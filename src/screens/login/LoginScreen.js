@@ -26,7 +26,6 @@ import { showFocusColor, AnimColor, showOriginColor } from '../../utils';
 import { styles } from '../styles';
 import { HTTP, setAuthToken } from '../../services';
  
-// import Loader from './Components/Loader';
 
 const pageStyles = StyleSheet.create({
   headerContainer: {
@@ -136,7 +135,7 @@ const LoginScreen = ({navigation, route}) => {
   return (<>
     <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
     <View style={styles.mainBody}>
-      {loading ? <Loader animating={loading} color={colors.white} /> : ''}
+      <Loader visible={loading} />
       {display === 'flex' ? <PageHeader name={'Log in'} /> : <></>}
       <ScrollView
         

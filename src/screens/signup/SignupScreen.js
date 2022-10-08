@@ -130,7 +130,7 @@ const SignupScreen = ({navigation}) => {
     <>
     <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
     <View style={styles.mainBody}>
-      {loading ? <Loader animating={loading} color={colors.white} /> : ''}
+      <Loader visible={loading} />
       {display === 'flex' ? <PageHeader name={'Sign up'} /> : <></>}
       <ScrollView
         keyboardShouldPersistTaps="handled"
