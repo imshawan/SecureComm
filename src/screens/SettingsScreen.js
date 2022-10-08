@@ -246,6 +246,7 @@ const SettingsScreen = ({navigation, route}) => {
                     <View>
                         <SectionHeading header={SETTINGS.account.header} subHeader={SETTINGS.account.subHeader} icon={'sliders'} />
                         <View style={styles.cardStyle}>
+                            <IndividualList onClicked={() => navigation.navigate('ChangePassword')} header={SETTINGS.menus.passwords} subHeader={SETTINGS.menus.passwordsSubText} />
                             <IndividualList header={SETTINGS.menus.notifications} subHeader={SETTINGS.menus.notificationsSubText} />
                             <IndividualList border={0} onClicked={() => setVisible(true)} header={SETTINGS.menus.removeAccount} subHeader={SETTINGS.menus.removeAccountSubText} />
                             {/* <IndividualList header={'Delete Account'} subHeader={'Delete your account permanently'} /> */}

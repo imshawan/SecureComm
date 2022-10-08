@@ -19,6 +19,9 @@ export const ERRORS = {
     noConfirmPassword: 'Please re-enter your password',
     passwordsNoMatch: 'Passwords do not match',
     noMessage: 'Please write something for us',
+    noNewPassword: 'Please enter your new passwword',
+    noConfirmPassword: 'Please re-enter new password',
+    passwordsDoNotMatch: 'Passwords do not match',
 };
 
 export const PLACEHOLDERS = {
@@ -63,8 +66,11 @@ export const SETTINGS = {
         subHeader: 'Reach us with your suggestions and feedbacks'
     },
     menus: {
+        passwords: 'Passwords',
+        passwordsSubText: 'Change your account passwords',
+
         notifications: 'Notifications',
-        notificationsSubText: 'Manage notifications and sound',
+        notificationsSubText: 'Manage app notifications and sound',
 
         removeAccount: 'Remove account',
         removeAccountSubText: 'Remove account from this device',
@@ -154,6 +160,23 @@ const CONTACT_SCREEN = {
     subHeader: 'and valuable thoughts'
 }
 
+const CHANGE_PASSWORD_SCREEN = {
+    title: 'Passwords',
+    header: 'Change existing app password',
+    subHeader: 'this helps in keeping your account secure',
+
+    currentPassword: 'Current password',
+    currentPasswordPlaceholder: 'Enter your current password',
+
+    newPassword: 'New password',
+    newPasswordPlaceholder: 'Create new password',
+
+    confirmPassword: 'Confirm password',
+    confirmPasswordPlaceholder: 'Re-enter your new password',
+
+    actionBtn: 'CHANGE PASSWORD'
+}
+
 export const LABELS = {
     FORGOT_PASSWORD_SCREEN,
     LOCATION_EDIT_SCREEN,
@@ -161,4 +184,5 @@ export const LABELS = {
     HOME_SCREEN,
     ABOUT_SCREEN,
     CONTACT_SCREEN,
+    CHANGE_PASSWORD_SCREEN
 };

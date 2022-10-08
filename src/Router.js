@@ -18,6 +18,7 @@
  import BasicProfileEdit from './screens/settings/BasicProfile';
  import About from './screens/settings/About';
  import Contact from './screens/settings/Contact';
+ import ChangePassword from './screens/settings/ChangePassword';
  
 
  const Stack = createStackNavigator();
@@ -52,6 +53,7 @@
           <Stack.Screen name="BasicProfileEdit" component={BasicProfileEdit} options={{headerShown: false}} />
           <Stack.Screen name="AboutScreen" component={About} options={{headerShown: false}} />
           <Stack.Screen name="ContactScreen" component={Contact} options={{headerShown: false}} />
+          <Stack.Screen name="ChangePassword" component={ChangePassword} options={{headerShown: false}} />
 
         </Stack.Navigator>
       </NavigationContainer>

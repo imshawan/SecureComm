@@ -56,10 +56,11 @@ const AnimatedTextInput = ({label, placeholder, value, onChange, inputStyle, mul
                 keyboardType="default"
                 defaultValue={value}
                 onFocus={() => {
-                    showFocusColor(interpolatedColor);
                     if (typeof onFocused === 'function') {
                         onFocused();
                     }
+                    
+                    showFocusColor(interpolatedColor);
                 }}
                 onBlur={() => showOriginColor(interpolatedColor)}
                 multiline={multiline}

@@ -216,7 +216,9 @@ const Contact = ({navigation}) => {
                 value={state.username}
                 disabled={username != ''}
                 error={!!errors.username}
-                onFocused={() => handleErrors(null, 'username')}
+                onFocused={() => {
+                  if (errors.username) handleErrors(null, 'username');
+                }}
                 />
 
               {errors.username ? <Text style={[defaultStyles.errorTextStyle, styles.errorTextStyle]}>{errors.username}</Text> : ''}
@@ -228,7 +230,9 @@ const Contact = ({navigation}) => {
                 value={state.email}
                 disabled={email != ''}
                 error={!!errors.email}
-                onFocused={() => handleErrors(null, 'email')}
+                onFocused={() => {
+                  if (errors.email) handleErrors(null, 'email');
+                }}
                 />
 
               {errors.email ? <Text style={[defaultStyles.errorTextStyle, styles.errorTextStyle]}>{errors.email}</Text> : ''}
@@ -241,7 +245,9 @@ const Contact = ({navigation}) => {
                 inputStyle={styles.textArea}
                 multiline={true}
                 error={!!errors.message}
-                onFocused={() => handleErrors(null, 'message')}
+                onFocused={() => {
+                  if (errors.message) handleErrors(null, 'message');
+                }}
                 />
 
               {errors.message ? <Text style={[defaultStyles.errorTextStyle, styles.errorTextStyle]}>{errors.message}</Text> : ''}
