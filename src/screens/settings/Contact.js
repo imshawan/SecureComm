@@ -4,11 +4,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector } from 'react-redux';
 
 import AnimatedTextInput from '../../components/AnimatedTextInput';
-import { currentUserActions } from '../../store/userStore';
-import { colors, HEADER_HEIGHT, fontSizes, LABELS, fontFamily, ERRORS } from '../../common';
+import { colors, HEADER_HEIGHT, fontSizes, LABELS, fontFamily, ERRORS, ENDPOINTS, PLACEHOLDERS } from '../../common';
 import { notifyUser } from '../../utils';
 import { styles as defaultStyles } from '../styles';
 import { log } from '../../config';
+import { HTTP } from '../../services';
 
 const { CONTACT_SCREEN } = LABELS;
 const styles = StyleSheet.create({
@@ -144,9 +144,9 @@ headerContainer: {
 
 
 const Contact = ({navigation}) => { 
-  const {email} = useSelector(state => state.user.currentUser)
-  const [state, setState] = useState({email: email, message: ''});
-  const [errors, setErrors] = useState({email: '', message: ''});
+  const {email, username} = useSelector(state => state.user.currentUser)
+  const [state, setState] = useState({email: email, username, message: ''});
+  const [errors, setErrors] = useState({email: '', username: '', message: ''});
 
   const handleOnChange = (field, value) => {
     setState(prevState => ({...prevState, [field]: value}));
@@ -156,15 +156,23 @@ const Contact = ({navigation}) => {
     setErrors(prevState => ({...prevState, [field]: errorMessage}));
   }
 
-  const sendMessage = async (payload) => {
-    // TODO
-    // Add API calls and logic
+  const sendMessage = async (data) => {
+    notifyUser(PLACEHOLDERS.sendingMessage);
+    navigation.goBack();
+
+    let {payload} = await HTTP.post(ENDPOINTS.contactUs, data);
+
+    notifyUser(payload.message)
   }
 
   const handleSubmitPress = async () => {
     Keyboard.dismiss();
     
     let errors = 0;
+    if (!state.username) {
+      handleErrors(ERRORS.noUsernameSupplied, 'username');
+      errors++;
+    }
     if (!state.email) {
       handleErrors(ERRORS.noEmail, 'email');
       errors++;
@@ -176,14 +184,11 @@ const Contact = ({navigation}) => {
     if (errors) return;
 
     await sendMessage(state);
-    navigation.goBack();
-    notifyUser('Message was sent!');
-
   }
 
   return (
     <>
-      <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
+      <StatusBar barStyle='dark-content' backgroundColor={colors.white} />      
       <View style={styles.container}>
           <View style={styles.headerContainer}>
               <View style={styles.headerContent}>
@@ -203,6 +208,18 @@ const Contact = ({navigation}) => {
             </View>
 
             <View style={styles.formContainer}>
+
+            <AnimatedTextInput 
+                label={'Your username'}
+                placeholder='Your username'
+                onChange={(val) => handleOnChange('username', val)}
+                value={state.username}
+                disabled={username != ''}
+                error={!!errors.username}
+                onFocused={() => handleErrors(null, 'username')}
+                />
+
+              {errors.username ? <Text style={[defaultStyles.errorTextStyle, styles.errorTextStyle]}>{errors.username}</Text> : ''}
             
               <AnimatedTextInput 
                 label={'Your email'}

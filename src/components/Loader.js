@@ -1,37 +1,37 @@
 import React from 'react';
-import { ActivityIndicator, View, StyleSheet } from 'react-native';
-import { colors } from '../common';
+import { Dialog } from "@rneui/themed";
+import { ActivityIndicator, Text, StyleSheet } from 'react-native';
+import { colors, fontFamily, fontSizes } from '../common';
 
-
+const styles = StyleSheet.create({
+  container: {
+    width: '85%',
+    borderRadius: 6
+},
+  activityIndicator: {
+    alignItems: 'center',
+    height: 48,
+  },
+  loaderText: {
+    alignSelf: 'center', 
+    fontFamily: fontFamily.regular, 
+    fontSize: fontSizes.medium, 
+    color: colors.black
+  }
+});
  
-const Loader = ({animating, color='#000'}) => {
+const Loader = ({animating, color='#000', text='Please wait...'}) => {
   return (
-    <View style={styles.container}>
+    <Dialog isVisible={animating} overlayStyle={styles.container} animationType='fade' statusBarTranslucent>
       <ActivityIndicator
         animating={animating}
         color={color}
         size="large"
         style={styles.activityIndicator}
       />
-    </View>
+      <Text style={styles.loaderText}>{text}</Text>
+    </Dialog>
   );
 };
  
-export default Loader; 
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: `${colors.black}90`,
-    zIndex: 99,
-    position: 'absolute',
-    height: '100%',
-    width: '100%'
-  },
-  activityIndicator: {
-    alignItems: 'center',
-    height: 80,
-  },
-});
+export default Loader;

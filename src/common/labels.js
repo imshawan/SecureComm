@@ -33,7 +33,9 @@ export const PLACEHOLDERS = {
     confirmPassword: 'Confirm Password',
 
     updatedSuccessfully: 'Updated successfully',
-    pleaseWait: 'Please wait'
+    pleaseWait: 'Please wait',
+
+    sendingMessage: 'Sending your message.'
 };
 
 export const DIALOG_LABELS = {
