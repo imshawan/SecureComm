@@ -14,6 +14,7 @@ import { List } from "../components/chat";
 import { log } from '../config';
 import { colors, LABELS, APP_REMOTE_HOST } from '../common';
 import { storeNewRoom, Rooms, listMyRooms } from '../database';
+import { getUserPicture } from '../utils';
 
 const styles = StyleSheet.create({
     container: {
@@ -107,7 +108,7 @@ const Home = ({navigation}) => {
                     let name = [chatUser.firstname, chatUser.lastname].join(' ') || chatUser.username;
 
                     return (
-                        <List name={name} image={chatUser.picture} callback={() => userCardOnClick({currentRoom: item, chatUser})} key={item._id} message={`@${chatUser.username}`} />
+                        <List name={name} image={getUserPicture(chatUser)} callback={() => userCardOnClick({currentRoom: item, chatUser})} key={item._id} message={`@${chatUser.username}`} />
                     );
                 })}
             </ScrollView>) : <EmptyComponent 

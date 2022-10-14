@@ -1,6 +1,6 @@
 import Snackbar from 'react-native-snackbar';
 import  {Animated} from 'react-native';
-import { colors } from "../common";
+import { colors, APP_REMOTE_HOST } from "../common";
 
 export const showOriginColor = (interpolatedColor, duration=350) => {
     Animated.timing(interpolatedColor, {
@@ -46,3 +46,8 @@ export const notifyUser = (message) => {
   }
 
 export const isBase64Data = string =>  new RegExp("base64").test(String(string));
+
+export const getUserPicture = (user) => {
+  if (!user.picture) return null;
+  return [APP_REMOTE_HOST, '/', user.picture].join('');
+}

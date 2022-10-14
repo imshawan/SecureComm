@@ -9,8 +9,8 @@ import { messageActions } from '../../store/messagesStore';
 import { Thread, ChatInput } from '../../components/chat';
 import ProfileAvtar from '../../components/ProfileAvtar';
 import { log } from '../../config';
-import { colors, HEADER_HEIGHT, fontSizes, dummyChat, APP_REMOTE_HOST } from '../../common';
-import { generateUUID } from '../../utils';
+import { colors, HEADER_HEIGHT, fontSizes, APP_REMOTE_HOST } from '../../common';
+import { generateUUID, getUserPicture } from '../../utils';
 
 
 const styles = StyleSheet.create({
@@ -167,7 +167,7 @@ const ChatScreen = ({navigation, route}) => {
                             <View style={styles.touchControlStyle}>
                                 <Icon name="arrow-left" size={fontSizes.large} style={styles.backNavStyle}/>
                             </View>
-                            <ProfileAvtar name={fullname} />
+                            <ProfileAvtar name={fullname} image={getUserPicture(chatUser)}/>
                         </TouchableOpacity>
                         <View>
                             <Text style={styles.headerTextStyle}>{fullname}</Text>

@@ -14,7 +14,7 @@ import { colors, HEADER_HEIGHT, fontSizes, LABELS, fontFamily, ENDPOINTS, PLACEH
 import { HTTP } from '../../services';
 import { styles as defaultStyles } from '../styles';
 import { log } from '../../config';
-import { getToken, isBase64Data } from '../../utils';
+import { getToken, getUserPicture, isBase64Data } from '../../utils';
 
 const { BASIC_PROFILE_EDIT } = LABELS;
 
@@ -194,7 +194,7 @@ const BasicProfileEdit = ({navigation}) => {
     if (isBase64Data(picture)) {
       updateProfile(ENDPOINTS.changePicture, {picture}).then((payload) => {
         if (!payload) return;
-        dispatch(currentUserActions.updateProfilePicture(APP_REMOTE_HOST + '/' + payload.picture));
+        dispatch(currentUserActions.updateProfilePicture(getUserPicture(payload)));
       });
     }
   }, [picture])

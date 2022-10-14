@@ -21,8 +21,8 @@ import PageHeader from '../../components/PageHeaderComponent';
 import Loader from '../../components/Loader';
 
 import { log, showAlert } from '../../config';
-import { colors, fontSizes, ENDPOINTS, ERRORS, PLACEHOLDERS, APP_REMOTE_HOST } from '../../common';
-import { showFocusColor, AnimColor, showOriginColor } from '../../utils';
+import { colors, fontSizes, ENDPOINTS, ERRORS, PLACEHOLDERS } from '../../common';
+import { showFocusColor, AnimColor, showOriginColor, getUserPicture } from '../../utils';
 import { styles } from '../styles';
 import { HTTP, setAuthToken } from '../../services';
  
@@ -79,7 +79,7 @@ const LoginScreen = ({navigation, route}) => {
       let { payload } = await HTTP.post(ENDPOINTS.logIn, userInput);
         let {user} = payload;
         if (user.picture) {
-          user.picture = APP_REMOTE_HOST + '/' + user.picture;
+          user.picture = getUserPicture(user);
         }
         await AsyncStorage.setItem('authToken', payload.token);
         await AsyncStorage.setItem('user', JSON.stringify(user));

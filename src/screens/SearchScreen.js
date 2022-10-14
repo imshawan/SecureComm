@@ -7,7 +7,8 @@ import { List } from "../components/chat";
 import SearchBar from '../components/SearchBar';
 
 import { log } from '../config';
-import { colors, HEADER_HEIGHT, fontSizes, dummyJSON } from '../common';
+import { colors, HEADER_HEIGHT, fontSizes } from '../common';
+import { getUserPicture } from '../utils';
 
 
 const styles = StyleSheet.create({
@@ -127,7 +128,7 @@ const SearchScreen = ({navigation}) => {
                     let name = [chatUser.firstname, chatUser.lastname].join(' ') || chatUser.username;
 
                     return (
-                        <List name={name} callback={() => userCardOnClick({currentRoom: item, chatUser})} key={item._id} message={`@${chatUser.username}`} />
+                        <List name={name} image={getUserPicture(chatUser)} callback={() => userCardOnClick({currentRoom: item, chatUser})} key={item._id} message={`@${chatUser.username}`} />
                     );
                 })}
             </ScrollView>

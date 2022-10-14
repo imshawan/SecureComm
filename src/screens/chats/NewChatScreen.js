@@ -9,9 +9,9 @@ import { List } from '../../components/chat';
 import Loader from '../../components/Loader';
 
 import { log } from '../../config';
-import { colors, HEADER_HEIGHT, fontSizes, ENDPOINTS, APP_REMOTE_HOST } from '../../common';
+import { colors, HEADER_HEIGHT, fontSizes, ENDPOINTS } from '../../common';
 import { HTTP } from '../../services';
-import { getLoggedInUser } from '../../utils';
+import { getLoggedInUser, getUserPicture } from '../../utils';
 import { storeNewRoom, Rooms } from '../../database';
 
 
@@ -152,7 +152,7 @@ const NewChatScreen = ({navigation, route}) => {
                     {apiResponse.map((item, index) => { 
                             let name = [item.firstname, item.lastname].join(' ') || item.username;
 
-                            return (<List name={name} image={[APP_REMOTE_HOST, '/', item.picture].join('')} callback={() => userCardOnClick(item)} key={item._id} message={`@${item.username}`} />);
+                            return (<List name={name} image={getUserPicture(item)} callback={() => userCardOnClick(item)} key={item._id} message={`@${item.username}`} />);
                         })}
                 </ScrollView>
 
