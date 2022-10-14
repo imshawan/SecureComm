@@ -108,7 +108,7 @@ const ChatScreen = ({navigation, route}) => {
         let payload = {
             name: fullname, 
             message, 
-            id: generateUUID(), 
+            id: generateUUID('msg'), 
             _id: currentUser._id, 
             room: roomId, 
             createdAt: new Date(Date.now()).toISOString(),
@@ -121,9 +121,9 @@ const ChatScreen = ({navigation, route}) => {
         
         socketIO.emit('message:send', payload);
         
+        socketIO.emit('global:message:send', {chatUser: currentUser, currentRoom, message: payload, room: chatUser._id});
         if (isNewRoom) {
-            socketIO.emit('global:message:send', {chatUser: currentUser, currentRoom, message: payload, room: chatUser._id});
-            setIsNewRoom(false);
+            // setIsNewRoom(false);
         }
     }
 

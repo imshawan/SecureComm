@@ -44,3 +44,5 @@ export const notifyUser = (message) => {
       numberOfLines: 4,
     });
   }
+
+export const isBase64Data = string =>  new RegExp("base64").test(String(string));

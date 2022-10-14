@@ -10,10 +10,11 @@ import ImagePickerDialog from '../../components/settings/ImagePIcker';
 import AnimatedTextInput from '../../components/AnimatedTextInput';
 
 import { currentUserActions } from '../../store/userStore';
-import { colors, HEADER_HEIGHT, fontSizes, LABELS, fontFamily, ENDPOINTS, PLACEHOLDERS } from '../../common';
+import { colors, HEADER_HEIGHT, fontSizes, LABELS, fontFamily, ENDPOINTS, PLACEHOLDERS, APP_REMOTE_HOST } from '../../common';
 import { HTTP } from '../../services';
 import { styles as defaultStyles } from '../styles';
 import { log } from '../../config';
+import { getToken, isBase64Data } from '../../utils';
 
 const { BASIC_PROFILE_EDIT } = LABELS;
 
@@ -149,7 +150,7 @@ const BasicProfileEdit = ({navigation}) => {
   });
 
   const dispatch = useDispatch();
-
+   
   const handleOnChange = (field, value) => {
     setState(prevState => ({...prevState, [field]: value}));
   }
@@ -170,6 +171,7 @@ const BasicProfileEdit = ({navigation}) => {
       let { payload } = await HTTP.put(endpoint, data);
       if (payload) {
         notifyUser(payload.message || PLACEHOLDERS.updatedSuccessfully);
+        return payload;
       }
     } catch (err) {
       notifyUser(err.status ? err.status.message : err);
@@ -183,9 +185,16 @@ const BasicProfileEdit = ({navigation}) => {
   }
 
   useEffect(() => {
-    if (picture && picture != currentUser.picture) {
-      updateProfile(ENDPOINTS.changePicture, {picture}).then(() => {
-        dispatch(currentUserActions.updateProfilePicture(picture));
+    // if (picture && picture != currentUser.picture) {
+    //   updateProfile(ENDPOINTS.changePicture, {picture}).then((payload) => {
+    //     dispatch(currentUserActions.updateProfilePicture(APP_REMOTE_HOST + '/' + payload.picture));
+    //   });
+    // }
+
+    if (isBase64Data(picture)) {
+      updateProfile(ENDPOINTS.changePicture, {picture}).then((payload) => {
+        if (!payload) return;
+        dispatch(currentUserActions.updateProfilePicture(APP_REMOTE_HOST + '/' + payload.picture));
       });
     }
   }, [picture])

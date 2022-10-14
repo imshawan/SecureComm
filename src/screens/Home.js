@@ -6,17 +6,13 @@ import { io } from 'socket.io-client';
 import { useSelector, useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { roomActions } from '../store/roomListStore';
-import { currentUserActions } from '../store/userStore';
 
 import HeaderComponent from "../components/HeaderComponent";
 import EmptyComponent from '../components/EmptyComponent';
 import { List } from "../components/chat";
 
 import { log } from '../config';
-import { colors, LABELS } from '../common';
-import { APP_REMOTE_HOST } from '../common';
-
-import { getLoggedInUser } from '../utils';
+import { colors, LABELS, APP_REMOTE_HOST } from '../common';
 import { storeNewRoom, Rooms, listMyRooms } from '../database';
 
 const styles = StyleSheet.create({
@@ -31,15 +27,19 @@ const styles = StyleSheet.create({
 
 const Home = ({navigation}) => {
     const [loading, setLoading] = useState(false);
+    const [socketIO, setSocket] = useState(null);
 
     const roomList = useSelector(state => state.rooms.roomList);
     const currentUser = useSelector(state => state.user.currentUser);
 
     const dispatch = useDispatch();
 
-    const socketIO = io(APP_REMOTE_HOST, {
-        transports: ['websocket']
-    });
+    useEffect(() => {
+        setSocket(io(APP_REMOTE_HOST, {
+            transports: ['websocket'],
+            })
+        );
+      }, []);
 
     const userCardOnClick = async (card) => {
         card = JSON.parse(JSON.stringify(card));
@@ -47,16 +47,22 @@ const Home = ({navigation}) => {
         navigation.navigate('ChatScreen', card);
     }
 
+    const roomExists = (roomId) => {
+        let rooms = roomList.find(e => e.roomId == roomId) || [];
+        return Boolean(rooms.length);
+    }
+
 
     useEffect(() => {
 
         listMyRooms().then(rooms => {
             if (rooms && rooms.length) {
+                log(Object.keys(rooms[0]))
                 dispatch(roomActions.initRooms(rooms));
             }
         });
 
-        if (!currentUser || !currentUser._id) return;
+        if (!currentUser || !currentUser._id || !socketIO) return;
 
         socketIO.on('connect', () =>{
             log('Connected to remote server with userId ' + currentUser._id)
@@ -64,17 +70,29 @@ const Home = ({navigation}) => {
         });
 
         
-        socketIO.on('global:message:receive', (socket) => {
-            alert(JSON.stringify(socket))
+        socketIO.on('global:message:receive', async (socket) => {
+            let {chatUser, currentRoom, message, room} = socket;
+            if (room != currentUser._id) return;
+
+            if (!roomExists(currentRoom.roomId)) {
+                currentRoom.creator = {};
+                dispatch(roomActions.addRoomToStore(currentRoom));
+                log(Object.keys(currentRoom))
+                log((currentRoom.memberDetails))
+                // let realmObj = await Rooms();
+                // await storeNewRoom(currentRoom, realmObj);
+                // log(Object.keys(currentRoom))
+            }
+
         })
 
-        return () => socketIO.removeListener('message:receive');
+        return () => socketIO.removeListener('global:message:receive');
 
         
-    }, [currentUser._id])
+    }, [currentUser._id, socketIO])
 
     return (
-        <AnimatedView animation={'fadeIn'} duration={600} style={styles.container}>
+        <AnimatedView animation={'fadeIn'} duration={800} style={styles.container}>
 
             <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
             <HeaderComponent />
@@ -89,7 +107,7 @@ const Home = ({navigation}) => {
                     let name = [chatUser.firstname, chatUser.lastname].join(' ') || chatUser.username;
 
                     return (
-                        <List name={name} callback={() => userCardOnClick({currentRoom: item, chatUser})} key={item._id} message={`@${chatUser.username}`} />
+                        <List name={name} image={chatUser.picture} callback={() => userCardOnClick({currentRoom: item, chatUser})} key={item._id} message={`@${chatUser.username}`} />
                     );
                 })}
             </ScrollView>) : <EmptyComponent 

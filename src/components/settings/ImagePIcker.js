@@ -19,6 +19,7 @@ const imagePickerOptions = {
   cropperActiveWidgetColor: colors.brandColor,
   cropperToolbarColor: colors.black,
   cropperToolbarWidgetColor: colors.white,
+  compressImageQuality: 0.8
 }
 
 const styles = StyleSheet.create({

@@ -5,6 +5,7 @@ const applicationInitialState = {
     isAuthenticated: false,
     currentRoom: null,
     loading: true,
+    authToken: null,
 }
 
 const applicationSlice = createSlice({
@@ -22,6 +23,9 @@ const applicationSlice = createSlice({
         },
         setLoading(state, action){
             state.loading = action.payload;
+        },
+        setAuthToken(state, action){
+            state.authToken = action.payload;
         }
     }
 });

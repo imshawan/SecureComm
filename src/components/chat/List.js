@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
 })
 
 
-export const List = ({name, message, id, callback}) => {
+export const List = ({name, message, id, callback, image}) => {
     const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
     const interpolatedColor = new Animated.Value(0);
     const navigation = useNavigation();
@@ -75,7 +75,7 @@ export const List = ({name, message, id, callback}) => {
         >
             <View style={styles.container}>
                 <View style={styles.avtarContainer}>
-                    <ProfileAvtar name={name} textStyle={styles.avtarTextStyle} customStyles={styles.avtarStyles} />
+                    <ProfileAvtar name={name} image={image} textStyle={styles.avtarTextStyle} customStyles={styles.avtarStyles} />
                 </View>
                 <View style={styles.textContainer}>
 

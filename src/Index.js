@@ -22,6 +22,7 @@ const SecureComm = () => {
         let token = await getToken();
         if (token) {
             setAuthToken(token);
+            dispatch(applicationActions.setAuthToken(token));
             let {payload} = await HTTP.post(ENDPOINTS.checkAuthentication, {});
             dispatch(applicationActions.setAuthenticated(payload.authenticated));
             if (payload.authenticated) {
