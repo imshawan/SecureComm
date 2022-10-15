@@ -1,15 +1,16 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, StatusBar, TouchableOpacity, Text, TextInput, Keyboard } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Snackbar from 'react-native-snackbar';
 import { useSelector, useDispatch } from 'react-redux';
 import { currentUserActions } from '../../store/userStore';
 import Select from '../../components/SelectInput/Select';
+import AnimatedTextInput from '../../components/AnimatedTextInput';
 import { colors, HEADER_HEIGHT, fontSizes, LABELS, fontFamily, PLACEHOLDERS, ENDPOINTS } from '../../common';
 import { HTTP } from '../../services';
 import { styles as defaultStyles } from '../styles';
 import { DATA } from '../../data';
 import { log } from '../../config';
+import { updateCachedUserObject, notifyUser } from '../../utils';
 
 const { LOCATION_EDIT_SCREEN } = LABELS;
 const styles = StyleSheet.create({
@@ -123,16 +124,6 @@ const LocationScreen = ({navigation}) => {
 
   const dispatch = useDispatch();
 
-  const notifyUser = (message) => {
-    Snackbar.show({
-      text: message,
-      duration: Snackbar.LENGTH_SHORT,
-      textColor: colors.white,
-      backgroundColor: colors.black,
-      numberOfLines: 4,
-    });
-  }
-
   const updateLocation = async (endpoint, data) => {
     notifyUser(PLACEHOLDERS.pleaseWait);
     
@@ -150,6 +141,7 @@ const LocationScreen = ({navigation}) => {
       if (payload) {
         notifyUser(PLACEHOLDERS.updatedSuccessfully);
       }
+      await updateCachedUserObject({location: data});
     } catch (err) {
       notifyUser(err.status ? err.status.message : err);
     }
@@ -207,20 +199,12 @@ const LocationScreen = ({navigation}) => {
               onChange={(val) => handleOnChange('region', val)} 
               currentValue={state.region} />
 
-
-            <Text style={styles.formLabel}>{LOCATION_EDIT_SCREEN.city}</Text>
-            <View style={styles.sectionStyle}>
-              <TextInput
-                style={styles.inputStyle}
-                onChangeText={(Usercity) => handleOnChange('city', Usercity)}
-                placeholder={LOCATION_EDIT_SCREEN.enterCity}
-                placeholderTextColor={colors.placeholderColor}
-                keyboardType="default"
-                blurOnSubmit={false}
-                underlineColorAndroid="#f000"
-                returnKeyType="next"
-                />
-            </View>
+            <AnimatedTextInput 
+              label={LOCATION_EDIT_SCREEN.city}
+              placeholder={LOCATION_EDIT_SCREEN.enterCity}
+              onChange={(val) => handleOnChange('city', val)}
+              value={state.city}
+            />
 
             <TouchableOpacity
               style={{...defaultStyles.buttonStyle, ...styles.buttonStyle}}

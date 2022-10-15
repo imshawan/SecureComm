@@ -17,7 +17,16 @@ export const isAuthenticated = async () => {
     }
 }
 
+export const cacheUserObject = async (userObj) => {
+    await AsyncStorage.setItem('user', JSON.stringify(userObj));
+}
+
 export const getLoggedInUser = async () => {
     let userData = await AsyncStorage.getItem('user');
     return JSON.parse(userData || {});
+}
+
+export const updateCachedUserObject = async (data) => {
+    let user = await getLoggedInUser();
+    await AsyncStorage.setItem('user', JSON.stringify({...user, ...data}));
 }

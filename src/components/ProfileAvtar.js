@@ -39,14 +39,13 @@ const ProfileAvtar = ({image, name, customStyles={}, textStyle = {}}) => {
     
     const props = {
         style: {...styles.avtarStyle, ...customStyles},
+        defaultSource: IMAGES.defaultUserProfile,
         source: {
             uri: image,
             headers: {
                 Authorization: `Bearer ${authToken}`
             },
-
         },
-        defaultSource: IMAGES.defaultUserProfile,
     }
     if (image) {
         component = React.createElement(Image, props);

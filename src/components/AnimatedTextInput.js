@@ -55,11 +55,12 @@ const AnimatedTextInput = ({label, placeholder, value, onChange, inputStyle, mul
                 placeholderTextColor={AnimColor(interpolatedColor, colors.placeholderColor)}
                 keyboardType="default"
                 defaultValue={value}
-                onFocus={() => {
+                onPressIn={() => {
                     if (typeof onFocused === 'function') {
                         onFocused();
                     }
-                    
+                }}
+                onFocus={() => {
                     showFocusColor(interpolatedColor);
                 }}
                 onBlur={() => showOriginColor(interpolatedColor)}

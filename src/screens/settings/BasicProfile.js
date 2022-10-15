@@ -14,7 +14,7 @@ import { colors, HEADER_HEIGHT, fontSizes, LABELS, fontFamily, ENDPOINTS, PLACEH
 import { HTTP } from '../../services';
 import { styles as defaultStyles } from '../styles';
 import { log } from '../../config';
-import { getToken, getUserPicture, isBase64Data } from '../../utils';
+import { getToken, getUserPicture, isBase64Data, updateCachedUserObject } from '../../utils';
 
 const { BASIC_PROFILE_EDIT } = LABELS;
 
@@ -108,7 +108,8 @@ inputStyle: {
     paddingLeft: 15,
     paddingRight: 15,
     borderRadius: 10,
-    height: 50,
+    height: 100, 
+    textAlignVertical: 'top',
     fontSize: fontSizes.medium,
     backgroundColor: colors.inputBackground,
     fontFamily: fontFamily.regular,
@@ -192,9 +193,11 @@ const BasicProfileEdit = ({navigation}) => {
     // }
 
     if (isBase64Data(picture)) {
-      updateProfile(ENDPOINTS.changePicture, {picture}).then((payload) => {
+      updateProfile(ENDPOINTS.changePicture, {picture}).then( async (payload) => {
         if (!payload) return;
-        dispatch(currentUserActions.updateProfilePicture(getUserPicture(payload)));
+        let userPicture = getUserPicture(payload);
+        dispatch(currentUserActions.updateProfilePicture(userPicture));
+        await updateCachedUserObject({picture: userPicture});
       });
     }
   }, [picture])
@@ -249,6 +252,7 @@ const BasicProfileEdit = ({navigation}) => {
                             value={state.about}
                             multiline={true}
                             AnimatedTextInputStyle={styles.about}
+                            inputStyle={styles.inputStyle}
                         />
 
                         <AnimatedTextInput 
