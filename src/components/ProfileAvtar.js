@@ -1,9 +1,9 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
-import { stringAvatar, stringToColor, getToken } from "../utils";
+import { stringAvatar, stringToColor, } from "../utils";
 import { log } from "../config";
-import { colors } from "../common";
+import { colors, IMAGES } from "../common";
 
 
 const styles = StyleSheet.create({
@@ -43,8 +43,10 @@ const ProfileAvtar = ({image, name, customStyles={}, textStyle = {}}) => {
             uri: image,
             headers: {
                 Authorization: `Bearer ${authToken}`
-            }
+            },
+
         },
+        defaultSource: IMAGES.defaultUserProfile,
     }
     if (image) {
         component = React.createElement(Image, props);
