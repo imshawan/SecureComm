@@ -62,6 +62,8 @@ const FullScreenDialog = ({title, visible, setVisible, data=[], setSelected}) =>
         setSelected(item);
         toggleDialog();
     }
+
+    const renderItem = ({item}) => <IndividualListItem item={item} onSelect={() => handleItemSelect(item)}/>
     
     return (
         <Dialog
@@ -76,9 +78,9 @@ const FullScreenDialog = ({title, visible, setVisible, data=[], setSelected}) =>
                 <Text style={styles.titleTextStyle}>{title}</Text>
                 <FlatList data={data} 
                     // scrollEventThrottle={false}
-                    maxToRenderPerBatch={8}
+                    // maxToRenderPerBatch={8}
                     showsVerticalScrollIndicator={false}
-                    renderItem={({item}) => <IndividualListItem item={item} onSelect={() => handleItemSelect(item)}/>}/>
+                    renderItem={renderItem}/>
             </View>
             
             

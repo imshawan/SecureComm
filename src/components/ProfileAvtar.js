@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
-import { stringAvatar, stringToColor, } from "../utils";
+import { stringAvatar, stringToColor } from "../utils";
 import { log } from "../config";
 import { colors, IMAGES } from "../common";
 
@@ -35,10 +35,10 @@ const styles = StyleSheet.create({
 
 const ProfileAvtar = ({image, name, customStyles={}, textStyle = {}}) => {
     const authToken = useSelector(state => state.application.authToken);
-    let component;
+    let component, style = {...styles.avtarStyle, ...customStyles};
     
     const props = {
-        style: {...styles.avtarStyle, ...customStyles},
+        style: style,
         defaultSource: IMAGES.defaultUserProfile,
         source: {
             uri: image,

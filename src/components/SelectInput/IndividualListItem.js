@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { colors, fontSizes, fontFamily } from "../../common";
 import { log } from "../../config";
@@ -17,10 +17,14 @@ const styles = StyleSheet.create({
     },
 });
 
-class IndividualListItem extends PureComponent {
+class IndividualListItem extends Component {
 
     constructor(props) {
         super(props)
+    }
+
+    shouldComponentUpdate () {
+        return false;
     }
 
     render() {
