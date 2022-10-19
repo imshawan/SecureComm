@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
 import { stringAvatar, stringToColor } from "../utils";
@@ -35,18 +35,24 @@ const styles = StyleSheet.create({
 
 const ProfileAvtar = ({image, name, customStyles={}, textStyle = {}}) => {
     const authToken = useSelector(state => state.application.authToken);
+    const headers = {
+        Authorization: `Bearer ${authToken}`
+    };
+    const [imageData, setImageData] = useState({
+        uri: image,
+        headers,
+    })
     let component, style = {...styles.avtarStyle, ...customStyles};
+
+    useEffect(() => setImageData(prevstate => ({...prevstate, uri: image, headers})), [image])
     
     const props = {
         style: style,
         defaultSource: IMAGES.defaultUserProfile,
-        source: {
-            uri: image,
-            headers: {
-                Authorization: `Bearer ${authToken}`
-            },
-        },
+        source: imageData,
+        onError: () => setImageData(IMAGES.defaultUserProfile)
     }
+
     if (image) {
         component = React.createElement(Image, props);
     } else if (name){

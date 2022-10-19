@@ -133,6 +133,19 @@ const ChatScreen = ({navigation, route}) => {
         navigation.goBack();
         return true;
     }
+
+    const renderItem = ({item}) => {
+        return (
+            <Thread 
+                key={item.id} 
+                userId={item._id}
+                name={item.name} 
+                message={item.message} 
+                containerStyles={{justifyContent: item._id != currentUser._id ? 'flex-start' : 'flex-end'}} 
+                customStyles={item._id != currentUser._id ? styles.receiverThreadStyles : styles.senderThreadStyles}
+            />
+        );
+    }
     
     useEffect(() => {
         if (!socketIO) return;
@@ -180,11 +193,7 @@ const ChatScreen = ({navigation, route}) => {
 
                 <FlatList 
                     data={messages}
-                    renderItem={({item}) => (
-                        <View key={item.id} style={{flexDirection: 'row', justifyContent: item._id != currentUser._id ? 'flex-start' : 'flex-end'}}>
-                            <Thread key={item.id} name={item.name} message={item.message} customStyles={item._id != currentUser._id ? styles.receiverThreadStyles : styles.senderThreadStyles}/>
-                        </View>
-                    )}
+                    renderItem={renderItem}
                     style={{scaleY: -1}}
                 />
                 
