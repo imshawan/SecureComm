@@ -49,9 +49,9 @@ const styles = StyleSheet.create({
     }
 })
 
+const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
 export const List = ({name, message, id, callback, image}) => {
-    const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
     const interpolatedColor = new Animated.Value(0);
     const navigation = useNavigation();
 
