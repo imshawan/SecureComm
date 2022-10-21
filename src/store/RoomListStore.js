@@ -32,6 +32,17 @@ const roomsSlice = createSlice({
                 state.recentRooms.length = 5;
             }
             state.recentRooms = [...new Set([...state.recentRooms, {...action.payload.currentRoom}])];
+        },
+        updateLatestMessage(state, action) {
+            let {message, _id} = action.payload;
+            let roomList = state.roomList || [];
+
+            let objIndex = roomList.findIndex(obj => obj._id == _id);
+
+            if (objIndex != -1) {
+                roomList[objIndex].latestMessage = message;
+                state.roomList = roomList;
+            }
         }
     }
 });

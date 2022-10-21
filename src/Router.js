@@ -1,7 +1,9 @@
- import React from 'react';
- import { useSelector } from 'react-redux';
+ import React, { useEffect } from 'react';
+ import { useSelector, useDispatch } from 'react-redux';
  import {NavigationContainer} from '@react-navigation/native';
  import {createStackNavigator} from '@react-navigation/stack';
+
+ import Loader from './components/Loader';
  
  import LoginScreen from './screens/login/LoginScreen';
  import SignupScreen from './screens/signup/SignupScreen';
@@ -19,6 +21,10 @@
  import About from './screens/settings/About';
  import Contact from './screens/settings/Contact';
  import ChangePassword from './screens/settings/ChangePassword';
+
+ import { listMyRooms } from './database';
+ import { roomActions } from './store/roomListStore';
+ import { applicationActions } from './store/appStore';
  
 
  const Stack = createStackNavigator();
@@ -38,7 +44,32 @@
    );
  };
 
- const PrivateRoutes = () => {
+  const PrivateRoutes = () => {
+
+  const application = useSelector(state => state.application);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log('useffect run');
+    console.log(application.isAuthenticated);
+    console.log(typeof application.initializingRooms);
+    
+    if (application.initializingRooms) {
+      listMyRooms().then((rooms=[]) => {
+        if (rooms && rooms.length) {
+            rooms = JSON.parse(JSON.stringify(rooms)).reverse();
+            dispatch(roomActions.initRooms(rooms));
+          }
+
+        dispatch(applicationActions.setinitializingRooms(false));
+      });
+    }
+  }, [application.initializingRooms])
+
+  if (application.initializingRooms) {
+    return <Loader visible={true} />
+  } 
+
   return (
     <NavigationContainer>
         <Stack.Navigator initialRouteName="Home">

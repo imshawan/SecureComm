@@ -13,7 +13,7 @@ import { List } from "../components/chat";
 
 import { log } from '../config';
 import { colors, LABELS, APP_REMOTE_HOST } from '../common';
-import { storeNewRoom, Rooms, listMyRooms } from '../database';
+import { storeNewRoom, Rooms, updateRoomData } from '../database';
 import { getUserPicture } from '../utils';
 
 const styles = StyleSheet.create({
@@ -49,19 +49,12 @@ const Home = ({navigation}) => {
     }
 
     const roomExists = (roomId) => {
-        let rooms = roomList.find(e => e.roomId == roomId) || [];
-        return Boolean(rooms.length);
+        let rooms = roomList.find(e => e.roomId == roomId);
+        return Boolean(rooms);
     }
 
 
     useEffect(() => {
-
-        listMyRooms().then(rooms => {
-            if (rooms && rooms.length) {
-                log(Object.keys(rooms[0]))
-                dispatch(roomActions.initRooms(rooms));
-            }
-        });
 
         if (!currentUser || !currentUser._id || !socketIO) return;
 
@@ -69,20 +62,27 @@ const Home = ({navigation}) => {
             log('Connected to remote server with userId ' + currentUser._id)
             socketIO.emit('join-room', {room: currentUser._id})
         });
-
         
         socketIO.on('global:message:receive', async (socket) => {
             let {chatUser, currentRoom, message, room} = socket;
             if (room != currentUser._id) return;
+            
+            await updateRoomData(message.message, currentRoom._id)
 
             if (!roomExists(currentRoom.roomId)) {
+
                 currentRoom.creator = {};
+                currentUser.latestMessage = message.message;
+
                 dispatch(roomActions.addRoomToStore(currentRoom));
-                log(Object.keys(currentRoom))
-                log((currentRoom.memberDetails))
-                // let realmObj = await Rooms();
-                // await storeNewRoom(currentRoom, realmObj);
-                // log(Object.keys(currentRoom))
+                let realmObj = await Rooms();
+                await storeNewRoom(currentRoom, realmObj);
+
+            } else {
+                dispatch(roomActions.updateLatestMessage({
+                    message: message.message,
+                    _id: currentRoom._id
+                }));
             }
 
         })
@@ -92,25 +92,32 @@ const Home = ({navigation}) => {
         
     }, [currentUser._id, socketIO])
 
+
+    const IndividualListItem = ({item, latestMessage}) => {
+        let {memberDetails} = item;
+        if (typeof memberDetails == 'string') {
+            memberDetails = JSON.parse(memberDetails);
+        }
+        let chatUser = memberDetails.find(el => el && Object.keys(el)[0] != currentUser._id);
+        chatUser = Object.values(chatUser||{})[0] || {};
+        let name = [chatUser.firstname, chatUser.lastname].join(' ') || chatUser.username;
+
+        return (
+            <List name={name} 
+                image={getUserPicture(chatUser)} 
+                callback={() => userCardOnClick({currentRoom: item, chatUser})} 
+                message={latestMessage || `@${chatUser.username}`} 
+            />
+        );
+    }
+
     return (
         <AnimatedView animation={'fadeIn'} duration={800} style={styles.container}>
 
             <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
             <HeaderComponent />
             { roomList.length ? (<ScrollView>
-                {roomList.map((item) => { 
-                    let {memberDetails} = item;
-                    if (typeof memberDetails == 'string') {
-                        memberDetails = JSON.parse(memberDetails);
-                    }
-                    let chatUser = memberDetails.find(el => el && Object.keys(el)[0] != currentUser._id);
-                    chatUser = Object.values(chatUser||{})[0] || {};
-                    let name = [chatUser.firstname, chatUser.lastname].join(' ') || chatUser.username;
-
-                    return (
-                        <List name={name} image={getUserPicture(chatUser)} callback={() => userCardOnClick({currentRoom: item, chatUser})} key={item._id} message={`@${chatUser.username}`} />
-                    );
-                })}
+                {roomList.map((item, i) => <IndividualListItem item={item} latestMessage={item.latestMessage} key={item._id} />)}
             </ScrollView>) : <EmptyComponent 
                                 header={LABELS.HOME_SCREEN.noConversations} 
                                 subHeader={LABELS.HOME_SCREEN.newConversationText} 

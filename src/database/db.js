@@ -32,9 +32,11 @@ export const storeNewRoom = async (room, realm) => {
     let creator = JSON.stringify(room.creator);
     let memberDetails = JSON.stringify(room.memberDetails);
 
-    realm.write(() => {
-        let document = realm.objects("Rooms").filtered(`_id = '${_id}'`);
-        if (!document || !document.length) {
+    let document = realm.objects("Rooms").filtered(`_id = '${_id}'`);
+    
+    if (!document || !document.length) {
+        realm.write(() => {
+        
             realm.create("Rooms", {
                 ...room,
                 _id,
@@ -44,14 +46,29 @@ export const storeNewRoom = async (room, realm) => {
                 creator,
                 memberDetails,
             });
-        }
-    });
+        });
+    }
+}
+
+export const updateRoomData = async (data, id) => {
+    const realmObj = await Rooms();
+    id = String(id);
+
+    let document = realmObj.objects("Rooms").filtered(`_id = '${id}'`);
+    if (document && document.length) {
+
+        realmObj.write(() => {
+            Object.keys(data).forEach((elem) => {
+                document[0][elem] = data[elem];
+            });
+        });
+    }
 }
 
 export const clearCurrentRooms = async () => {
     const rooms = await Rooms();
     rooms.write(() => {
-        roomsObj = rooms.objects("Rooms");
+        let roomsObj = rooms.objects("Rooms");
         rooms.delete(roomsObj);
     });
 }
