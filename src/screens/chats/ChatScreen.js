@@ -5,6 +5,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { io } from 'socket.io-client';
 import { useSelector, useDispatch } from 'react-redux';
 import { messageActions } from '../../store/messagesStore';
+import { roomActions } from '../../store/roomListStore';
 
 import { Thread, ChatInput } from '../../components/chat';
 import ProfileAvtar from '../../components/ProfileAvtar';
@@ -152,7 +153,8 @@ const ChatScreen = ({navigation, route}) => {
 
         socketIO.on('connect', () =>{
             log('Connected to remote server in room ' + roomId);
-            socketIO.emit('join-room', {room: roomId})
+            socketIO.emit('join-room', {room: roomId});
+            dispatch(roomActions.setCurrentRoom(roomId));
         });
 
         socketIO.on('message:receive', (socket) => {

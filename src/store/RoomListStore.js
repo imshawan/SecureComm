@@ -4,6 +4,7 @@ import { log } from "../config";
 const roomsInitialState = {
     roomList: [],
     recentRooms: [],
+    currentRoomId: 'haha',
 }
 
 const roomsSlice = createSlice({
@@ -43,6 +44,9 @@ const roomsSlice = createSlice({
                 roomList[objIndex].latestMessage = message;
                 state.roomList = roomList;
             }
+        },
+        setCurrentRoom(state, action) {
+            state.currentRoomId = action.payload;
         }
     }
 });

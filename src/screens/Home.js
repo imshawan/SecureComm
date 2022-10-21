@@ -27,11 +27,11 @@ const styles = StyleSheet.create({
 })
 
 const Home = ({navigation}) => {
-    const [loading, setLoading] = useState(false);
     const [socketIO, setSocket] = useState(null);
 
     const roomList = useSelector(state => state.rooms.roomList);
     const currentUser = useSelector(state => state.user.currentUser);
+    const currentRoomId = useSelector(state => state.rooms.currentRoomId);
 
     const dispatch = useDispatch();
 
@@ -67,24 +67,22 @@ const Home = ({navigation}) => {
             let {chatUser, currentRoom, message, room} = socket;
             if (room != currentUser._id) return;
             
-            await updateRoomData(message.message, currentRoom._id)
+            await updateRoomData({latestMessage: message.message}, currentRoom._id)
 
             if (!roomExists(currentRoom.roomId)) {
-
                 currentRoom.creator = {};
-                currentUser.latestMessage = message.message;
+                currentRoom.latestMessage = message.message;
 
                 dispatch(roomActions.addRoomToStore(currentRoom));
                 let realmObj = await Rooms();
                 await storeNewRoom(currentRoom, realmObj);
 
-            } else {
-                dispatch(roomActions.updateLatestMessage({
-                    message: message.message,
-                    _id: currentRoom._id
-                }));
             }
 
+            dispatch(roomActions.updateLatestMessage({
+                message: message.message,
+                _id: currentRoom._id
+            }));
         })
 
         return () => socketIO.removeListener('global:message:receive');

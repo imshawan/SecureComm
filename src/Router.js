@@ -50,9 +50,6 @@
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log('useffect run');
-    console.log(application.isAuthenticated);
-    console.log(typeof application.initializingRooms);
     
     if (application.initializingRooms) {
       listMyRooms().then((rooms=[]) => {
