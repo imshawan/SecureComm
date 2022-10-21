@@ -30,7 +30,9 @@ export const storeNewRoom = async (room, realm) => {
     let _id = String(room._id);
     let members = Array.isArray(room.members) ? room.members.join(':') : room.members;
     let creator = JSON.stringify(room.creator);
-    let memberDetails = JSON.stringify(room.memberDetails);
+    let {memberDetails} = room;
+
+    memberDetails = typeof memberDetails === 'object' ? JSON.stringify(memberDetails) : memberDetails;
 
     let document = realm.objects("Rooms").filtered(`_id = '${_id}'`);
     

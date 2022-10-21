@@ -18,9 +18,7 @@ const roomsSlice = createSlice({
 
             let found = (state.roomList || []).find(item => item._id == action.payload._id);
             if (!found) {
-                state.roomList = [...state.roomList, {
-                    ...action.payload
-                }]
+                state.roomList = [{...action.payload}, ...state.roomList]
             } else {
                 state.roomList = state.roomList;
             }
