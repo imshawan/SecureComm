@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, memo} from 'react';
 import { View, StyleSheet, ScrollView, StatusBar, FlatList } from "react-native";
 import { View as AnimatedView } from 'react-native-animatable';
 import { SpeedDial } from '@rneui/themed';
@@ -32,8 +32,6 @@ const Home = ({navigation}) => {
     const roomList = useSelector(state => state.rooms.roomList);
     const currentUser = useSelector(state => state.user.currentUser);
     const currentRoomId = useSelector(state => state.rooms.currentRoomId);
-
-    const [roomLists, setRoomLists] = useState();
 
     const dispatch = useDispatch();
 
@@ -93,40 +91,24 @@ const Home = ({navigation}) => {
     }, [socketIO])
 
 
-    const IndividualListItem = ({item, latestMessage}) => {
-        let {memberDetails} = item;
-
-        if (typeof memberDetails == 'string') {
-            memberDetails = JSON.parse(memberDetails);
-        }
-        log('rendering...')
-
-        let chatUser = memberDetails.find(el => el && Object.keys(el)[0] != currentUser._id);
-        chatUser = Object.values(chatUser||{})[0] || {};
-        let name = [chatUser.firstname, chatUser.lastname].join(' ') || chatUser.username;
-
-        return (
-            <List name={name} 
-                key={item._id}
-                image={getUserPicture(chatUser)} 
-                callback={() => userCardOnClick({currentRoom: item, chatUser})} 
-                message={latestMessage || `@${chatUser.username}`} 
-            />
-        );
-    }
+    const renderItem = ({item}) => <List key={item.roomId} item={item} message={item.latestMessage} />
 
     return (
         <AnimatedView animation={'fadeIn'} duration={800} style={styles.container}>
 
             <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
             <HeaderComponent />
-            { roomList.length ? (<ScrollView>
-                {roomList.map((item, i) => <IndividualListItem item={item} latestMessage={item.latestMessage} key={item._id} />)}
-            </ScrollView>) : <EmptyComponent 
-                                header={LABELS.HOME_SCREEN.noConversations} 
-                                subHeader={LABELS.HOME_SCREEN.newConversationText} 
-                                IconComponent={() => <Icon name={'commenting'} style={styles.iconStyles} size={90} />}
-                                /> }
+            { roomList.length ? <FlatList
+                data={roomList}
+                renderItem={renderItem}
+                showsVerticalScrollIndicator={false}
+                /> : 
+            
+            <EmptyComponent 
+                header={LABELS.HOME_SCREEN.noConversations} 
+                subHeader={LABELS.HOME_SCREEN.newConversationText} 
+                IconComponent={() => <Icon name={'commenting'} style={styles.iconStyles} size={90} />}
+                /> }
 
             <SpeedDial
                 onOpen={() => navigation.navigate('NewChatScreen')}

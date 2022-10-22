@@ -1,17 +1,17 @@
-import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView, StatusBar, BackHandler } from "react-native";
+import React, {useState} from 'react';
+import { View, StyleSheet, Text, TouchableOpacity, StatusBar, FlatList } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { TextInput } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import { roomActions } from '../../store/roomListStore';
 
-import { List } from '../../components/chat';
+import { UserList } from '../../components/chat';
 import Loader from '../../components/Loader';
 
 import { log } from '../../config';
 import { colors, HEADER_HEIGHT, fontSizes, ENDPOINTS } from '../../common';
 import { HTTP } from '../../services';
-import { getLoggedInUser, getUserPicture } from '../../utils';
+import { getLoggedInUser } from '../../utils';
 import { storeNewRoom, Rooms } from '../../database';
 
 
@@ -115,14 +115,7 @@ const NewChatScreen = ({navigation, route}) => {
         setLoading(false);
     }
 
-    useEffect(() => {
-        const backHandler = BackHandler.addEventListener("hardwareBackPress", function () {
-            navigation.goBack();
-            return true;
-        });
-    
-        return () => backHandler.remove();
-    }, []);
+    const renderItem = ({item}) => <UserList callback={() => userCardOnClick(item)} item={item} key={item._id} />
 
     return (<>
             <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
@@ -147,14 +140,12 @@ const NewChatScreen = ({navigation, route}) => {
                         />
                     </View>
                 </View>
-
-                <ScrollView>
-                    {apiResponse.map((item, index) => { 
-                            let name = [item.firstname, item.lastname].join(' ') || item.username;
-
-                            return (<List name={name} image={getUserPicture(item)} callback={() => userCardOnClick(item)} key={item._id} message={`@${item.username}`} />);
-                        })}
-                </ScrollView>
+                
+                <FlatList 
+                    data={apiResponse}
+                    renderItem={renderItem}
+                    showsVerticalScrollIndicator={false}
+                />
 
             </View>
         </>

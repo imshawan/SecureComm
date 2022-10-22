@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView, StatusBar, BackHandler } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView, StatusBar, FlatList } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -91,6 +91,8 @@ const SearchScreen = ({navigation}) => {
 
     }, [value])
 
+    const renderItem = ({item}) => <List key={item.roomId} item={item} />
+
 
     return (
         <View style={styles.container}>
@@ -117,21 +119,11 @@ const SearchScreen = ({navigation}) => {
 
             </View>
             
-            <ScrollView>
-                {results.map(item => {
-                    let {memberDetails} = item;
-                    if (typeof memberDetails == 'string') {
-                        memberDetails = JSON.parse(memberDetails);
-                    }
-                    let chatUser = memberDetails.find(el => el && Object.keys(el)[0] != currentUser._id);
-                    chatUser = Object.values(chatUser||{})[0] || {};
-                    let name = [chatUser.firstname, chatUser.lastname].join(' ') || chatUser.username;
-
-                    return (
-                        <List name={name} image={getUserPicture(chatUser)} callback={() => userCardOnClick({currentRoom: item, chatUser})} key={item._id} message={`@${chatUser.username}`} />
-                    );
-                })}
-            </ScrollView>
+            <FlatList 
+                data={results}
+                renderItem={renderItem}
+                showsVerticalScrollIndicator={false}
+            />
         </View>
     )
 };

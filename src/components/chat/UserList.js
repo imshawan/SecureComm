@@ -1,10 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Animated } from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import { useSelector, useDispatch } from 'react-redux';
 
 import ProfileAvtar from '../ProfileAvtar';
-import { roomActions } from '../../store/roomListStore';
 import { colors, fontFamily, fontSizes, TOUCHABLE_TAP } from '../../common'
 import { log } from '../../config';
 import { AnimColor, showFocusColor, showOriginColor, getUserPicture } from '../../utils';
@@ -22,13 +20,11 @@ const styles = StyleSheet.create({
     avtarStyles: {
         height: 50,
         width: 50,
-        // paddingTop: 10,
     },
     avtarTextStyle: {
         fontSize: fontSizes.large
     },
     avtarContainer: {
-        // marginLeft: 5,
         marginTop: -2.5,
         paddingBottom: 10
     },
@@ -51,28 +47,21 @@ const styles = StyleSheet.create({
 
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
-export const List = ({item, message}) => {
-    const currentUser = useSelector(state => state.user.currentUser);
+export const UserList = ({item, callback}) => {
     const interpolatedColor = new Animated.Value(0);
     const navigation = useNavigation();
-    const dispatch = useDispatch();
 
-    let {memberDetails} = item;
+    const name = [item.firstname, item.lastname].join(' ');
 
-    if (typeof memberDetails == 'string') {
-        memberDetails = JSON.parse(memberDetails);
+    const onPresshandler = () => {
+        if (typeof callback === 'function') {
+            callback()
+        } else {
+            navigation.navigate('ChatScreen', {
+                id, name
+            });
+        }
     }
-
-    let chatUser = memberDetails.find(el => el && Object.keys(el)[0] != currentUser._id);
-    chatUser = Object.values(chatUser||{})[0] || {};
-
-    let name = [chatUser.firstname, chatUser.lastname].join(' ') || chatUser.username;
-
-    const userCardOnClick = async card => {
-      card = JSON.parse(JSON.stringify(card));
-      dispatch(roomActions.addToRecent(card));
-      navigation.navigate('ChatScreen', card);
-    };
 
     return (
         <AnimatedTouchable 
@@ -80,16 +69,16 @@ export const List = ({item, message}) => {
         style={{backgroundColor: AnimColor(interpolatedColor, colors.white, colors.grey), borderRadius: 10, marginHorizontal: 10}}
         onPressIn={() => showFocusColor(interpolatedColor, TOUCHABLE_TAP.onTapDuration)} 
         onPressOut={() => showOriginColor(interpolatedColor, TOUCHABLE_TAP.onReleaseDuration)}
-        onPress={() => userCardOnClick({currentRoom: item, chatUser})}
+        onPress={onPresshandler}
         >
             <View style={styles.container}>
                 <View style={styles.avtarContainer}>
-                    <ProfileAvtar name={name} image={getUserPicture(chatUser)} textStyle={styles.avtarTextStyle} customStyles={styles.avtarStyles} />
+                    <ProfileAvtar name={name} image={getUserPicture(item)} textStyle={styles.avtarTextStyle} customStyles={styles.avtarStyles} />
                 </View>
                 <View style={styles.textContainer}>
 
                     <Text style={styles.userNameText} numberOfLines={1} ellipsizeMode='tail'>{name}</Text>
-                    <Text style={styles.latestMsgText} numberOfLines={1} ellipsizeMode='tail'>{message || `@${chatUser.username}`}</Text>
+                    <Text style={styles.latestMsgText} numberOfLines={1} ellipsizeMode='tail'>{`@${item.username}`}</Text>
                     
                 </View>
             </View>
