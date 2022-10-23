@@ -16,7 +16,10 @@
     "url": "https://github.com/imshawan/SecureComm.git"
   },
   "dependencies": {
+    "@notifee/react-native": "^5.7.0",
     "@react-native-community/async-storage": "^1.12.1",
+    "@react-native-firebase/app": "^16.1.1",
+    "@react-native-firebase/messaging": "^16.1.1",
     "@react-navigation/elements": "^1.3.4",
     "@react-navigation/native": "^6.0.11",
     "@react-navigation/native-stack": "^6.7.0",

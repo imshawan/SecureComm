@@ -14,7 +14,7 @@ import { List } from "../components/chat";
 import { log } from '../config';
 import { colors, LABELS, APP_REMOTE_HOST } from '../common';
 import { storeNewRoom, Rooms, updateRoomData } from '../database';
-import { getUserPicture } from '../utils';
+import { displayNotification } from '../utils';
 
 const styles = StyleSheet.create({
     container: {
@@ -39,14 +39,9 @@ const Home = ({navigation}) => {
         setSocket(io(APP_REMOTE_HOST, {
             transports: ['websocket'],
             })
-        );
+        );        
       }, []);
 
-    const userCardOnClick = async (card) => {
-        card = JSON.parse(JSON.stringify(card));
-        dispatch(roomActions.addToRecent(card));
-        navigation.navigate('ChatScreen', card);
-    }
 
     const roomExists = (roomId) => {
         let rooms = roomList.find(e => e.roomId == roomId);
@@ -67,7 +62,11 @@ const Home = ({navigation}) => {
             let {chatUser, currentRoom, message, room} = socket;
             if (room != currentUser._id) return;
             
-            await updateRoomData({latestMessage: message.message}, currentRoom._id)
+            await updateRoomData({latestMessage: message.message}, currentRoom._id);
+            await displayNotification(
+                [chatUser.firstname, chatUser.lastname].join(' '), 
+                message.message, 
+                chatUser.picture);
 
             if (!roomExists(currentRoom.roomId)) {
                 currentRoom.creator = {};
