@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity, StatusBar, FlatList, BackHand
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useIsFocused } from "@react-navigation/native";
 import { io } from 'socket.io-client';
+import notifee from '@notifee/react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { messageActions } from '../../store/messagesStore';
 import { roomActions } from '../../store/roomListStore';
@@ -100,6 +101,8 @@ const ChatScreen = ({navigation, route}) => {
             transports: ['websocket'],
             })
         );
+
+        notifee.cancelNotification(chatUser._id);
       }, []);
 
     // log(isFocused)    
@@ -154,11 +157,11 @@ const ChatScreen = ({navigation, route}) => {
         socketIO.on('connect', () =>{
             log('Connected to remote server in room ' + roomId);
             socketIO.emit('join-room', {room: roomId});
-            dispatch(roomActions.setCurrentRoom(roomId));
+            dispatch(roomActions.setCurrentRoom({roomId, _id: chatUser._id}));
         });
 
         socketIO.on('message:receive', (socket) => {
-            log(socket)
+            // log(socket)
             dispatch(messageActions.addMessageToStore({...socket, id: generateUUID()}));
         })
     
@@ -167,7 +170,7 @@ const ChatScreen = ({navigation, route}) => {
         return () => {
             backHandler.remove();
             socketIO.removeListener('message:receive');
-            // socketIO.emit('end');
+            dispatch(roomActions.setCurrentRoom({}));
         }
     
         

@@ -286,6 +286,7 @@ dependencies {
 
     implementation project(':react-native-vector-icons')
     implementation project(':react-native-fs')
+    implementation "androidx.core:core:1.6.0"
 
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules

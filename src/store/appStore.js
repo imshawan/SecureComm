@@ -3,7 +3,6 @@ import { log } from "../config";
 
 const applicationInitialState = {
     isAuthenticated: false,
-    currentRoom: null,
     loading: true,
     authToken: null,
     initializingRooms: true,
@@ -15,9 +14,6 @@ const applicationSlice = createSlice({
     reducers: {
         setAuthenticated(state, action) {
             state.isAuthenticated = action.payload;
-        },
-        setCurrentRoom(state, action) {
-            state.currentRoom = action.payload;
         },
         clearAuthentication(state){
             state.isAuthenticated = false;

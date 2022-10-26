@@ -1,5 +1,5 @@
-import React, {useState, useEffect, memo} from 'react';
-import { View, StyleSheet, ScrollView, StatusBar, FlatList } from "react-native";
+import React, {useState, useEffect} from 'react';
+import { StyleSheet, StatusBar, FlatList } from "react-native";
 import { View as AnimatedView } from 'react-native-animatable';
 import { SpeedDial } from '@rneui/themed';
 import { io } from 'socket.io-client';
@@ -31,23 +31,20 @@ const Home = ({navigation}) => {
 
     const roomList = useSelector(state => state.rooms.roomList);
     const currentUser = useSelector(state => state.user.currentUser);
-    const currentRoomId = useSelector(state => state.rooms.currentRoomId);
 
     const dispatch = useDispatch();
-
-    useEffect(() => {
-        setSocket(io(APP_REMOTE_HOST, {
-            transports: ['websocket'],
-            })
-        );        
-      }, []);
-
 
     const roomExists = (roomId) => {
         let rooms = roomList.find(e => e.roomId == roomId);
         return Boolean(rooms);
     }
 
+    useEffect(() => {
+        setSocket(io(APP_REMOTE_HOST, {
+            transports: ['websocket'],
+            })
+        );
+      }, []);
 
     useEffect(() => {
 
@@ -61,9 +58,11 @@ const Home = ({navigation}) => {
         socketIO.on('global:message:receive', async (socket) => {
             let {chatUser, currentRoom, message, room} = socket;
             if (room != currentUser._id) return;
-            
+
             await updateRoomData({latestMessage: message.message}, currentRoom._id);
+
             await displayNotification(
+                chatUser._id,
                 [chatUser.firstname, chatUser.lastname].join(' '), 
                 message.message, 
                 chatUser.picture);
