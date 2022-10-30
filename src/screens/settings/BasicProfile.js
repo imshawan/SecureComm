@@ -14,7 +14,7 @@ import { colors, HEADER_HEIGHT, fontSizes, LABELS, fontFamily, ENDPOINTS, PLACEH
 import { HTTP } from '../../services';
 import { styles as defaultStyles } from '../styles';
 import { log } from '../../config';
-import { getToken, getUserPicture, isBase64Data, updateCachedUserObject } from '../../utils';
+import { getUserPicture, isBase64Data, updateCachedUserObject } from '../../utils';
 
 const { BASIC_PROFILE_EDIT } = LABELS;
 
@@ -183,14 +183,10 @@ const BasicProfileEdit = ({navigation}) => {
     Keyboard.dismiss();
     await updateProfile(ENDPOINTS.updateUserData, state);
     dispatch(currentUserActions.updateUserData(state));
+    await updateCachedUserObject(state);
   }
 
   useEffect(() => {
-    // if (picture && picture != currentUser.picture) {
-    //   updateProfile(ENDPOINTS.changePicture, {picture}).then((payload) => {
-    //     dispatch(currentUserActions.updateProfilePicture(APP_REMOTE_HOST + '/' + payload.picture));
-    //   });
-    // }
 
     if (isBase64Data(picture)) {
       updateProfile(ENDPOINTS.changePicture, {picture}).then( async (payload) => {

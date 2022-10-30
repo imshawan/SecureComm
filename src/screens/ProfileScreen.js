@@ -6,7 +6,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import { View as AnimatableView } from 'react-native-animatable';
 
 import ProfileAvtar from "../components/ProfileAvtar";
-import { colors, HEADER_HEIGHT, fontSizes, DIALOG_LABELS, BUTTONS } from '../common';
+import { colors, HEADER_HEIGHT, fontSizes, DIALOG_LABELS, BUTTONS, fontFamily } from '../common';
 import { isAuthenticated } from "../utils";
 import { log } from "../config";
 import { currentUserActions } from '../store/userStore';
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
         // marginLeft: 5, 
         // fontWeight: 'bold',
         color: colors.white,
-        fontFamily: 'SF-Pro-Rounded-Bold',
+        fontFamily: fontFamily.bold,
         lineHeight: fontSizes.extraLarge + 5,
     },
     headerContent: {
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     avtarTextStyles: {
         textAlign: 'left',
         fontSize: 45,
-        fontFamily: 'SF-Pro-Rounded-Bold',
+        fontFamily: fontFamily.bold,
     },
     profileRightContainer: {
         width: '60%',
@@ -113,14 +113,14 @@ const styles = StyleSheet.create({
     },
     profileNameText: {
         fontSize: fontSizes.large,
-        fontFamily: 'SF-Pro-Rounded-Bold',
+        fontFamily: fontFamily.bold,
         color: colors.black,
         lineHeight: fontSizes.large,
         // marginTop: 10,
         marginBottom: 4,
     },
     usernameText: {
-        fontFamily: 'SF-Pro-Rounded-Regular',
+        fontFamily: fontFamily.regular,
         fontSize: fontSizes.medium,
         lineHeight: fontSizes.medium,
         color: colors.lightBlack
@@ -144,14 +144,14 @@ const styles = StyleSheet.create({
     },
     detailsHeadText: {
         // marginTop: 3,
-        fontFamily: 'SF-Pro-Rounded-Regular',
+        fontFamily: fontFamily.regular,
         color: colors.lightBlack,
         fontSize: fontSizes.small,
         lineHeight: fontSizes.small,
     },
     detailsSubText: {
         marginTop: 4,
-        fontFamily: 'SF-Pro-Rounded-Bold',
+        fontFamily: fontFamily.bold,
         color: colors.black,
         fontSize: fontSizes.medium,
         lineHeight: fontSizes.medium
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     buttonTextStyle: {
         color: colors.white,
         fontSize: fontSizes.regular,
-        fontFamily: 'SF-Pro-Rounded-Bold',
+        fontFamily: fontFamily.bold,
         lineHeight: fontSizes.regular
     },
     cardStyle: {
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         borderRadius: 15,
         backgroundColor: colors.lightestBlue,
-        minHeight: 60,
+        minHeight: 40,
         marginBottom: 10,
         marginTop: 0,
     },
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         paddingTop: 9,
         fontSize: fontSizes.medium,
-        fontFamily: 'SF-Pro-Rounded-Bold',
+        fontFamily: fontFamily.bold,
         color: colors.black,
         lineHeight: fontSizes.medium,
         // backgroundColor: 'red'
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
     cardContentText: {
         paddingHorizontal: 15,
         fontSize: fontSizes.medium,
-        fontFamily: 'SF-Pro-Rounded-Regular',
+        fontFamily: fontFamily.regular,
         paddingBottom: 15,
         color: colors.lightBlack,
         lineHeight: fontSizes.medium + 4,
@@ -223,53 +223,57 @@ const styles = StyleSheet.create({
     aboutSectionHeaderText: {
         fontSize: fontSizes.large,
         color: colors.black,
-        fontFamily: 'SF-Pro-Rounded-Bold',
+        fontFamily: fontFamily.bold,
         lineHeight: fontSizes.large
     },
     aboutSectionSubHeaderText: {
         fontSize: fontSizes.medium,
         color: colors.black,
-        fontFamily: 'SF-Pro-Rounded-Regular',
+        fontFamily: fontFamily.regular,
         lineHeight: fontSizes.medium + 5
     },
-    individualListStyle: {
-        flexDirection: 'column',
-        width: '90%',
-        alignSelf: 'center',
-        borderRadius: 10,
-        backgroundColor: colors.lightestBlue,
-        minHeight: 45,
-        marginBottom: 10,
-        marginTop: 0,
-    },
-    individualListContainer: {
-        width: '100%',
-        flexDirection: 'row',
+    displayIconsContainer: {
+        justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 13,
+        marginHorizontal: 8,
+        width: 45,
+        height: 45,
+        backgroundColor: colors.brandColor,
+        borderRadius: 10,
     },
-    individualListTextContainer: {
-        paddingRight: 2,
-        width: '86%'
+    displayIcons: {
+        color: colors.white,
     },
-    individualListHead: {
-        fontSize: fontSizes.medium,
-        fontFamily: 'SF-Pro-Rounded-Bold',
+    listCard: {
+        marginVertical: 10,
+        flexDirection: 'row',
+    },
+      listCardIcon: {
+        color: colors.black
+    },
+      listText: {
+        justifyContent: 'center',
+        width: '80%'
+    },
+      listHeader: {
         color: colors.black,
-        lineHeight: fontSizes.medium,
-        marginBottom: 5,
-    },
-    individualListSubtext: {
+        fontFamily: fontFamily.bold,
         fontSize: fontSizes.medium,
-        fontFamily: 'SF-Pro-Rounded-Regular',
+        lineHeight: fontSizes.regular + 5,
+    },
+      listSubText: {
         color: colors.lightBlack,
-        lineHeight: fontSizes.medium
+        fontFamily: fontFamily.regular,
+        fontSize: fontSizes.medium,
+        lineHeight: fontSizes.regular + 5,
     },
-    individualListIcon: {
-        color: colors.black,
-        marginLeft: 15,
-        width: 30,
-    }
+      displayIconCustom: {
+        backgroundColor: colors.white, 
+        marginLeft: 0
+    },
+      displayIconCustomIcon: {
+        color: colors.black
+    },
 });
 
 
@@ -282,24 +286,56 @@ const ProfileChipContent = ({header, subHeader}) => {
     );
 }
 
-const IndividualList = ({header, subHeader, icon}) => {
+const DisplayIcon = ({icon, customStyles={}, iconStyles={}}) => {
     return (
-        <TouchableOpacity activeOpacity={0.5} style={styles.individualListStyle}>
-            <View style={{...styles.individualListContainer}}>
-                <Icon name={icon} style={styles.individualListIcon} size={20} />
-                <View style={styles.individualListTextContainer}>
-                    {/* <Text numberOfLines={1} ellipsizeMode='tail' style={styles.individualListHead}>{header}</Text> */}
-                    <Text numberOfLines={1} ellipsizeMode='tail' style={styles.individualListSubtext}>{subHeader}</Text>
-                </View>
+        <View style={[styles.displayIconsContainer, customStyles]}>
+            <Icon name={icon} style={[styles.displayIcons, iconStyles]} size={28} />
+        </View>
+    );
+}
+
+const ListCard = ({header, subHeader, icon}) => {
+    if (!subHeader) return;
+    
+    return (
+        <View style={styles.listCard}>
+            <DisplayIcon icon={icon} customStyles={styles.displayIconCustom} iconStyles={styles.displayIconCustomIcon}/>
+            <View style={styles.listText}>
+                <Text style={styles.listHeader}>{header}</Text>
+                <Text numberOfLines={2} ellipsizeMode='tail' style={styles.listSubText}>{subHeader}</Text>
             </View>
-        </TouchableOpacity>
+        </View>
+    );
+}
+
+const About = ({text}) => {
+    if (!text) return;
+    return (
+        <View style={styles.cardStyle}>
+            <Text style={styles.cardContentText}>
+                {text}
+            </Text>
+        </View>
     );
 }
 
 const AccountScreen = ({navigation, route}) => {
     const profile = useSelector(state => state.user.currentUser);
+
     const getFullname = () => {
         return [profile.firstname, profile.lastname].join(' ') || profile.username;
+    }
+
+    const getJoiningDate = () => {
+        return new Date(profile.createdAt).getFullYear()
+    }
+
+    const getCurrentLocation = () => {
+        let {city} = profile.location;
+        if (typeof city == 'object') {
+            city = '';
+        }
+        return [profile.location.country.name, profile.location.region.name, city].join(', ');
     }
 
     return (<>
@@ -330,7 +366,7 @@ const AccountScreen = ({navigation, route}) => {
                                         <Text numberOfLines={1} ellipsizeMode='tail' style={styles.usernameText} >{'@' + profile.username}</Text>
                                         <View style={getFullname().length <= 15 ? {...styles.statusContainer, marginTop: 30} : styles.statusContainer}>
                                             <ProfileChipContent header={'Status'} subHeader={'Online'} />
-                                            <ProfileChipContent header={'Age'} subHeader={'24'} />
+                                            <ProfileChipContent header={'Joined'} subHeader={getJoiningDate()} />
                                             <ProfileChipContent header={'Location'} subHeader={'India'} />
                                         </View>
                                     </View>
@@ -354,21 +390,13 @@ const AccountScreen = ({navigation, route}) => {
                         <Text style={styles.aboutSectionSubHeaderText}>{getFullname()}</Text>
                     </View>
 
-                    <View style={styles.cardStyle}>
-                        {/* <View style={styles.cardInnerChipps}>
-                            <Text numberOfLines={1} ellipsizeMode='tail' style={styles.chippsTextStyle}>Bio</Text>
-                        </View> */}
-                        <Text style={styles.cardContentText}>
-                            {`Create super-engaging Instagram captions with this AI powered Instagram caption generator.`}
-                            {getFullname()}
-                        </Text>
+                    <About text={profile.about}/>
+
+                    <View style={{width: '90%', alignSelf: 'center'}}>
+                        <ListCard icon={'location-arrow'} header={'Location'} subHeader={getCurrentLocation()} />
+                        <ListCard icon={'briefcase'} header={'Work'} subHeader={[profile.work, profile.organization].join(' at ')} />
+                        <ListCard icon={'envelope'} header={'Email'} subHeader={profile.email} />
                     </View>
-
-                    <IndividualList subHeader={'Backend developer at DT'} icon={'briefcase'}/>
-
-                    <IndividualList subHeader={'Margherita, Assam, India'} icon={'location-arrow'}/>
-
-                    <IndividualList subHeader={'hello@imshawan.dev'} icon={'envelope'} />
 
                     {/* <View style={{...styles.cardStyle, backgroundColor: '#313a5670'}}>
                         <View style={{...styles.cardInnerChipps, backgroundColor: '#313a56'}}>
