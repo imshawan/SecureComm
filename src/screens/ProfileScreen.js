@@ -188,22 +188,6 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         marginTop: 0,
     },
-    cardInnerChipps: {
-        marginTop: 5,
-        // backgroundColor: colors.white,
-        height: 32,
-        // borderRadius: 5,
-        // width: 95,
-    },
-    chippsTextStyle: {
-        paddingHorizontal: 15,
-        paddingTop: 9,
-        fontSize: fontSizes.medium,
-        fontFamily: fontFamily.bold,
-        color: colors.black,
-        lineHeight: fontSizes.medium,
-        // backgroundColor: 'red'
-    },
     cardContentText: {
         paddingHorizontal: 15,
         fontSize: fontSizes.medium,
@@ -397,15 +381,6 @@ const AccountScreen = ({navigation, route}) => {
                         <ListCard icon={'briefcase'} header={'Work'} subHeader={[profile.work, profile.organization].join(' at ')} />
                         <ListCard icon={'envelope'} header={'Email'} subHeader={profile.email} />
                     </View>
-
-                    {/* <View style={{...styles.cardStyle, backgroundColor: '#313a5670'}}>
-                        <View style={{...styles.cardInnerChipps, backgroundColor: '#313a56'}}>
-                            <Text numberOfLines={1} ellipsizeMode='tail' style={styles.chippsTextStyle}>About me</Text>
-                        </View>
-                        <Text style={styles.cardContentText}>{profile.about}{profile.about}{profile.about}</Text>
-                    </View> */}
-                    
-                 
                     
                 </ScrollView>
             </View>
