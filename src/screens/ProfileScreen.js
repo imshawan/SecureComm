@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
         color: colors.white,
     },
     listCard: {
-        marginVertical: 10,
+        marginVertical: 8,
         flexDirection: 'row',
     },
       listCardIcon: {
