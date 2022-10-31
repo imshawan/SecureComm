@@ -59,7 +59,7 @@ const Home = ({navigation}) => {
             let {chatUser, currentRoom, message, room} = socket;
             if (room != currentUser._id) return;
 
-            await updateRoomData({latestMessage: message.message}, currentRoom._id);
+            await updateRoomData({latestMessage: message.message, lastActive: message.createdAt}, currentRoom._id);
 
             await displayNotification(
                 chatUser._id,
@@ -70,6 +70,7 @@ const Home = ({navigation}) => {
             if (!roomExists(currentRoom.roomId)) {
                 currentRoom.creator = {};
                 currentRoom.latestMessage = message.message;
+                currentRoom.lastActive = message.createdAt;
 
                 dispatch(roomActions.addRoomToStore(currentRoom));
                 let realmObj = await Rooms();
@@ -78,8 +79,9 @@ const Home = ({navigation}) => {
             }
 
             dispatch(roomActions.updateLatestMessage({
+                _id: currentRoom._id,
                 message: message.message,
-                _id: currentRoom._id
+                lastActive: message.createdAt,
             }));
         })
 

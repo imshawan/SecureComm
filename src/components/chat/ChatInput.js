@@ -24,16 +24,16 @@ const styles = StyleSheet.create({
     inputStyles: {
         flex: 1,
         marginRight: 6,
-        color: colors.placeholderColor,
+        color: colors.black,
         backgroundColor: '#eceef5',
         borderRadius: 20,
         padding: 10,
     },
     buttonContainer: {
         backgroundColor: colors.brandColor,
-        borderRadius: 50,
-        width: 50,
-        height: 50,
+        borderRadius: 47,
+        width: 47,
+        height: 47,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -62,7 +62,7 @@ export const ChatInput = ({value, setValue, onActionSend, onFocused, onRemoveFoc
                     returnKeyType="next"
                     />
             </View>
-            <TouchableOpacity onPress={onActionSend} style={styles.buttonContainer}>
+            <TouchableOpacity activeOpacity={0.6} onPress={onActionSend} style={styles.buttonContainer}>
                 <Icon name="send" style={styles.sendIconStyle} size={fontSizes.extraLarge}/>
             </TouchableOpacity>
         </View>

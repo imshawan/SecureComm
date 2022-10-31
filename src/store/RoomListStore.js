@@ -33,13 +33,14 @@ const roomsSlice = createSlice({
             state.recentRooms = [...new Set([...state.recentRooms, {...action.payload.currentRoom}])];
         },
         updateLatestMessage(state, action) {
-            let {message, _id} = action.payload;
+            let {message, _id, lastActive} = action.payload;
             let roomList = state.roomList || [];
 
             let objIndex = roomList.findIndex(obj => obj._id == _id);
 
             if (objIndex != -1) {
                 roomList[objIndex].latestMessage = message;
+                roomList[objIndex].lastActive = lastActive;
                 state.roomList = roomList;
             }
         },

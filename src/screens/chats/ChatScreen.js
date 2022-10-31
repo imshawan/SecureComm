@@ -150,6 +150,10 @@ const ChatScreen = ({navigation, route}) => {
             />
         );
     }
+
+    const navigateToChatUserProfile = () => {
+        navigation.navigate('ProfileScreen', chatUser)
+    }
     
     useEffect(() => {
         if (!socketIO) return;
@@ -187,10 +191,10 @@ const ChatScreen = ({navigation, route}) => {
                             </View>
                             <ProfileAvtar name={fullname} image={getUserPicture(chatUser)}/>
                         </TouchableOpacity>
-                        <View>
+                        <TouchableOpacity onPress={navigateToChatUserProfile} activeOpacity={0.5}>
                             <Text style={styles.headerTextStyle}>{fullname}</Text>
                             <Text style={styles.activeTimeStyle} numberOfLines={1} ellipsizeMode='tail'>{'Last online 2 min ago'}</Text>
-                        </View>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>

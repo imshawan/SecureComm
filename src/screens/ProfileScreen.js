@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, StatusBar, TouchableOpacity, ScrollView, BackHandler } from "react-native";
+import { View, Text, StyleSheet, StatusBar, TouchableOpacity, ScrollView } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useSelector, useDispatch } from 'react-redux';
-import AsyncStorage from "@react-native-community/async-storage";
-import { View as AnimatableView } from 'react-native-animatable';
+import { useSelector } from 'react-redux';
 
 import ProfileAvtar from "../components/ProfileAvtar";
-import { colors, HEADER_HEIGHT, fontSizes, DIALOG_LABELS, BUTTONS, fontFamily } from '../common';
-import { isAuthenticated } from "../utils";
+import { colors, HEADER_HEIGHT, fontSizes, DIALOG_LABELS, BUTTONS, fontFamily, APP_REMOTE_HOST } from '../common';
+import { getUserPicture } from "../utils";
 import { log } from "../config";
-import { currentUserActions } from '../store/userStore';
 
 
 const styles = StyleSheet.create({
@@ -84,9 +81,9 @@ const styles = StyleSheet.create({
     },
     profileContainer: {
         flexDirection: 'column',
-        height: 230,
+        height: 218,
         width: '90%',
-        marginTop: -150,
+        marginTop: -160,
         backgroundColor: colors.white,
         borderRadius: 20,
         elevation: 15,
@@ -166,7 +163,7 @@ const styles = StyleSheet.create({
         borderWidth: 0,
         color: colors.white,
         borderColor: colors.borderColor,
-        height: 50,
+        height: 48,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 10,
@@ -176,7 +173,16 @@ const styles = StyleSheet.create({
         color: colors.white,
         fontSize: fontSizes.regular,
         fontFamily: fontFamily.bold,
-        lineHeight: fontSizes.regular
+        lineHeight: fontSizes.regular,
+        marginTop: 1,
+    },
+    requestButton: {
+        backgroundColor: colors.white,
+        borderColor: colors.brandColor,
+        borderWidth: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     cardStyle: {
         flexDirection: 'column',
@@ -195,7 +201,6 @@ const styles = StyleSheet.create({
         paddingBottom: 15,
         color: colors.lightBlack,
         lineHeight: fontSizes.medium + 4,
-        // marginTop: -4,
         paddingTop: 15
     },
     aboutSectionHeaderContainer: {
@@ -225,8 +230,9 @@ const styles = StyleSheet.create({
         backgroundColor: colors.brandColor,
         borderRadius: 10,
     },
-    displayIcons: {
-        color: colors.white,
+    iconsBlack: {
+        color: colors.black,
+        marginRight: 8
     },
     listCard: {
         marginVertical: 8,
@@ -270,10 +276,26 @@ const ProfileChipContent = ({header, subHeader}) => {
     );
 }
 
+const CurrentUserProfileActions = () => {
+    return (
+        <View style={styles.profileButtonsContainer}>
+            <TouchableOpacity activeOpacity={0.8} style={[styles.buttonStyle, {flexDirection: 'row'}]}>
+                <Icon name={'paper-plane'} style={[styles.iconStyles, {marginRight: 10}]} size={18} />
+                <Text style={styles.buttonTextStyle}>Message</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity activeOpacity={0.4} style={[styles.buttonStyle, styles.requestButton]}>
+                <Icon name={'user-plus'} style={styles.iconsBlack} size={18} />
+                <Text style={{...styles.buttonTextStyle, color: colors.black}}>Request</Text>
+            </TouchableOpacity>
+        </View>
+    );
+}
+
 const DisplayIcon = ({icon, customStyles={}, iconStyles={}}) => {
     return (
         <View style={[styles.displayIconsContainer, customStyles]}>
-            <Icon name={icon} style={[styles.displayIcons, iconStyles]} size={28} />
+            <Icon name={icon} style={[styles.iconStyles, iconStyles]} size={28} />
         </View>
     );
 }
@@ -304,22 +326,41 @@ const About = ({text}) => {
 }
 
 const AccountScreen = ({navigation, route}) => {
-    const profile = useSelector(state => state.user.currentUser);
+    const {params} = route;
+    const profile = params || useSelector(state => state.user.currentUser);
 
     const getFullname = () => {
         return [profile.firstname, profile.lastname].join(' ') || profile.username;
     }
 
     const getJoiningDate = () => {
-        return new Date(profile.createdAt).getFullYear()
+        return new Date(profile.createdAt).getFullYear();
     }
 
     const getCurrentLocation = () => {
-        let {city} = profile.location;
+        if (!profile.location) return;
+        let {city=''} = profile.location;
+
         if (typeof city == 'object') {
             city = '';
         }
         return [profile.location.country.name, profile.location.region.name, city].join(', ');
+    }
+
+    const getPicture = (picture) => {
+        if (picture.includes(APP_REMOTE_HOST)) {
+            return picture;
+        } else return getUserPicture(profile);
+    }
+
+    const getWorkInfo = () => {
+        if (profile.work && profile.organization) {
+            return [profile.work, profile.organization].join(' at ');
+        }else if (profile.organization) {
+            return profile.organization;
+        } else if (profile.work) return profile.work;
+
+        return null;
     }
 
     return (<>
@@ -344,7 +385,7 @@ const AccountScreen = ({navigation, route}) => {
                         <View style={styles.profileSectionContainer}>
                             <View style={styles.profileContainer}>
                                 <View style={{flexDirection: "row", alignItems: 'center', width: '90%'}}>
-                                    <ProfileAvtar image={profile.picture} customStyles={styles.avtarStyles} textStyle={styles.avtarTextStyles} name={getFullname()} />
+                                    <ProfileAvtar image={getPicture(profile.picture)} customStyles={styles.avtarStyles} textStyle={styles.avtarTextStyles} name={getFullname()} />
                                     <View style={styles.profileRightContainer}>
                                         <Text numberOfLines={2} ellipsizeMode='tail' style={getFullname().length > 15 ? {...styles.profileNameText, height: 40} : styles.profileNameText}>{getFullname()}</Text>
                                         <Text numberOfLines={1} ellipsizeMode='tail' style={styles.usernameText} >{'@' + profile.username}</Text>
@@ -355,15 +396,7 @@ const AccountScreen = ({navigation, route}) => {
                                         </View>
                                     </View>
                                 </View>
-                                <View style={styles.profileButtonsContainer}>
-                                    <TouchableOpacity activeOpacity={0.5} style={styles.buttonStyle}>
-                                        <Text style={styles.buttonTextStyle}>Message</Text>
-                                    </TouchableOpacity>
-
-                                    <TouchableOpacity activeOpacity={0.5} style={{...styles.buttonStyle, backgroundColor: colors.white, borderColor: colors.brandColor, borderWidth: 1}}>
-                                        <Text style={{...styles.buttonTextStyle, color: colors.black}}>Ping</Text>
-                                    </TouchableOpacity>
-                                </View>
+                                <CurrentUserProfileActions />
                             </View>
                         </View>
 
@@ -378,7 +411,7 @@ const AccountScreen = ({navigation, route}) => {
 
                     <View style={{width: '90%', alignSelf: 'center'}}>
                         <ListCard icon={'location-arrow'} header={'Location'} subHeader={getCurrentLocation()} />
-                        <ListCard icon={'briefcase'} header={'Work'} subHeader={[profile.work, profile.organization].join(' at ')} />
+                        <ListCard icon={'briefcase'} header={'Work'} subHeader={getWorkInfo()} />
                         <ListCard icon={'envelope'} header={'Email'} subHeader={profile.email} />
                     </View>
                     

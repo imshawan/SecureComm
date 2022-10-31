@@ -51,3 +51,55 @@ export const getUserPicture = (user) => {
   if (!user.picture) return null;
   return [APP_REMOTE_HOST, '/', user.picture].join('');
 }
+
+// https://stackoverflow.com/questions/6108819/javascript-timestamp-to-relative-time
+export const processTime = timestamp => {
+  var currentTime = Date.now();
+
+  var msPerMinute = 60 * 1000;
+  var msPerHour = msPerMinute * 60;
+  var msPerDay = msPerHour * 24;
+  var msPerMonth = msPerDay * 30;
+  var msPerYear = msPerDay * 365;
+
+  var elapsed = currentTime - new Date(timestamp);
+
+  if (elapsed < msPerMinute) {
+    return processShortTime(timestamp);
+    //  return Math.round(elapsed/1000) + ' seconds ago';
+  } else if (elapsed < msPerHour) {
+    return processShortTime(timestamp);
+    //  return Math.round(elapsed/msPerMinute) + ' minutes ago';
+  } else if (elapsed < msPerDay) {
+    return processShortTime(timestamp);
+    //  return Math.round(elapsed/msPerHour ) + ' hours ago';
+  }
+
+  if (elapsed < msPerMonth) {
+    return Math.round(elapsed / msPerDay) + ' days ago';
+  } else if (elapsed < msPerYear) {
+    return Math.round(elapsed / msPerMonth) + ' months ago';
+  } else {
+    return Math.round(elapsed / msPerYear) + ' years ago';
+  }
+};
+
+
+// https://www.geeksforgeeks.org/how-do-you-display-javascript-datetime-in-12-hour-am-pm-format/
+export const processShortTime = timestamp => {
+  var date = new Date(timestamp);
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+
+  // Check whether AM or PM
+  var newformat = hours >= 12 ? 'pm' : 'am';
+
+  // Find current hour in AM-PM Format
+  hours = hours % 12;
+
+  // To display "0" as "12"
+  hours = hours ? hours : 12;
+  minutes = minutes < 10 ? '0' + minutes : minutes;
+
+  return hours + ':' + minutes + ' ' + newformat;
+};

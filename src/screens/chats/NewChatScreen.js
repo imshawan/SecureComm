@@ -104,11 +104,21 @@ const NewChatScreen = ({navigation, route}) => {
         }
         let room = await HTTP.post(ENDPOINTS.createRoom, payload);
         if (room.payload) {
+            let {memberDetails=[]} = room.payload;
             let realmObj = await Rooms();
+            let chatUserData = memberDetails.find(el =>  Object.keys(el)[0] != _id);
+            
+            if (chatUserData) {
+                chatUserData = chatUserData[selectedUser._id];
+            } else {
+                chatUserData = selectedUser;
+            }
+
+            let roomPayload = {chatUser: chatUserData, currentRoom: room.payload};
+
             await storeNewRoom(room.payload, realmObj);
             dispatch(roomActions.addRoomToStore(room.payload));
-            // realmObj.close();
-            let roomPayload = {chatUser: selectedUser, currentRoom: room.payload};
+
             dispatch(roomActions.addToRecent(roomPayload))
             navigation.navigate('ChatScreen', {...roomPayload, isNew: true});
         }

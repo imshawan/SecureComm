@@ -7,7 +7,7 @@ import ProfileAvtar from '../ProfileAvtar';
 import { roomActions } from '../../store/roomListStore';
 import { colors, fontFamily, fontSizes, TOUCHABLE_TAP } from '../../common'
 import { log } from '../../config';
-import { AnimColor, showFocusColor, showOriginColor, getUserPicture } from '../../utils';
+import { AnimColor, showFocusColor, showOriginColor, getUserPicture, processTime } from '../../utils';
 
 
 const styles = StyleSheet.create({
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 6,
         paddingVertical: 12,
         marginVertical: 2,
-        width: '80%',
+        
     },
     avtarStyles: {
         height: 50,
@@ -34,18 +34,27 @@ const styles = StyleSheet.create({
     },
     textContainer: {
         marginLeft: 10,
-       justifyContent: 'center'
+       justifyContent: 'center',
+       width: '80%',
     },
     userNameText: {
         fontSize: fontSizes.regular,
         fontFamily: fontFamily.bold,
         color: colors.black,
-        lineHeight: fontSizes.regular + 5,
+        lineHeight: fontSizes.regular + 6,
+        width: '60%'
     },
     latestMsgText: {
-        fontSize: fontSizes.medium,
+        fontSize: fontSizes.small,
         color: colors.subText,
+        minHeight: 30,
+        // backgroundColor: 'red'
         // fontFamily: 'SF-Pro-Rounded-Regular',
+    },
+    timeStyles: {
+        fontSize: fontSizes.small,
+        color: colors.lightBlack,
+        fontFamily: fontFamily.bold,
     }
 })
 
@@ -57,7 +66,7 @@ export const List = ({item, message}) => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
-    let {memberDetails} = item;
+    let {memberDetails, lastActive} = item;
 
     if (typeof memberDetails == 'string') {
         memberDetails = JSON.parse(memberDetails);
@@ -88,8 +97,11 @@ export const List = ({item, message}) => {
                 </View>
                 <View style={styles.textContainer}>
 
-                    <Text style={styles.userNameText} numberOfLines={1} ellipsizeMode='tail'>{name}</Text>
-                    <Text style={styles.latestMsgText} numberOfLines={1} ellipsizeMode='tail'>{message || `@${chatUser.username}`}</Text>
+                    <View style={{justifyContent: 'space-between', flexDirection: 'row', }}>
+                        <Text style={styles.userNameText} numberOfLines={1} ellipsizeMode='tail'>{name}</Text>
+                        {lastActive ? <Text style={styles.timeStyles} numberOfLines={1} ellipsizeMode='tail'>{processTime(lastActive)}</Text> : ''}
+                    </View>
+                    <Text style={styles.latestMsgText} numberOfLines={2} ellipsizeMode='tail'>{message || `@${chatUser.username}`}</Text>
                     
                 </View>
             </View>
