@@ -8,20 +8,22 @@ import { log } from '../../config';
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
+        width: '100%',
         margin: 10,
         marginLeft: 0,
-        alignItems: 'flex-end'
+        alignItems: 'flex-end',
     },
     mainContainer: {
         flexDirection: 'row',
         backgroundColor: colors.g,
         borderRadius: 50,
         flex: 1,
-        alignItems: 'flex-end',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start'
     },
     inputStyles: {
         flex: 1,
-        marginHorizontal: 10,
+        marginRight: 6,
         color: colors.placeholderColor,
         backgroundColor: '#eceef5',
         borderRadius: 20,
@@ -55,6 +57,7 @@ export const ChatInput = ({value, setValue, onActionSend, onFocused, onRemoveFoc
                     multiline 
                     autoCapitalize 
                     placeholder='Type a message...'
+                    placeholderTextColor={colors.placeholderColor}
                     underlineColorAndroid="#f000"
                     returnKeyType="next"
                     />
