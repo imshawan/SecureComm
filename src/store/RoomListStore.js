@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { sortItemByTimestamp } from "../utils";
 import { log } from "../config";
 
 const roomsInitialState = {
@@ -12,15 +13,15 @@ const roomsSlice = createSlice({
     initialState: roomsInitialState,
     reducers: {
         initRooms(state, action) {
-            state.roomList = action.payload;
+            state.roomList = sortItemByTimestamp(action.payload, 'lastActive');
         },
         addRoomToStore(state, action) {
 
             let found = (state.roomList || []).find(item => item._id == action.payload._id);
             if (!found) {
-                state.roomList = [{...action.payload}, ...state.roomList]
+                state.roomList = sortItemByTimestamp([{...action.payload}, ...state.roomList], 'lastActive')
             } else {
-                state.roomList = state.roomList;
+                state.roomList = sortItemByTimestamp(state.roomList, 'lastActive');
             }
         },
         clearRooms(state) {
@@ -30,7 +31,7 @@ const roomsSlice = createSlice({
             if (state.recentRooms.length > 6) {
                 state.recentRooms.length = 5;
             }
-            state.recentRooms = [...new Set([...state.recentRooms, {...action.payload.currentRoom}])];
+            state.recentRooms = sortItemByTimestamp([...new Set([...state.recentRooms, {...action.payload.currentRoom}])], 'lastActive');
         },
         updateLatestMessage(state, action) {
             let {message, _id, lastActive} = action.payload;
@@ -41,7 +42,8 @@ const roomsSlice = createSlice({
             if (objIndex != -1) {
                 roomList[objIndex].latestMessage = message;
                 roomList[objIndex].lastActive = lastActive;
-                state.roomList = roomList;
+
+                state.roomList = sortItemByTimestamp(roomList, 'lastActive');
             }
         },
         setCurrentRoom(state, action) {

@@ -103,3 +103,7 @@ export const processShortTime = timestamp => {
 
   return hours + ':' + minutes + ' ' + newformat;
 };
+
+export const sortItemByTimestamp = (array=[], key) => {
+  return array.sort((firstElem, secondElem) => new Date(firstElem[key]).getTime() < (new Date(secondElem[key])).getTime());
+}
