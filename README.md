@@ -1,4 +1,4 @@
-# *UNDER DEVELOPMENT*
+# Screenshots
 
 ### Project configuration & dependencies 
 * Node 14
