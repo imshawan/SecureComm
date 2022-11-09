@@ -59,7 +59,14 @@ const Home = ({navigation}) => {
             let {chatUser, currentRoom, message, room} = socket;
             if (room != currentUser._id) return;
 
-            await updateRoomData({latestMessage: message.message, lastActive: message.createdAt}, currentRoom._id);
+            await updateRoomData(
+              {
+                latestMessage: message.message,
+                lastActive: message.createdAt,
+                memberDetails: JSON.stringify(chatUser),
+              },
+              currentRoom._id,
+            );
 
             await displayNotification(
                 chatUser._id,
@@ -68,9 +75,13 @@ const Home = ({navigation}) => {
                 chatUser.picture);
 
             if (!roomExists(currentRoom.roomId)) {
+                // let chatUserData = currentRoom.memberDetails.find(el =>  Object.keys(el)[0] != currentUser._id);
+
                 currentRoom.creator = {};
                 currentRoom.latestMessage = message.message;
                 currentRoom.lastActive = message.createdAt;
+                // currentRoom.memberDetails = Object.values(chatUserData)[0];
+                currentRoom.memberDetails = chatUser;
 
                 dispatch(roomActions.addRoomToStore(currentRoom));
                 let realmObj = await Rooms();
@@ -82,6 +93,7 @@ const Home = ({navigation}) => {
                 _id: currentRoom._id,
                 message: message.message,
                 lastActive: message.createdAt,
+                memberDetails: chatUser,
             }));
         })
 

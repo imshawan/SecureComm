@@ -1,6 +1,7 @@
 import notifee, { AndroidImportance, AndroidStyle, AndroidBadgeIconType }  from '@notifee/react-native';
 import Sound from 'react-native-sound';
 import Store from '../store';
+import { counterActions } from '../store/countersStore';
 import { IMAGES, colors } from '../common';
 
 const notificationSound = new Sound('bell.mp3', Sound.MAIN_BUNDLE);
@@ -35,6 +36,8 @@ export const displayNotification = async (id, title, body, icon) => {
     const currentRoom = getCurrentRoom();
 
     if (currentRoom._id == id) return;
+
+    Store.dispatch(counterActions.incrementUnreadCount(id));
     
     await notifee.displayNotification({
         id,

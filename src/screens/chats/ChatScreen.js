@@ -7,12 +7,14 @@ import notifee from '@notifee/react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { messageActions } from '../../store/messagesStore';
 import { roomActions } from '../../store/roomListStore';
+import { counterActions } from '../../store/countersStore';
 
 import { Thread, ChatInput } from '../../components/chat';
 import ProfileAvtar from '../../components/ProfileAvtar';
 import { log } from '../../config';
 import { colors, HEADER_HEIGHT, fontSizes, APP_REMOTE_HOST } from '../../common';
 import { generateUUID, getUserPicture } from '../../utils';
+import { updateRoomData } from '../../database';
 
 
 const styles = StyleSheet.create({
@@ -103,6 +105,7 @@ const ChatScreen = ({navigation, route}) => {
         );
 
         notifee.cancelNotification(chatUser._id);
+        dispatch(counterActions.clearUnreadMessageCount((chatUser._id))) 
       }, []);
 
     // log(isFocused)    

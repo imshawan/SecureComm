@@ -116,8 +116,8 @@ const NewChatScreen = ({navigation, route}) => {
 
             let roomPayload = {chatUser: chatUserData, currentRoom: room.payload};
 
-            await storeNewRoom(room.payload, realmObj);
-            dispatch(roomActions.addRoomToStore(room.payload));
+            await storeNewRoom({...room.payload, memberDetails: chatUserData}, realmObj);
+            dispatch(roomActions.addRoomToStore({...room.payload, memberDetails: chatUserData}));
 
             dispatch(roomActions.addToRecent(roomPayload))
             navigation.navigate('ChatScreen', {...roomPayload, isNew: true});

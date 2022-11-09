@@ -49,6 +49,8 @@ export const isBase64Data = string =>  new RegExp("base64").test(String(string))
 
 export const getUserPicture = (user) => {
   if (!user.picture) return null;
+  if (user.picture.includes(APP_REMOTE_HOST)) return user.picture;
+  
   return [APP_REMOTE_HOST, '/', user.picture].join('');
 }
 

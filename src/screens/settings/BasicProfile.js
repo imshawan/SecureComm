@@ -181,9 +181,13 @@ const BasicProfileEdit = ({navigation}) => {
 
   const handleSubmitPress = async () => {
     Keyboard.dismiss();
-    await updateProfile(ENDPOINTS.updateUserData, state);
-    dispatch(currentUserActions.updateUserData(state));
-    await updateCachedUserObject(state);
+    let data = state;
+    delete data.picture;
+
+    log(data)
+    await updateProfile(ENDPOINTS.updateUserData, data);
+    dispatch(currentUserActions.updateUserData(data));
+    await updateCachedUserObject(data);
   }
 
   useEffect(() => {

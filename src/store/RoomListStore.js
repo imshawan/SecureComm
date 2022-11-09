@@ -34,7 +34,7 @@ const roomsSlice = createSlice({
             state.recentRooms = sortItemByTimestamp([...new Set([...state.recentRooms, {...action.payload.currentRoom}])], 'lastActive');
         },
         updateLatestMessage(state, action) {
-            let {message, _id, lastActive} = action.payload;
+            let {message, _id, lastActive, memberDetails} = action.payload;
             let roomList = state.roomList || [];
 
             let objIndex = roomList.findIndex(obj => obj._id == _id);
@@ -42,6 +42,7 @@ const roomsSlice = createSlice({
             if (objIndex != -1) {
                 roomList[objIndex].latestMessage = message;
                 roomList[objIndex].lastActive = lastActive;
+                roomList[objIndex].memberDetails = memberDetails;
 
                 state.roomList = sortItemByTimestamp(roomList, 'lastActive');
             }

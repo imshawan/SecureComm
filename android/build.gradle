@@ -32,6 +32,12 @@ buildscript {
 }
 
 allprojects {
+    configurations.all {
+        resolutionStrategy {
+        force 'com.facebook.react:react-native:0.69.4' //select Version of react-natice you used (package.json)
+        }
+    }
+
     repositories {
         google()  // Google's Maven repository
         mavenCentral()  // Maven Central repository
