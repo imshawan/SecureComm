@@ -407,12 +407,13 @@ const AccountScreen = ({navigation, route}) => {
                         <Text style={styles.aboutSectionSubHeaderText}>{getFullname()}</Text>
                     </View>
 
-                    <About text={profile.about}/>
+                    {/* <About text={profile.about}/> */}
 
                     <View style={{width: '90%', alignSelf: 'center'}}>
                         <ListCard icon={'location-arrow'} header={'Location'} subHeader={getCurrentLocation()} />
                         <ListCard icon={'briefcase'} header={'Work'} subHeader={getWorkInfo()} />
                         <ListCard icon={'envelope'} header={'Email'} subHeader={profile.email} />
+                        <ListCard icon={'info-circle'} header={'Bio'} subHeader={profile.about} />
                     </View>
                     
                 </ScrollView>
