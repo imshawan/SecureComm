@@ -155,7 +155,7 @@ const ChatScreen = ({navigation, route}) => {
     }
 
     const navigateToChatUserProfile = () => {
-        navigation.navigate('ProfileScreen', chatUser)
+        navigation.navigate('ProfileScreen', {currentRoom, chatUser})
     }
     
     useEffect(() => {

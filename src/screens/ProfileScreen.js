@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, StatusBar, TouchableOpacity, ScrollView } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector } from 'react-redux';
+import { useNavigation } from "@react-navigation/native";
 
 import ProfileAvtar from "../components/ProfileAvtar";
 import { colors, HEADER_HEIGHT, fontSizes, DIALOG_LABELS, BUTTONS, fontFamily, APP_REMOTE_HOST } from '../common';
@@ -163,7 +164,7 @@ const styles = StyleSheet.create({
         borderWidth: 0,
         color: colors.white,
         borderColor: colors.borderColor,
-        height: 48,
+        height: 45,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 10,
@@ -277,16 +278,36 @@ const ProfileChipContent = ({header, subHeader}) => {
 }
 
 const CurrentUserProfileActions = () => {
+    const navigation = useNavigation();
+
     return (
         <View style={styles.profileButtonsContainer}>
-            <TouchableOpacity activeOpacity={0.8} style={[styles.buttonStyle, {flexDirection: 'row'}]}>
+            <TouchableOpacity onPress={() => navigation.navigate('BasicProfileEdit')} activeOpacity={0.8} style={[styles.buttonStyle, {flexDirection: 'row'}]}>
+                <Icon name={'pencil'} style={[styles.iconStyles, {marginRight: 10}]} size={18} />
+                <Text numberOfLines={1} ellipsizeMode='tail' style={styles.buttonTextStyle}>Edit profile</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => navigation.navigate('SettingsScreen')} activeOpacity={0.4} style={[styles.buttonStyle, styles.requestButton]}>
+                <Icon name={'cog'} style={styles.iconsBlack} size={18} />
+                <Text numberOfLines={1} ellipsizeMode='tail' style={{...styles.buttonTextStyle, color: colors.black}}>Manage</Text>
+            </TouchableOpacity>
+        </View>
+    );
+}
+
+const UserProfileActions = ({params}) => {
+    const navigation = useNavigation();
+
+    return (
+        <View style={styles.profileButtonsContainer}>
+            <TouchableOpacity onPress={() => navigation.navigate('ChatScreen', params)} activeOpacity={0.8} style={[styles.buttonStyle, {flexDirection: 'row'}]}>
                 <Icon name={'paper-plane'} style={[styles.iconStyles, {marginRight: 10}]} size={18} />
-                <Text style={styles.buttonTextStyle}>Message</Text>
+                <Text numberOfLines={1} ellipsizeMode='tail' style={styles.buttonTextStyle}>Message</Text>
             </TouchableOpacity>
 
             <TouchableOpacity activeOpacity={0.4} style={[styles.buttonStyle, styles.requestButton]}>
-                <Icon name={'user-plus'} style={styles.iconsBlack} size={18} />
-                <Text style={{...styles.buttonTextStyle, color: colors.black}}>Request</Text>
+                <Icon name={'phone'} style={styles.iconsBlack} size={18} />
+                <Text numberOfLines={1} ellipsizeMode='tail' style={{...styles.buttonTextStyle, color: colors.black}}>Call</Text>
             </TouchableOpacity>
         </View>
     );
@@ -327,7 +348,8 @@ const About = ({text}) => {
 
 const AccountScreen = ({navigation, route}) => {
     const {params} = route;
-    const profile = params || useSelector(state => state.user.currentUser);
+    const currentUser = useSelector(state => state.user.currentUser);
+    const profile = params && params.chatUser ? params.chatUser : currentUser;
 
     const getFullname = () => {
         return [profile.firstname, profile.lastname].join(' ') || profile.username;
@@ -363,6 +385,8 @@ const AccountScreen = ({navigation, route}) => {
         return null;
     }
 
+    const isCurrentUserProfile = (params && params.viewAsVisitor) || profile._id === currentUser._id;
+
     return (<>
             <StatusBar barStyle='light-content' backgroundColor={"#8b97b0"} />
             <View style={styles.container}>
@@ -396,7 +420,7 @@ const AccountScreen = ({navigation, route}) => {
                                         </View>
                                     </View>
                                 </View>
-                                <CurrentUserProfileActions />
+                                {isCurrentUserProfile ? <CurrentUserProfileActions /> : <UserProfileActions params={params} />}
                             </View>
                         </View>
 

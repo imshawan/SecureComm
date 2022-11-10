@@ -239,7 +239,7 @@ const SettingsScreen = ({navigation, route}) => {
                             </TouchableOpacity>
                             {/* <IndividualList border={0} header={'Birthday'} subHeader={'18th July'} /> */}
                             <IndividualList header={'Email'} subHeader={'hello@imshawan.dev'} />
-                            <IndividualList onClicked={() => navigation.navigate('LocationScreen')} header={'Location'} subHeader={getCurrentLocation()} />
+                            <IndividualList border={0} onClicked={() => navigation.navigate('LocationScreen')} header={'Location'} subHeader={getCurrentLocation()} />
                         </View>
                     </View>
                     
@@ -256,8 +256,8 @@ const SettingsScreen = ({navigation, route}) => {
                     <View>
                         <SectionHeading header={SETTINGS.about.header} subHeader={SETTINGS.about.subHeader} icon={'question-circle-o'} />
                         <View style={styles.cardStyle}>
-                            <IndividualList onClicked={() => navigation.navigate('ContactScreen')} border={0} header={SETTINGS.menus.reachUs} subHeader={SETTINGS.menus.reachUsSubText} />
-                            <IndividualList onClicked={() => navigation.navigate('AboutScreen')} header={SETTINGS.menus.about} subHeader={SETTINGS.menus.aboutSubText} />
+                            <IndividualList onClicked={() => navigation.navigate('ContactScreen')} header={SETTINGS.menus.reachUs} subHeader={SETTINGS.menus.reachUsSubText} />
+                            <IndividualList border={0} onClicked={() => navigation.navigate('AboutScreen')} header={SETTINGS.menus.about} subHeader={SETTINGS.menus.aboutSubText} />
                         </View>
                     </View>
 
