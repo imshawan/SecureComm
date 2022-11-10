@@ -385,7 +385,7 @@ const AccountScreen = ({navigation, route}) => {
         return null;
     }
 
-    const isCurrentUserProfile = (params && params.viewAsVisitor) || profile._id === currentUser._id;
+    const isCurrentUserProfile = profile._id === currentUser._id;
 
     return (<>
             <StatusBar barStyle='light-content' backgroundColor={"#8b97b0"} />
