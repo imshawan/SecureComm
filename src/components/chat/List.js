@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Animated } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -57,13 +57,14 @@ const styles = StyleSheet.create({
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
 export const List = ({item, message}) => {
+    const [unreadCount, setUnreadCount] = useState(null);
     const interpolatedColor = new Animated.Value(0);
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
     const unreadMessagesCount = useSelector(state => state.counters.unreadMessagesCount);
     
-    let {memberDetails, lastActive, _id} = item;
+    let {memberDetails, lastActive} = item;
     let chatUser = memberDetails || {};
 
     if (typeof memberDetails == 'string') {
@@ -89,6 +90,10 @@ export const List = ({item, message}) => {
       return count;
     }
 
+    useEffect(() => {
+      setUnreadCount(getUnreadMessagesCount());
+    }, [unreadMessagesCount]);
+
     return (
         <AnimatedTouchable 
         activeOpacity={1}
@@ -99,7 +104,7 @@ export const List = ({item, message}) => {
         >
             <View style={styles.container}>
                 <View style={styles.avtarContainer}>
-                    <UnreadMessagesCount count={getUnreadMessagesCount()} />
+                    <UnreadMessagesCount count={unreadCount} />
                     <ProfileAvtar name={name} image={getUserPicture(chatUser)} textStyle={styles.avtarTextStyle} customStyles={styles.avtarStyles} />
                 </View>
                 <View style={styles.textContainer}>
@@ -108,7 +113,7 @@ export const List = ({item, message}) => {
                         <Text style={styles.userNameText} numberOfLines={1} ellipsizeMode='tail'>{name}</Text>
                         {lastActive ? <Text style={styles.timeStyles} numberOfLines={1} ellipsizeMode='tail'>{processTime(lastActive)}</Text> : ''}
                     </View>
-                    <Text style={styles.latestMsgText} numberOfLines={2} ellipsizeMode='tail'>{message || `@${chatUser.username}`}</Text>
+                    <Text style={[styles.latestMsgText, {fontWeight: unreadCount ? '700' : '400'}]} numberOfLines={2} ellipsizeMode='tail'>{message || `@${chatUser.username}`}</Text>
                     
                 </View>
             </View>
