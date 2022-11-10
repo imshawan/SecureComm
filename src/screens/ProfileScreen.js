@@ -185,25 +185,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    cardStyle: {
-        flexDirection: 'column',
-        width: '90%',
-        alignSelf: 'center',
-        borderRadius: 15,
-        backgroundColor: colors.lightestBlue,
-        minHeight: 40,
-        marginBottom: 10,
-        marginTop: 0,
-    },
-    cardContentText: {
-        paddingHorizontal: 15,
-        fontSize: fontSizes.medium,
-        fontFamily: fontFamily.regular,
-        paddingBottom: 15,
-        color: colors.lightBlack,
-        lineHeight: fontSizes.medium + 4,
-        paddingTop: 15
-    },
     aboutSectionHeaderContainer: {
         flexDirection: 'column',
         width: '90%',
@@ -335,17 +316,6 @@ const ListCard = ({header, subHeader, icon}) => {
     );
 }
 
-const About = ({text}) => {
-    if (!text) return;
-    return (
-        <View style={styles.cardStyle}>
-            <Text style={styles.cardContentText}>
-                {text}
-            </Text>
-        </View>
-    );
-}
-
 const AccountScreen = ({navigation, route}) => {
     const {params} = route;
     const currentUser = useSelector(state => state.user.currentUser);
@@ -430,9 +400,7 @@ const AccountScreen = ({navigation, route}) => {
                         <Text style={styles.aboutSectionHeaderText}>More information about</Text>
                         <Text style={styles.aboutSectionSubHeaderText}>{getFullname()}</Text>
                     </View>
-
-                    {/* <About text={profile.about}/> */}
-
+                    
                     <View style={{width: '90%', alignSelf: 'center'}}>
                         <ListCard icon={'location-arrow'} header={'Location'} subHeader={getCurrentLocation()} />
                         <ListCard icon={'briefcase'} header={'Work'} subHeader={getWorkInfo()} />
