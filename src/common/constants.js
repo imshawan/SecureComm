@@ -24,6 +24,7 @@ const API_VERSION = 'v1';
 
 export const ENDPOINTS = {
     logIn: '/api/' + API_VERSION +'/auth/signin',
+    logOut: '/api/' + API_VERSION +'/auth/signout',
     register: '/api/' + API_VERSION +'/auth/register',
 
     forgotPassword: '/api/' + API_VERSION +'/auth/password/forgot',

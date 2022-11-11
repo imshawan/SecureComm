@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, StatusBar, FlatList } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { TextInput } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import { roomActions } from '../../store/roomListStore';
+import { debounce } from 'lodash';
 
 import { UserList } from '../../components/chat';
 import Loader from '../../components/Loader';
@@ -11,7 +12,7 @@ import Loader from '../../components/Loader';
 import { log } from '../../config';
 import { colors, HEADER_HEIGHT, fontSizes, ENDPOINTS } from '../../common';
 import { HTTP } from '../../services';
-import { getLoggedInUser } from '../../utils';
+import { getLoggedInUser, notifyUser } from '../../utils';
 import { storeNewRoom, Rooms } from '../../database';
 
 
@@ -85,15 +86,22 @@ const NewChatScreen = ({navigation, route}) => {
 
     const dispatch = useDispatch();
 
-    const handleSearch = async (query) => {
+    const handleSearch = useCallback(debounce(async(query) => {
         if (!query || (query && query.length < 3)) return setApiResponse([]);
-        let {payload} = await HTTP.get(ENDPOINTS.getUsersByUsername, {
-            query
-        });
-        if (payload) {
-            setApiResponse(payload.data);
+        try {
+            let {payload} = await HTTP.get(ENDPOINTS.getUsersByUsername, {
+                query
+            });
+            if (payload) {
+                setApiResponse(payload.data);
+            }
+        } catch (err) {
+            let {status} = err;
+            if (status) {
+                notifyUser(status.message);
+            }
         }
-    }
+    }, 500),[]);
 
     const userCardOnClick = async (selectedUser) => {
         setLoading(true);
@@ -102,25 +110,32 @@ const NewChatScreen = ({navigation, route}) => {
             members: [_id, selectedUser._id],
             name: [selectedUser.firstname, selectedUser.lastname].join(' '),
         }
-        let room = await HTTP.post(ENDPOINTS.createRoom, payload);
-        if (room.payload) {
-            let {memberDetails=[]} = room.payload;
-            let realmObj = await Rooms();
-            let chatUserData = memberDetails.find(el =>  Object.keys(el)[0] != _id);
-            
-            if (chatUserData) {
-                chatUserData = chatUserData[selectedUser._id];
-            } else {
-                chatUserData = selectedUser;
+        try {
+            let room = await HTTP.post(ENDPOINTS.createRoom, payload);
+            if (room.payload) {
+                let {memberDetails=[]} = room.payload;
+                let realmObj = await Rooms();
+                let chatUserData = memberDetails.find(el =>  Object.keys(el)[0] != _id);
+                
+                if (chatUserData) {
+                    chatUserData = chatUserData[selectedUser._id];
+                } else {
+                    chatUserData = selectedUser;
+                }
+
+                let roomPayload = {chatUser: chatUserData, currentRoom: room.payload};
+
+                await storeNewRoom({...room.payload, memberDetails: chatUserData}, realmObj);
+                dispatch(roomActions.addRoomToStore({...room.payload, memberDetails: chatUserData}));
+
+                dispatch(roomActions.addToRecent(roomPayload))
+                navigation.navigate('ChatScreen', {...roomPayload, isNew: true});
             }
-
-            let roomPayload = {chatUser: chatUserData, currentRoom: room.payload};
-
-            await storeNewRoom({...room.payload, memberDetails: chatUserData}, realmObj);
-            dispatch(roomActions.addRoomToStore({...room.payload, memberDetails: chatUserData}));
-
-            dispatch(roomActions.addToRecent(roomPayload))
-            navigation.navigate('ChatScreen', {...roomPayload, isNew: true});
+        } catch (err) {
+            let {status} = err;
+            if (status) {
+                notifyUser(status.message);
+            }
         }
         setLoading(false);
     }

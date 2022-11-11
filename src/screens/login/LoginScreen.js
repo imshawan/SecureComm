@@ -19,6 +19,7 @@ import { currentUserActions } from '../../store/userStore';
 import { applicationActions } from '../../store/appStore';
 import PageHeader from '../../components/PageHeaderComponent';
 import Loader from '../../components/Loader';
+import DialogBox from '../../components/DialogBox';
 
 import { log, showAlert } from '../../config';
 import { colors, fontSizes, ENDPOINTS, ERRORS, PLACEHOLDERS } from '../../common';
@@ -47,9 +48,15 @@ const LoginScreen = ({navigation, route}) => {
   const [justifyContent, setJustifyContent] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({ });
+  const [showDialog, setShowDialog] = useState(false);
+  const [dialog, setDialog] = useState({
+    title: 'Some error occured',
+    body: ''
+  });
   const [userInput, setUserInput] = useState({
     username: '',
     password: '',
+    deviceId: 'shaaa' // Testing purposes
   })
   const [loading, setLoading] = useState(false)
  
@@ -87,21 +94,20 @@ const LoginScreen = ({navigation, route}) => {
       setAuthToken(payload.token);
       dispatch(currentUserActions.setCurrentUser(user));
       dispatch(applicationActions.setAuthenticated(true));
+      setLoading(false);
       // navigation.navigate('Home');
 
     } catch (err) {
-      if (Platform.OS === 'android') {
-        ToastAndroid.show(err, Snackbar.LENGTH_SHORT);
-      } else {
-        Snackbar.show({
-          text: err,
-          duration: Snackbar.LENGTH_SHORT,
-          textColor: colors.white,
-          backgroundColor: colors.black,
-        });
-      }
+      setLoading(false);
+
+      let {status} = err;
+      if (status) {
+          setDialog({title: status.error, body: status.message});
+      } else setDialog(prevState => ({...prevState, body: err}));
+
+      setShowDialog(true);
+      
     }
-    setLoading(false);
   }
 
   const handleOnChange = (value, field) => {
@@ -138,6 +144,13 @@ const LoginScreen = ({navigation, route}) => {
     <StatusBar barStyle='dark-content' backgroundColor={colors.white} />
     <View style={styles.mainBody}>
       <Loader visible={loading} />
+      <DialogBox
+        title={dialog.title}
+        body={dialog.body}
+        visible={showDialog}
+        setVisible={setShowDialog}
+        action2Text={'close'}
+      />
       {display === 'flex' ? <PageHeader name={'Log in'} /> : <></>}
       <ScrollView
         

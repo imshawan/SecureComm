@@ -9,8 +9,9 @@ import { roomActions } from '../store/roomListStore';
 import { applicationActions } from '../store/appStore';
 import ProfileAvtar from "../components/ProfileAvtar";
 import DialogBox from "../components/DialogBox";
-import { colors, HEADER_HEIGHT, fontSizes, DIALOG_LABELS, BUTTONS, SETTINGS, APP_NAME, LABELS, fontFamily } from '../common';
+import { colors, HEADER_HEIGHT, fontSizes, DIALOG_LABELS, BUTTONS, SETTINGS, APP_NAME, LABELS, fontFamily, ENDPOINTS } from '../common';
 import { log } from "../config";
+import { HTTP } from "../services";
 
 
 const styles = StyleSheet.create({
@@ -179,6 +180,8 @@ const SettingsScreen = ({navigation, route}) => {
     const dispatch = useDispatch();
 
     const processLogOut = async () => {
+        await HTTP.post(ENDPOINTS.logOut);
+        
         await clearCurrentRooms();
         setVisible(false);
         await AsyncStorage.clear();

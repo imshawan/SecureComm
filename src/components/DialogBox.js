@@ -63,12 +63,12 @@ const DialogBox = ({title, body, visible, setVisible, action1, action2, action1T
                 <Text style={styles.titleTextStyle}>{title}</Text>
                 <Text style={styles.bodyTextStyle}>{body}</Text>
                 <Dialog.Actions>
-                    <TouchableOpacity
+                    {action1 ? <TouchableOpacity
                         activeOpacity={0.5}
-                        onPress={action1 || defaultAction}
+                        onPress={action1}
                         style={{...styles.buttonStyle, backgroundColor: colors.brandColor}}>
                         <Text style={{...styles.buttonTextStyle, color: colors.white}}>{action1Text || 'Click'}</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> : ''}
                     <TouchableOpacity
                         activeOpacity={0.5}
                         onPress={action2 || defaultAction}
