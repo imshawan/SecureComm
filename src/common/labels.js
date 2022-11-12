@@ -177,6 +177,20 @@ const CHANGE_PASSWORD_SCREEN = {
     actionBtn: 'CHANGE PASSWORD'
 }
 
+const NOTIFICATION_SCREEN = {
+    title: 'Notifications',
+    header: 'Update your notification',
+    subHeader: 'and sound preferences',
+
+    notificationItems: {
+        incomingMessage: 'Play notifications sounds',
+        incomingMessageSubtext: 'Play sounds while receiving new incoming messages',
+
+        vibrate: 'Enable vibration',
+        vibrateSubtext: 'Vibrate on new incoming messages'
+    }
+}
+
 export const LABELS = {
     FORGOT_PASSWORD_SCREEN,
     LOCATION_EDIT_SCREEN,
@@ -184,5 +198,6 @@ export const LABELS = {
     HOME_SCREEN,
     ABOUT_SCREEN,
     CONTACT_SCREEN,
-    CHANGE_PASSWORD_SCREEN
+    CHANGE_PASSWORD_SCREEN,
+    NOTIFICATION_SCREEN
 };

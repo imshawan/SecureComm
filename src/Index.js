@@ -2,11 +2,12 @@ import React, {useState, useEffect} from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { applicationActions } from './store/appStore';
 import { currentUserActions } from './store/userStore';
+import { settingsActions } from './store/settingsStore';
 import SplashScreen from './screens/SplashScreen';
 import Router from './Router';
 import { ENDPOINTS } from './common';
 import { HTTP, setAuthToken } from './services';
-import { getToken, getLoggedInUser } from './utils';
+import { getToken, getLoggedInUser, getNotificationPreferences } from './utils';
 
 const SecureComm = () => {
     const applicationState = useSelector(state => state.application);
@@ -18,8 +19,16 @@ const SecureComm = () => {
         }
     }
 
+    const loadApplicationSettings = async () => {
+        const notification = await getNotificationPreferences();
+
+        dispatch(settingsActions.setNotificationData(notification));
+    }
+
     const loadInitialState = async () => {
+        await loadApplicationSettings();
         let token = await getToken();
+        
         if (token) {
             setAuthToken(token);
             dispatch(applicationActions.setAuthToken(token));
