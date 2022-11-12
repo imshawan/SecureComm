@@ -102,7 +102,7 @@ const LoginScreen = ({navigation, route}) => {
 
       let {status} = err;
       if (status) {
-          setDialog({title: status.error, body: status.message});
+          setDialog(prevState => ({...prevState, body: status.message}));
       } else setDialog(prevState => ({...prevState, body: err}));
 
       setShowDialog(true);
