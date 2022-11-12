@@ -169,10 +169,6 @@ const Contact = ({navigation}) => {
     Keyboard.dismiss();
     
     let errors = 0;
-    if (!state.username) {
-      handleErrors(ERRORS.noUsernameSupplied, 'username');
-      errors++;
-    }
     if (!state.email) {
       handleErrors(ERRORS.noEmail, 'email');
       errors++;
@@ -209,20 +205,6 @@ const Contact = ({navigation}) => {
 
             <View style={styles.formContainer}>
 
-            <AnimatedTextInput 
-                label={'Your username'}
-                placeholder='Your username'
-                onChange={(val) => handleOnChange('username', val)}
-                value={state.username}
-                disabled={username != ''}
-                error={!!errors.username}
-                onFocused={() => {
-                  if (errors.username) handleErrors(null, 'username');
-                }}
-                />
-
-              {errors.username ? <Text style={[defaultStyles.errorTextStyle, styles.errorTextStyle]}>{errors.username}</Text> : ''}
-            
               <AnimatedTextInput 
                 label={'Your email'}
                 placeholder='Your email'
