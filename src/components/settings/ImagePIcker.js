@@ -1,10 +1,13 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dialog } from '@rneui/themed';
 import ImagePicker from 'react-native-image-crop-picker';
-
-import { colors, HEADER_HEIGHT, fontSizes, LABELS, fontFamily, PROFILE_PICTURE_DIMENSIONS } from '../../common';
+import { useDispatch } from 'react-redux';
+import { currentUserActions } from '../../store/userStore';
+import { updateCachedUserObject, notifyUser } from '../../utils';
+import { HTTP } from '../../services';
+import { colors, ENDPOINTS, fontSizes, LABELS, fontFamily, PROFILE_PICTURE_DIMENSIONS } from '../../common';
 import { log } from '../../config';
 
 const { BASIC_PROFILE_EDIT } = LABELS;
@@ -71,14 +74,11 @@ const styles = StyleSheet.create({
 })
 
 const ImagePickerDialog = ({visible, setVisible, onChange}) => {
+  const dispatch = useDispatch();
+
   const toggleDialog = () => {
       setVisible(!visible);
   };
-  
-  const handleItemSelect = (item) => {
-      setSelected(item);
-      toggleDialog();
-  }
   
   const openImagePicker = () => {
     ImagePicker.openPicker(imagePickerOptions).then(image => {
@@ -96,9 +96,26 @@ const ImagePickerDialog = ({visible, setVisible, onChange}) => {
     });
   }
 
+  const deleteProfilePicture = async () => {
+    try {
+      let {payload} = await HTTP.del(ENDPOINTS.changePicture);
+      dispatch(currentUserActions.updateProfilePicture(null));
+      await updateCachedUserObject({picture: null});
+
+      if (payload.message) {
+        notifyUser(payload.message);
+      }
+
+    } catch (err) {
+      notifyUser(err.status ? err.status.message : err);
+    }
+  }
+
+
   const removePicture = () => {
     onChange('');
     toggleDialog();
+    deleteProfilePicture()
   }
 
     return (

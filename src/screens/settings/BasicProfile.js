@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, StatusBar, TouchableOpacity, Text, ToastAndroid,
+import { View, StyleSheet, StatusBar, TouchableOpacity, Text,
   Keyboard, ScrollView, KeyboardAvoidingView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector, useDispatch } from 'react-redux';
@@ -10,7 +10,7 @@ import ImagePickerDialog from '../../components/settings/ImagePIcker';
 import AnimatedTextInput from '../../components/AnimatedTextInput';
 
 import { currentUserActions } from '../../store/userStore';
-import { colors, HEADER_HEIGHT, fontSizes, LABELS, fontFamily, ENDPOINTS, PLACEHOLDERS, APP_REMOTE_HOST } from '../../common';
+import { colors, HEADER_HEIGHT, fontSizes, LABELS, fontFamily, ENDPOINTS, PLACEHOLDERS } from '../../common';
 import { HTTP } from '../../services';
 import { styles as defaultStyles } from '../styles';
 import { log } from '../../config';
@@ -190,10 +190,6 @@ const BasicProfileEdit = ({navigation}) => {
   }
 
   useEffect(() => {
-    if (!picture) {
-      // TODO
-      // Call api to remove the picture
-    }
 
     if (isBase64Data(picture)) {
       updateProfile(ENDPOINTS.changePicture, {picture}).then( async (payload) => {
