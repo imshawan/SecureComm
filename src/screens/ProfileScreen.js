@@ -331,12 +331,12 @@ const AccountScreen = ({navigation, route}) => {
 
     const getCurrentLocation = () => {
         if (!profile.location) return;
-        let {city=''} = profile.location;
+        let {city='', country={}, region={}} = profile.location;
 
         if (typeof city == 'object') {
             city = '';
         }
-        return [profile.location.country.name, profile.location.region.name, city].join(', ');
+        return [country.name, region.name, city].join(', ');
     }
 
     const getPicture = (picture) => {

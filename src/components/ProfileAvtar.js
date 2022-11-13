@@ -49,7 +49,7 @@ const ProfileAvtar = ({image, name, customStyles={}, textStyle = {}}) => {
     const props = {
         style: style,
         defaultSource: IMAGES.defaultUserProfile,
-        source: imageData,
+        source: imageData || IMAGES.defaultUserProfile,
         onError: () => setImageData(IMAGES.defaultUserProfile)
     }
 

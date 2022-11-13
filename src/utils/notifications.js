@@ -6,9 +6,9 @@ import { IMAGES, colors } from '../common';
 
 const notificationSound = new Sound('bell.mp3', Sound.MAIN_BUNDLE);
 
-export const getCurrentRoom = () => {
-    const {rooms} = Store.getState();
-    return rooms.currentRoom;
+export const getRoomAndNotificationPreferences = () => {
+    const {rooms, settings} = Store.getState();
+    return {currentRoom: rooms.currentRoom, notifications: settings.notifications};
 }
 
 export const createChannelById = async (name='Default') => {
@@ -33,7 +33,7 @@ export const createChannelById = async (name='Default') => {
 
 export const displayNotification = async (id, title, body, icon) => {
     const channelId = await getChannel('Notification');
-    const currentRoom = getCurrentRoom();
+    const {currentRoom, notifications} = getRoomAndNotificationPreferences();
 
     if (currentRoom._id == id) return;
 
@@ -81,5 +81,6 @@ export const displayNotification = async (id, title, body, icon) => {
         },
       });
     
+    if (!notifications.tune) return;
     notificationSound.play()
 }

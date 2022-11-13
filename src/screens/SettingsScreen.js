@@ -195,11 +195,11 @@ const SettingsScreen = ({navigation, route}) => {
     }
 
     const getCurrentLocation = () => {
-        let {city} = currentUser.location;
-        if (typeof city == 'object') {
+        let {city, country={}, region={}} = currentUser.location;
+        if (!city || typeof city == 'object') {
             city = '';
         }
-        return [currentUser.location.country.name, currentUser.location.region.name, city].join(', ');
+        return [country.name, region.name, city].join(', ');
     }
 
     return (<>
@@ -241,7 +241,7 @@ const SettingsScreen = ({navigation, route}) => {
                                 </View>
                             </TouchableOpacity>
                             {/* <IndividualList border={0} header={'Birthday'} subHeader={'18th July'} /> */}
-                            <IndividualList header={'Email'} subHeader={'hello@imshawan.dev'} />
+                            <IndividualList header={'Email'} subHeader={currentUser.email} />
                             <IndividualList border={0} onClicked={() => navigation.navigate('LocationScreen')} header={'Location'} subHeader={getCurrentLocation()} />
                         </View>
                     </View>

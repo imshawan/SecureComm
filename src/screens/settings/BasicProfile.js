@@ -191,6 +191,10 @@ const BasicProfileEdit = ({navigation}) => {
   }
 
   useEffect(() => {
+    if (!picture) {
+      // TODO
+      // Call api to remove the picture
+    }
 
     if (isBase64Data(picture)) {
       updateProfile(ENDPOINTS.changePicture, {picture}).then( async (payload) => {
