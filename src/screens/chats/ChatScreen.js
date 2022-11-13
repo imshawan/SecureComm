@@ -108,7 +108,7 @@ const ChatScreen = ({navigation, route}) => {
         dispatch(counterActions.clearUnreadMessageCount((chatUser._id))) 
       }, []);
 
-    // log(isFocused)    
+ 
     const sendMessage = () => {
         if (!message) return;
 

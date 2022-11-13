@@ -15,6 +15,5 @@ export const getNotificationPreferences = async () => {
 
 export const setNotificationPreferences = async (payload={}) => {
     payload = JSON.stringify(payload);
-    console.log(payload);
     await AsyncStorage.setItem('notifications', payload);
 }

@@ -184,7 +184,6 @@ const BasicProfileEdit = ({navigation}) => {
     let data = state;
     delete data.picture;
 
-    log(data)
     await updateProfile(ENDPOINTS.updateUserData, data);
     dispatch(currentUserActions.updateUserData(data));
     await updateCachedUserObject(data);
