@@ -2,6 +2,7 @@
  import { useSelector, useDispatch } from 'react-redux';
  import {NavigationContainer} from '@react-navigation/native';
  import {createStackNavigator} from '@react-navigation/stack';
+ import SplashScreen from 'react-native-splash-screen';
 
  import Loader from './components/Loader';
  
@@ -92,6 +93,10 @@
 
  export default Router = () => {
   const isAuthenticated = useSelector(state => state.application.isAuthenticated);
+
+  useEffect(() => {
+    SplashScreen.hide();
+  }, [])
 
   return (
     <>
