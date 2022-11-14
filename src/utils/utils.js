@@ -78,11 +78,16 @@ export const processTime = timestamp => {
   }
 
   if (elapsed < msPerMonth) {
-    return Math.round(elapsed / msPerDay) + ' days ago';
+    let day = Math.round(elapsed / msPerDay);
+    return day + (day < 2 ? ' day' : ' days')  + ' ago';
+
   } else if (elapsed < msPerYear) {
-    return Math.round(elapsed / msPerMonth) + ' months ago';
+    let month = Math.round(elapsed / msPerMonth);
+    return month + (month < 2 ? ' month' : ' months') + ' ago';
+
   } else {
-    return Math.round(elapsed / msPerYear) + ' years ago';
+    let year = Math.round(elapsed / msPerYear);
+    return year + (month < 2 ? ' year' : ' years') + ' ago';
   }
 };
 
