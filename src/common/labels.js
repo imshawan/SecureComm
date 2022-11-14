@@ -71,10 +71,10 @@ export const SETTINGS = {
         passwordsSubText: 'Change your account passwords',
 
         notifications: 'Notifications',
-        notificationsSubText: 'Manage app notifications and sound',
+        notificationsSubText: 'Manage app notifications and sounds',
 
         removeAccount: 'Remove account',
-        removeAccountSubText: 'Remove account from this device',
+        removeAccountSubText: 'Remove your account from this device',
 
         about: 'About',
         aboutSubText: 'Find more about ' + APP_NAME,
