@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
 
     const handleErrors = (errorMessage, field) => {
         setErrors(prevState => ({...prevState, [field]: errorMessage}));
-      }
+    }
   
     const handleSubmitPress = async () => {
         Keyboard.dismiss();

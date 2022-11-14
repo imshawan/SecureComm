@@ -23,6 +23,7 @@
  import Contact from './screens/settings/Contact';
  import ChangePassword from './screens/settings/ChangePassword';
  import Notification from './screens/settings/Notification';
+ import Email from './screens/settings/Email';
 
  import { listMyRooms } from './database';
  import { roomActions } from './store/roomListStore';
@@ -85,6 +86,7 @@
           <Stack.Screen name="ContactScreen" component={Contact} options={{headerShown: false}} />
           <Stack.Screen name="ChangePassword" component={ChangePassword} options={{headerShown: false}} />
           <Stack.Screen name="Notification" component={Notification} options={{headerShown: false}} />
+          <Stack.Screen name="Email" component={Email} options={{headerShown: false}} />
 
         </Stack.Navigator>
       </NavigationContainer>

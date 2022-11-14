@@ -241,7 +241,7 @@ const SettingsScreen = ({navigation, route}) => {
                                 </View>
                             </TouchableOpacity>
                             {/* <IndividualList border={0} header={'Birthday'} subHeader={'18th July'} /> */}
-                            <IndividualList header={'Email'} subHeader={currentUser.email} />
+                            <IndividualList onClicked={() => navigation.navigate('Email')} header={'Email'} subHeader={currentUser.email} />
                             <IndividualList border={0} onClicked={() => navigation.navigate('LocationScreen')} header={'Location'} subHeader={getCurrentLocation()} />
                         </View>
                     </View>

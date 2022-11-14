@@ -340,6 +340,7 @@ const AccountScreen = ({navigation, route}) => {
     }
 
     const getPicture = (picture) => {
+        if (!picture) return;
         if (picture.includes(APP_REMOTE_HOST)) {
             return picture;
         } else return getUserPicture(profile);

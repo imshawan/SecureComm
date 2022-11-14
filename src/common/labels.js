@@ -16,6 +16,7 @@ export const ERRORS = {
     noPasswordSupplied: 'Password field cannot be empty',
     noUsernameSupplied: 'Username cannot be empty',
     noOtpSupplied: 'Please fill the OTP',
+    invalidOtp: 'Invalid OTP',
     noConfirmPassword: 'Please re-enter your password',
     passwordsNoMatch: 'Passwords do not match',
     noMessage: 'Please write something for us',
@@ -191,6 +192,18 @@ const NOTIFICATION_SCREEN = {
     }
 }
 
+const EMAIL_SCREEN = {
+    title: 'Email',
+    header: 'Change your existing email',
+    subHeader: 'with a new one',
+
+    enterEmail: 'New email',
+    enterEmailSubtext: 'Your new email address',
+
+    codeSent: 'Code sent to ',
+    enterCode: 'Enter the 6-digit code',
+}
+
 export const LABELS = {
     FORGOT_PASSWORD_SCREEN,
     LOCATION_EDIT_SCREEN,
@@ -199,5 +212,6 @@ export const LABELS = {
     ABOUT_SCREEN,
     CONTACT_SCREEN,
     CHANGE_PASSWORD_SCREEN,
-    NOTIFICATION_SCREEN
+    NOTIFICATION_SCREEN,
+    EMAIL_SCREEN
 };
