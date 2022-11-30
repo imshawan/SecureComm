@@ -10,6 +10,7 @@ export const colors = {
     red: '#FF0000',
     green: '#30BE76',
     lightestGrey: '#999999',
+    lightGrey: '#C0C0C0',
     lightBlack: '#4D4D4D',
     whiteSmock: '#F5F5F5',
     drawerBackGroundGray: 'rgba(52, 52, 52, 0.6)',

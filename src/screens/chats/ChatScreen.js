@@ -64,12 +64,13 @@ const styles = StyleSheet.create({
     senderThreadStyles: {
         backgroundColor: colors.blue,
         color: colors.white,
-        marginVertical: 5,
+        marginVertical: 4,
         scaleY: -1,
     },
     receiverThreadStyles: {
         scaleY: -1,
-        minWidth: 20
+        marginVertical: 4,
+        // minWidth: 20
     },
     hiddenContainer: {
         width: 0,
@@ -148,6 +149,9 @@ const ChatScreen = ({navigation, route}) => {
                 userId={item._id}
                 name={item.name} 
                 message={item.message} 
+                timestamp={item.createdAt}
+                status={item.status}
+                isReceiver={item._id != currentUser._id}
                 containerStyles={{justifyContent: item._id != currentUser._id ? 'flex-start' : 'flex-end'}} 
                 customStyles={item._id != currentUser._id ? styles.receiverThreadStyles : styles.senderThreadStyles}
             />
@@ -204,6 +208,7 @@ const ChatScreen = ({navigation, route}) => {
             <View style={styles.container}>
 
                 <FlatList 
+                    bounces={true}
                     data={messages}
                     renderItem={renderItem}
                     style={{scaleY: -1}}
