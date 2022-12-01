@@ -10,6 +10,7 @@ import {
   Dimensions, TouchableHighlight,
   KeyboardAvoidingView,
 } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
  
 import Snackbar from 'react-native-snackbar';
 import PageHeader from '../../components/PageHeaderComponent';
@@ -75,8 +76,11 @@ const SignupScreen = ({navigation}) => {
 
   const processRegisteration = async () => {
     setLoading(true);
+    
+    const deviceId = DeviceInfo.getUniqueIdSync();
+
     try {
-      let { payload } = await HTTP.post(ENDPOINTS.register, userInput);
+      let { payload } = await HTTP.post(ENDPOINTS.register, {...userInput, deviceId});
       if (payload) {
         setLoading(false);
         navigation.navigate('LoginScreen', { message: payload.message });

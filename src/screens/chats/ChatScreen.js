@@ -96,12 +96,17 @@ const ChatScreen = ({navigation, route}) => {
 
     const currentUser = useSelector(state => state.user.currentUser);
     const messages = useSelector(state => state.messages.messageList);
+    const application = useSelector(state => state.application);
     
     let fullname = [chatUser.firstname, chatUser.lastname].join(' ') || chatUser.username;
 
     useEffect(() => {
         setSocket(io(APP_REMOTE_HOST, {
-            transports: ['websocket'],
+            transports: ['websocket', 'polling'],
+            extraHeaders: {
+                Authorization: "Bearer " + application.authToken,
+                deviceId: application.deviceId,
+            }
             })
         );
 
@@ -161,6 +166,10 @@ const ChatScreen = ({navigation, route}) => {
     const navigateToChatUserProfile = () => {
         navigation.navigate('ProfileScreen', {currentRoom, chatUser})
     }
+
+    const onSocketConnectionError = async (error) => {
+        notifyUser(error.message);
+    }
     
     useEffect(() => {
         if (!socketIO) return;
@@ -170,6 +179,8 @@ const ChatScreen = ({navigation, route}) => {
             socketIO.emit('join-room', {room: roomId});
             dispatch(roomActions.setCurrentRoom({roomId, _id: chatUser._id}));
         });
+
+        socketIO.on("connect_error", onSocketConnectionError);
 
         socketIO.on('message:receive', (socket) => {
             // log(socket)

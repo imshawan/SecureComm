@@ -14,7 +14,7 @@ import { List } from "../components/chat";
 import { log } from '../config';
 import { colors, LABELS, APP_REMOTE_HOST } from '../common';
 import { storeNewRoom, Rooms, updateRoomData } from '../database';
-import { displayNotification } from '../utils';
+import { displayNotification, notifyUser } from '../utils';
 
 const styles = StyleSheet.create({
     container: {
@@ -31,6 +31,7 @@ const Home = ({navigation}) => {
 
     const roomList = useSelector(state => state.rooms.roomList);
     const currentUser = useSelector(state => state.user.currentUser);
+    const application = useSelector(state => state.application);
 
     const dispatch = useDispatch();
 
@@ -39,9 +40,18 @@ const Home = ({navigation}) => {
         return Boolean(rooms);
     }
 
+    const onSocketConnectionError = async (error) => {
+        notifyUser(error.message);
+        // Not sure what to do next, will have to figure out!
+    }
+
     useEffect(() => {
         setSocket(io(APP_REMOTE_HOST, {
-            transports: ['websocket'],
+            transports: ['websocket', 'polling'],
+            extraHeaders: {
+                Authorization: "Bearer " + application.authToken,
+                deviceId: application.deviceId,
+            }
             })
         );
       }, []);
@@ -54,6 +64,8 @@ const Home = ({navigation}) => {
             log('Connected to remote server with userId ' + currentUser._id)
             socketIO.emit('join-room', {room: currentUser._id})
         });
+
+        socketIO.on("connect_error", onSocketConnectionError);
         
         socketIO.on('global:message:receive', async (socket) => {
             let {chatUser, currentRoom, message, room} = socket;

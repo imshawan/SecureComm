@@ -5,7 +5,7 @@ export const LOGS = false;
 export const APP_NAME = 'SecureComm';
 export const APP_VERSION = version;
 
-export const APP_REMOTE_HOST = 'https://apps.imshawan.dev';
+export const APP_REMOTE_HOST = 'http://192.168.1.8:3001';
 
 export const HEADER_HEIGHT = 65;
 export const SEARCHBAR_HEIGHT = 45;

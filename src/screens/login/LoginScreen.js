@@ -1,19 +1,15 @@
 import React, {useState, createRef, useEffect} from 'react';
 import {
   TextInput,
-  View,
-  Text,
-  ScrollView,
-  Animated, ToastAndroid,
-  Keyboard, StatusBar,
-  TouchableOpacity, StyleSheet,
-  Dimensions, TouchableHighlight,
+  View, Text, ScrollView,
+  Animated, Keyboard, StatusBar,
+  TouchableOpacity, StyleSheet, Dimensions,
   KeyboardAvoidingView, Platform
 } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
  
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Snackbar from 'react-native-snackbar';
 import { useSelector, useDispatch } from 'react-redux';
 import { currentUserActions } from '../../store/userStore';
 import { applicationActions } from '../../store/appStore';
@@ -56,7 +52,7 @@ const LoginScreen = ({navigation, route}) => {
   const [userInput, setUserInput] = useState({
     username: '',
     password: '',
-    deviceId: 'shaaa' // Testing purposes
+    deviceId: DeviceInfo.getUniqueIdSync(),
   })
   const [loading, setLoading] = useState(false)
  

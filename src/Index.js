@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import DeviceInfo from 'react-native-device-info';
 import { useSelector, useDispatch } from "react-redux";
 import { applicationActions } from './store/appStore';
 import { currentUserActions } from './store/userStore';
@@ -27,8 +28,12 @@ const SecureComm = () => {
 
     const loadInitialState = async () => {
         await loadApplicationSettings();
-        let token = await getToken();
         
+        const token = await getToken();
+        const deviceId = DeviceInfo.getUniqueIdSync();
+        
+        dispatch(applicationActions.setDeviceId(deviceId));
+
         if (token) {
             setAuthToken(token);
             dispatch(applicationActions.setAuthToken(token));

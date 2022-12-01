@@ -6,6 +6,7 @@ const applicationInitialState = {
     loading: true,
     authToken: null,
     initializingRooms: true,
+    deviceId: null,
 }
 
 const applicationSlice = createSlice({
@@ -27,6 +28,9 @@ const applicationSlice = createSlice({
         setinitializingRooms(state, action){
             state.initializingRooms = action.payload;
         },
+        setDeviceId(state, action) {
+            state.deviceId = action.payload;
+        }
     }
 });
 
