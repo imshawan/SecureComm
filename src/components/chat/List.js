@@ -45,6 +45,8 @@ const styles = StyleSheet.create({
   latestMsgText: {
     fontSize: fontSizes.small,
     color: colors.subText,
+    fontFamily: fontFamily.regular,
+    lineHeight: fontSizes.regular,
     minHeight: 30,
   },
   timeStyles: {

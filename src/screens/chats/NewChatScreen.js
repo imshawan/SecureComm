@@ -10,7 +10,7 @@ import { UserList } from '../../components/chat';
 import Loader from '../../components/Loader';
 
 import { log } from '../../config';
-import { colors, HEADER_HEIGHT, fontSizes, ENDPOINTS } from '../../common';
+import { colors, HEADER_HEIGHT, fontSizes, ENDPOINTS, fontFamily } from '../../common';
 import { HTTP } from '../../services';
 import { getLoggedInUser, notifyUser } from '../../utils';
 import { storeNewRoom, Rooms } from '../../database';
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         fontSize: fontSizes.extraLarge, 
         marginLeft: 5, 
-        fontFamily: 'SF-Pro-Rounded-Bold',
+        fontFamily: fontFamily.bold,
         lineHeight: fontSizes.extraLarge + 5,
         color: colors.black,
     },
@@ -67,13 +67,14 @@ const styles = StyleSheet.create({
         color: colors.black,
         paddingVertical: 7,
         paddingRight: 7,
-        fontFamily: 'SF-Pro-Rounded-Bold',
+        fontFamily: fontFamily.bold,
     },
     inputStyles: {
         width: '90%',
         height: 40,
         backgroundColor: colors.white,
-        fontFamily: 'SF-Pro-Rounded-Regular'
+        fontFamily: fontFamily.regular,
+        color: colors.black,
     },
     iconStyles: {
         color: colors.black
@@ -159,8 +160,9 @@ const NewChatScreen = ({navigation, route}) => {
                     <View style={styles.headerContent}>
                         <Text style={styles.labelStyle}>To</Text>
                         <TextInput 
-                            style={styles.inputStyles} 
-                            placeholder="@username"
+                            style={styles.inputStyles}
+                            placeholder="name"
+                            placeholderTextColor={colors.placeholderColor}
                             onChangeText={(searchText) => handleSearch(searchText)}
                         />
                     </View>

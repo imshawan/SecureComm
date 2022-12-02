@@ -38,7 +38,8 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     dialogInnerContainer: {
-        marginVertical: 20
+        marginVertical: 20,
+        width: '100%'
     },
     titleTextStyle: {
         color: colors.black,
@@ -77,6 +78,7 @@ const FullScreenDialog = ({title, visible, setVisible, data=[], setSelected}) =>
             <View style={styles.dialogInnerContainer}>
                 <Text style={styles.titleTextStyle}>{title}</Text>
                 <FlatList data={data} 
+                    // style={{width: '100%', backgroundColor: 'red'}}
                     // scrollEventThrottle={false}
                     // maxToRenderPerBatch={8}
                     showsVerticalScrollIndicator={false}

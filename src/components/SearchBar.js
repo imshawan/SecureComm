@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, TextInput, Text, View, Keyboard, TouchableOpacity } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { View as AnimatedView } from 'react-native-animatable';
-import { colors, fontSizes, SEARCHBAR_HEIGHT, BASE_ANIMATION_DURATION } from "../common";
+import { colors, fontSizes, SEARCHBAR_HEIGHT, BASE_ANIMATION_DURATION, fontFamily } from "../common";
 
 
 const styles = StyleSheet.create({
@@ -36,6 +36,11 @@ const styles = StyleSheet.create({
     input: {
       marginLeft: 10,
       width: "90%",
+      color: colors.black,
+      fontFamily: fontFamily.regular,
+      fontSize: fontSizes.medium,
+      lineHeight: fontSizes.regular,
+      alignSelf: 'center',
     },
     buttonStyle: {
         padding: 11,
@@ -46,7 +51,9 @@ const styles = StyleSheet.create({
     },
     buttonTextStyle: {
         color: 'blue',
-        fontSize: fontSizes.regular
+        fontSize: fontSizes.regular,
+        fontFamily: fontFamily.regular,
+        lineHeight: fontSizes.large,
     }
   });
   
@@ -60,21 +67,22 @@ const SearchBar = ({clicked, value, setValue, setClicked}) => {
             ? styles.searchBarClicked
             : styles.searchBarUnClicked
         }>
-            <Icon name="search" size={20} color="black" style={{ marginLeft: 1 }} />
+            <Icon name="search" size={18} color="black" style={{ marginLeft: 1 }} />
 
             <TextInput
-            style={styles.input}
-            placeholder="Search"
-            value={value}
-            onChangeText={setValue}
-            onFocus={() => {
-                setClicked(true);
-            }}
-            />
+              style={styles.input}
+              placeholder="Search"
+              value={value}
+              placeholderTextColor={colors.placeholderColor}
+              onChangeText={setValue}
+              onFocus={() => {
+                  setClicked(true);
+              }}
+              />
         
             {clicked && (
                 <TouchableOpacity onPress={() => { setValue("") }}>
-                    <Icon name="close" size={20} color="black" style={{ padding: 1 }}/>
+                    <Icon name="close" size={18} color="black" style={{ padding: 1 }}/>
                 </TouchableOpacity>
             )}
       </View>

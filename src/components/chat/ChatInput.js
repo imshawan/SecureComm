@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, TouchableOpacity, TextInput } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { colors, fontSizes } from '../../common'
+import { colors, fontFamily, fontSizes } from '../../common'
 import { log } from '../../config';
 
 const styles = StyleSheet.create({
@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
         flex: 1,
         marginRight: 6,
         color: colors.black,
+        fontFamily: fontFamily.regular,
         backgroundColor: colors.inputBackground,
         borderRadius: 20,
         padding: 10,

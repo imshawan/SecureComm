@@ -12,7 +12,7 @@ import { counterActions } from '../../store/countersStore';
 import { Thread, ChatInput } from '../../components/chat';
 import ProfileAvtar from '../../components/ProfileAvtar';
 import { log } from '../../config';
-import { colors, HEADER_HEIGHT, fontSizes, APP_REMOTE_HOST } from '../../common';
+import { colors, HEADER_HEIGHT, fontSizes, APP_REMOTE_HOST, fontFamily } from '../../common';
 import { generateUUID, getUserPicture } from '../../utils';
 import { updateRoomData } from '../../database';
 
@@ -51,11 +51,14 @@ const styles = StyleSheet.create({
         fontSize: fontSizes.big,  
         // fontWeight: 'bold',
         color: colors.black,
-        fontFamily: 'SF-Pro-Rounded-Bold',
+        fontFamily: fontFamily.bold,
         lineHeight: fontSizes.big + 5
     },
     activeTimeStyle: {
-        fontSize: fontSizes.small
+        fontSize: fontSizes.small,
+        color: colors.lightBlack,
+        fontFamily: fontFamily.regular,
+        lineHeight: fontSizes.regular
     },
     touchControlStyle: {
         marginHorizontal: 10,

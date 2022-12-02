@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { colors, fontSizes, headerFontSize } from "../common";
+import { colors, fontFamily, fontSizes, headerFontSize } from "../common";
 
 export const styles = StyleSheet.create({
     mainBody: {
@@ -104,6 +104,8 @@ export const styles = StyleSheet.create({
       color: 'red',
       textAlign: 'left',
       fontSize: fontSizes.medium,
+      fontFamily: fontFamily.regular,
+      lineHeight: fontSizes.regular,
       marginLeft: 50,
       marginRight: 35
     },

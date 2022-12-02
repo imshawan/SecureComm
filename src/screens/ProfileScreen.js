@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     profileButtonsContainer: {
         flexDirection: 'row',
         width: '90%',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
     buttonStyle: {
         backgroundColor: colors.brandColor,
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 10,
-        width: 150,
+        minWidth: 135,
     },
     buttonTextStyle: {
         color: colors.white,
@@ -380,7 +380,9 @@ const AccountScreen = ({navigation, route}) => {
                         <View style={styles.profileSectionContainer}>
                             <View style={styles.profileContainer}>
                                 <View style={{flexDirection: "row", alignItems: 'center', width: '90%'}}>
-                                    <ProfileAvtar image={getPicture(profile.picture)} customStyles={styles.avtarStyles} textStyle={styles.avtarTextStyles} name={getFullname()} />
+                                    <View style={{width: '40%'}}>
+                                        <ProfileAvtar image={getPicture(profile.picture)} customStyles={styles.avtarStyles} textStyle={styles.avtarTextStyles} name={getFullname()} />
+                                    </View>
                                     <View style={styles.profileRightContainer}>
                                         <Text numberOfLines={2} ellipsizeMode='tail' style={getFullname().length > 15 ? {...styles.profileNameText, height: 40} : styles.profileNameText}>{getFullname()}</Text>
                                         <Text numberOfLines={1} ellipsizeMode='tail' style={styles.usernameText} >{'@' + profile.username}</Text>
