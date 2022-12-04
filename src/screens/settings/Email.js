@@ -1,14 +1,16 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, StatusBar, TouchableOpacity, Text, Keyboard } from 'react-native';
+import { View, StyleSheet, StatusBar, TouchableOpacity, Text, Keyboard, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 import AnimatedTextInput from '../../components/AnimatedTextInput';
+import { currentUserActions } from '../../store/userStore';
 
 import { colors, HEADER_HEIGHT, fontSizes, LABELS, fontFamily, ERRORS, ENDPOINTS } from '../../common';
 import { styles as defaultStyles } from '../styles';
 import { HTTP } from '../../services';
 import { log } from '../../config';
-import { notifyUser, validateEmail } from '../../utils';
+import { notifyUser, validateEmail, updateCachedUserObject } from '../../utils';
 
 const { EMAIL_SCREEN } = LABELS;
 const styles = StyleSheet.create({
@@ -95,20 +97,23 @@ headerContainer: {
 });
  
 
-const VerifyCodeSection = ({newEmail, visible, currentEmail}) => {
+const VerifyCodeSection = ({newEmail, visible, oldEmail}) => {
     if (!visible) return;
 
+    const [loading, setLoading] = useState(false);
     const [state, setState] = useState({
-        currentEmail,
+        oldEmail,
         newEmail,
         oldEmailCode: '',
-        newEmailcode: '',
+        newEmailCode: '',
     });
 
     const [errors, setErrors] = useState({
         oldEmailCode: '',
-        newEmailcode: '',
+        newEmailCode: '',
     });
+
+    const [dispatch, navigation] = [useDispatch(), useNavigation()];
 
     const handleOnChange = (field, value) => {
         setState(prevState => ({...prevState, [field]: value}));
@@ -118,21 +123,40 @@ const VerifyCodeSection = ({newEmail, visible, currentEmail}) => {
         setErrors(prevState => ({...prevState, [field]: errorMessage}));
     }
 
+    const changeEmail = async () => {
+      setLoading(true);
+      
+      try {
+        let {payload} = await HTTP.post(ENDPOINTS.changeEmail, state);
+        setLoading(false);
+
+        dispatch(currentUserActions.updateUserData({email: state.newEmail}));
+        navigation.navigate('SettingsScreen');
+        await updateCachedUserObject({email: state.newEmail});
+        notifyUser(payload.message);
+  
+      } catch (err) {
+        setLoading(false);
+        return notifyUser(err.status.message);
+      }
+
+    }
+
     const handleSubmitPress = () => {
         Keyboard.dismiss();
 
         let errors = 0;
-        if (!state.oldPassword) {
+        if (!state.oldEmail) {
             handleErrors(ERRORS.noOtpSupplied, 'oldEmailCode');
             errors++;
         }
-        if (!state.newEmailcode) {
-            handleErrors(ERRORS.noOtpSupplied, 'oldEmailCode');
+        if (!state.newEmailCode) {
+            handleErrors(ERRORS.noOtpSupplied, 'newEmailCode');
             errors++;
         }
 
-        if (state.newEmailcode.length < 6) {
-            handleErrors(ERRORS.invalidOtp, 'newEmailcode');
+        if (state.newEmailCode.length < 6) {
+            handleErrors(ERRORS.invalidOtp, 'newEmailCode');
             errors++;
         }
 
@@ -143,7 +167,7 @@ const VerifyCodeSection = ({newEmail, visible, currentEmail}) => {
 
         if (errors) return;
 
-        log(state)
+        changeEmail();
     }
 
     return (
@@ -151,18 +175,18 @@ const VerifyCodeSection = ({newEmail, visible, currentEmail}) => {
             <AnimatedTextInput 
                 label={EMAIL_SCREEN.codeSent + newEmail}
                 placeholder={EMAIL_SCREEN.enterCode}
-                onChange={(val) => handleOnChange('newEmailcode', val)}
-                value={state.newEmailcode}
-                error={!!errors.newEmailcode}
+                onChange={(val) => handleOnChange('newEmailCode', val)}
+                value={state.newEmailCode}
+                error={!!errors.newEmailCode}
                 onFocused={() => {
-                        if (errors.newEmailcode) handleErrors(null, 'newEmailcode');
+                        if (errors.newEmailCode) handleErrors(null, 'newEmailCode');
                     }}
             />
 
-            {errors.newEmailcode ? <Text style={[defaultStyles.errorTextStyle, styles.errorTextStyle]}>{errors.newEmailcode}</Text> : ''}
+            {errors.newEmailCode ? <Text style={[defaultStyles.errorTextStyle, styles.errorTextStyle]}>{errors.newEmailCode}</Text> : ''}
 
             <AnimatedTextInput 
-                label={EMAIL_SCREEN.codeSent + currentEmail}
+                label={EMAIL_SCREEN.codeSent + oldEmail}
                 placeholder={EMAIL_SCREEN.enterCode}
                 onChange={(val) => handleOnChange('oldEmailCode', val)}
                 value={state.oldEmailCode}
@@ -178,13 +202,13 @@ const VerifyCodeSection = ({newEmail, visible, currentEmail}) => {
                 style={[defaultStyles.buttonStyle, styles.buttonStyle]}
                 activeOpacity={0.5}
                 onPress={handleSubmitPress}>
-                <Text style={defaultStyles.buttonTextStyle}>CHANGE</Text>
+                <Text style={defaultStyles.buttonTextStyle}>{loading ? <ActivityIndicator color={colors.white} size={'large'}/> : 'CHANGE'}</Text>
             </TouchableOpacity>
         </View>
     );
 }
 
-const EmailInputSection = ({value, setValue, onSubmit, visible, error, onFocused}) => {
+const EmailInputSection = ({value, setValue, onSubmit, isFetching=false, visible, error, onFocused}) => {
     if (!visible) return;
     
     const handleOnChange = (field, val) => {
@@ -206,7 +230,7 @@ const EmailInputSection = ({value, setValue, onSubmit, visible, error, onFocused
                 style={[defaultStyles.buttonStyle, styles.buttonStyle]}
                 activeOpacity={0.5}
                 onPress={onSubmit}>
-                <Text style={defaultStyles.buttonTextStyle}>VERIFY</Text>
+                <Text style={defaultStyles.buttonTextStyle}>{isFetching ? <ActivityIndicator color={colors.white} size={'large'}/> : 'VERIFY'}</Text>
             </TouchableOpacity>
         </View>
     );
@@ -214,10 +238,12 @@ const EmailInputSection = ({value, setValue, onSubmit, visible, error, onFocused
 
 const Email = ({navigation}) => {
   const currentUser = useSelector(state => state.user.currentUser);
+
+  const [loading, setLoading] = useState(false);
   const [state, setState] = useState({
     codeSent: false,
     email: '',
-    currentEmail: currentUser.email,
+    oldEmail: currentUser.email,
   });
   const [errors, setErrors] = useState({
     email: '',
@@ -230,6 +256,22 @@ const Email = ({navigation}) => {
 
   const handleErrors = (errorMessage, field) => {
     setErrors(prevState => ({...prevState, [field]: errorMessage}));
+  }
+
+  const sendVerificationCode = async () => {
+    setLoading(true);
+
+    try {
+      let {payload} = await HTTP.post(ENDPOINTS.sendOtp, {email: state.oldEmail, newEmail: state.email, action: 'change_email'});
+      setLoading(false);
+      notifyUser(payload.message);
+
+    } catch (err) {
+      setLoading(false);
+      return notifyUser(err.status.message);
+    }
+
+    handleOnChange('codeSent', true);
   }
 
   const handleSubmitPress = () => {
@@ -248,7 +290,7 @@ const Email = ({navigation}) => {
 
     if (errors) return;
 
-    handleOnChange('codeSent', true);
+    sendVerificationCode();
   }
  
   return (
@@ -279,6 +321,7 @@ const Email = ({navigation}) => {
                 onSubmit={handleSubmitPress}
                 visible={!state.codeSent}
                 error={errors.email}
+                isFetching={loading}
                 onFocused={() => {
                         if (errors.email) handleErrors(null, 'email');
                     }}
@@ -287,7 +330,7 @@ const Email = ({navigation}) => {
             <VerifyCodeSection 
                 visible={state.codeSent}
                 newEmail={state.email}
-                currentEmail={state.currentEmail}
+                oldEmail={state.oldEmail}
             />
             
           </View>

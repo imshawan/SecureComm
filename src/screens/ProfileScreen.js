@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 10,
-        minWidth: 135,
+        width: '46%',
     },
     buttonTextStyle: {
         color: colors.white,

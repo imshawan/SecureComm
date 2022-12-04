@@ -88,6 +88,7 @@ const LoginScreen = ({navigation, route}) => {
         await AsyncStorage.setItem('user', JSON.stringify(user));
       
       setAuthToken(payload.token);
+      dispatch(applicationActions.setAuthToken(payload.token));
       dispatch(currentUserActions.setCurrentUser(user));
       dispatch(applicationActions.setAuthenticated(true));
       setLoading(false);

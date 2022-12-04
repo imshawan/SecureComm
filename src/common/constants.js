@@ -30,6 +30,8 @@ export const ENDPOINTS = {
     forgotPassword: '/api/' + API_VERSION +'/auth/password/forgot',
     resetPassword: '/api/' + API_VERSION +'/auth/password/reset',
     changePassword: '/api/' + API_VERSION +'/auth/password/change',
+    changeEmail: '/api/' + API_VERSION +'/auth/email/change',
+    sendOtp: '/api/' + API_VERSION +'/auth/otp',
 
     checkAuthentication: '/api/' + API_VERSION +'/users/authentication',
     getUsersByUsername: '/api/' + API_VERSION +'/users/username',
