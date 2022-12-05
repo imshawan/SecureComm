@@ -35,13 +35,29 @@ export const generateUUID = (string='') => {
     return string.toLowerCase() + '-' + Date.now();
 }
 
-export const notifyUser = (message) => {
+export const notifyUser = (message, action={}) => {
+    let {onPressAction, actionText='OK', showAction=true} = action;
+    let snackbarAction = {};
+
+    if (typeof onPressAction !== 'function') {
+      onPressAction = () => Snackbar.dismiss();
+    }
+
+    if (showAction) {
+      snackbarAction = {
+        text: actionText,
+        textColor: colors.brandColor,
+        onPress: onPressAction,
+      };
+    }
+
     Snackbar.show({
       text: message,
-      duration: Snackbar.LENGTH_SHORT,
+      duration: Snackbar.LENGTH_LONG,
       textColor: colors.white,
       backgroundColor: colors.black,
       numberOfLines: 4,
+      action: snackbarAction,
     });
   }
 

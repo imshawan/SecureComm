@@ -14,7 +14,7 @@ import { colors, HEADER_HEIGHT, fontSizes, LABELS, fontFamily, ENDPOINTS, PLACEH
 import { HTTP } from '../../services';
 import { styles as defaultStyles } from '../styles';
 import { log } from '../../config';
-import { getUserPicture, isBase64Data, updateCachedUserObject } from '../../utils';
+import { getUserPicture, isBase64Data, updateCachedUserObject, notifyUser } from '../../utils';
 
 const { BASIC_PROFILE_EDIT } = LABELS;
 
@@ -156,18 +156,8 @@ const BasicProfileEdit = ({navigation}) => {
     setState(prevState => ({...prevState, [field]: value}));
   }
 
-  const notifyUser = (message) => {
-    Snackbar.show({
-      text: message,
-      duration: Snackbar.LENGTH_SHORT,
-      textColor: colors.white,
-      backgroundColor: colors.black,
-      numberOfLines: 4,
-    });
-  }
-
   const updateProfile = async (endpoint, data) => {
-    notifyUser(PLACEHOLDERS.pleaseWait);
+    notifyUser(PLACEHOLDERS.pleaseWait, {showAction: false});
     try {
       let { payload } = await HTTP.put(endpoint, data);
       if (payload) {
