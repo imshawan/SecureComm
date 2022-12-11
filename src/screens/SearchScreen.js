@@ -1,16 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView, StatusBar, FlatList } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { List } from "../components/chat";
 import SearchBar from '../components/SearchBar';
+import EmptyComponent from '../components/EmptyComponent';
 
 import { log } from '../config';
-import { colors, HEADER_HEIGHT, fontSizes } from '../common';
+import { colors, HEADER_HEIGHT, fontSizes, LABELS } from '../common';
 import { getUserPicture } from '../utils';
 
-
+const {SEARCH_SCREEN} = LABELS;
 const styles = StyleSheet.create({
     container: {
         backgroundColor: colors.white,
@@ -119,11 +121,16 @@ const SearchScreen = ({navigation}) => {
 
             </View>
             
-            <FlatList 
+            {results.length ? <FlatList 
                 data={results}
                 renderItem={renderItem}
                 showsVerticalScrollIndicator={false}
-            />
+            /> : (<EmptyComponent 
+                    header={SEARCH_SCREEN.emptyComponent.header} 
+                    subHeader={SEARCH_SCREEN.emptyComponent.subHeader}
+                    IconComponent={() => <MaterialIcon name='search-off' style={{color: colors.lightGrey}} size={90} />}
+                    />
+                )}
         </View>
     )
 };

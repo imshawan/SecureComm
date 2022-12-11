@@ -90,6 +90,25 @@ const HOME_SCREEN = {
 
 }
 
+const SEARCH_SCREEN = {
+    emptyComponent: {
+        header: 'Oops! No chats yet',
+        subHeader: 'Please start new conversations for chats to \n appear here.'
+    }
+}
+
+const NEW_CHATS_SCREEN = {
+    title: 'New Message',
+    emptyComponent: {
+        header: 'Oops! Noting found',
+        subHeader: 'No users were found with that name/username'
+    },
+    initialComponent: {
+        header: 'Search users',
+        subHeader: 'Find new users by their name or username'
+    }
+}
+
 const FORGOT_PASSWORD_SCREEN = {
     header: 'No worries, we got you covered',
     subText: 'Please enter the email associated with your account and we\'ll send an email with the instructions to reset your password'
@@ -213,5 +232,7 @@ export const LABELS = {
     CONTACT_SCREEN,
     CHANGE_PASSWORD_SCREEN,
     NOTIFICATION_SCREEN,
-    EMAIL_SCREEN
+    EMAIL_SCREEN,
+    SEARCH_SCREEN,
+    NEW_CHATS_SCREEN
 };

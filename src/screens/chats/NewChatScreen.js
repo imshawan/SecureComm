@@ -1,6 +1,7 @@
-import React, {useState, useCallback} from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, StatusBar, FlatList } from "react-native";
+import React, {useState, useCallback, useRef} from 'react';
+import { View, StyleSheet, Text, TouchableOpacity, StatusBar, FlatList, ActivityIndicator } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { TextInput } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import { roomActions } from '../../store/roomListStore';
@@ -8,14 +9,15 @@ import { debounce } from 'lodash';
 
 import { UserList } from '../../components/chat';
 import Loader from '../../components/Loader';
+import EmptyComponent from '../../components/EmptyComponent';
 
 import { log } from '../../config';
-import { colors, HEADER_HEIGHT, fontSizes, ENDPOINTS, fontFamily } from '../../common';
+import { colors, HEADER_HEIGHT, fontSizes, ENDPOINTS, fontFamily, LABELS } from '../../common';
 import { HTTP } from '../../services';
 import { getLoggedInUser, notifyUser } from '../../utils';
 import { storeNewRoom, Rooms } from '../../database';
 
-
+const {NEW_CHATS_SCREEN} = LABELS;
 const styles = StyleSheet.create({
     container: {
         backgroundColor: colors.white,
@@ -79,16 +81,32 @@ const styles = StyleSheet.create({
     iconStyles: {
         color: colors.black
     },
+    searchingIconContainerStyle: {
+        right: 16,
+        position: "absolute",
+        height: 40,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
 });
 
 const NewChatScreen = ({navigation, route}) => {
     const [apiResponse, setApiResponse] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [isInitialLoad, setIsInitialLoad] = useState(true);
+    const [isSearching, setIsSearching] = useState(false);
 
     const dispatch = useDispatch();
+    const textInputRef = useRef();
 
     const handleSearch = useCallback(debounce(async(query) => {
-        if (!query || (query && query.length < 3)) return setApiResponse([]);
+        if (!query || (query && query.length < 3)) return;
+        if (isInitialLoad) {
+            setIsInitialLoad(false);
+        }
+
+        setIsSearching(true);
+        
         try {
             let {payload} = await HTTP.get(ENDPOINTS.getUsersByUsername, {
                 query
@@ -102,7 +120,9 @@ const NewChatScreen = ({navigation, route}) => {
                 notifyUser(status.message);
             }
         }
-    }, 500),[]);
+
+        setIsSearching(false);
+    }, 400),[]);
 
     const userCardOnClick = async (selectedUser) => {
         setLoading(true);
@@ -141,6 +161,12 @@ const NewChatScreen = ({navigation, route}) => {
         setLoading(false);
     }
 
+    const clearTextInput = () => {
+        if (!isSearching) {
+            textInputRef.current.clear();
+        }
+    }
+
     const renderItem = ({item}) => <UserList callback={() => userCardOnClick(item)} item={item} key={item._id} />
 
     return (<>
@@ -154,25 +180,37 @@ const NewChatScreen = ({navigation, route}) => {
                             <TouchableOpacity style={styles.touchControlStyle} onPress={() => navigation.goBack()}>
                                 <Icon name="arrow-left" style={styles.iconStyles} size={fontSizes.large} />
                             </TouchableOpacity>
-                            <Text style={styles.headerTextStyle}>New Message</Text>
+                            <Text style={styles.headerTextStyle}>{NEW_CHATS_SCREEN.title}</Text>
                         </View>
                     </View>
                     <View style={styles.headerContent}>
                         <Text style={styles.labelStyle}>To</Text>
                         <TextInput 
                             style={styles.inputStyles}
-                            placeholder="name"
+                            ref={textInputRef}
+                            placeholder="Name or username"
                             placeholderTextColor={colors.placeholderColor}
                             onChangeText={(searchText) => handleSearch(searchText)}
                         />
+                        <TouchableOpacity onPress={clearTextInput} style={styles.searchingIconContainerStyle}>
+                          {isSearching ? 
+                            <ActivityIndicator color={colors.brandColor} size={25} /> : 
+                            <Icon name={"times"} size={fontSizes.regular} style={styles.iconStyles} />
+                            }
+                        </TouchableOpacity>
                     </View>
                 </View>
                 
-                <FlatList 
+                {apiResponse.length ? <FlatList 
                     data={apiResponse}
                     renderItem={renderItem}
                     showsVerticalScrollIndicator={false}
-                />
+                /> : (<EmptyComponent 
+                        header={NEW_CHATS_SCREEN[isInitialLoad ? 'initialComponent' :'emptyComponent'].header}
+                        subHeader={NEW_CHATS_SCREEN[isInitialLoad ? 'initialComponent' :'emptyComponent'].subHeader}
+                        IconComponent={() => <MaterialIcon name={isInitialLoad ? 'person-search' :'people-alt'} style={{color: colors.lightGrey}} size={90} />} 
+                        />
+                    )}
 
             </View>
         </>
