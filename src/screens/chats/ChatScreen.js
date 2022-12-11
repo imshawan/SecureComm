@@ -13,8 +13,8 @@ import { Thread, ChatInput } from '../../components/chat';
 import ProfileAvtar from '../../components/ProfileAvtar';
 import { log } from '../../config';
 import { colors, HEADER_HEIGHT, fontSizes, APP_REMOTE_HOST, fontFamily } from '../../common';
-import { generateUUID, getUserPicture } from '../../utils';
-import { updateRoomData } from '../../database';
+import { generateUUID, getUserPicture, notifyUser } from '../../utils';
+import { writeMessage, getMessagesByRoomId } from '../../database';
 
 
 const styles = StyleSheet.create({
@@ -92,7 +92,7 @@ const ChatScreen = ({navigation, route}) => {
     const [message, setMessage] = useState("");
     const [roomId, setRoomId] = useState(currentRoom.roomId);
     const [socketIO, setSocket] = useState(null);
-    const [isNewRoom, setIsNewRoom] = useState(isNew)
+    const [isNewRoom, setIsNewRoom] = useState(isNew);
 
     const isFocused = useIsFocused();
     const dispatch = useDispatch();
@@ -114,11 +114,19 @@ const ChatScreen = ({navigation, route}) => {
         );
 
         notifee.cancelNotification(chatUser._id);
-        dispatch(counterActions.clearUnreadMessageCount((chatUser._id))) 
+        dispatch(counterActions.clearUnreadMessageCount((chatUser._id)));
+
+        (async () => {
+
+            let currentRoomMessages = await getMessagesByRoomId(roomId);
+            dispatch(messageActions.initmessages(currentRoomMessages));
+            
+        })();
+
       }, []);
 
  
-    const sendMessage = () => {
+    const sendMessage = async () => {
         if (!message) return;
 
         let payload = {
@@ -141,11 +149,13 @@ const ChatScreen = ({navigation, route}) => {
         if (isNewRoom) {
             // setIsNewRoom(false);
         }
+
+        await writeMessage(payload);
     }
 
     const goBack = () => {
         socketIO.emit('leave-room', {room: roomId});
-        dispatch(messageActions.clearMessages())
+        dispatch(messageActions.clearMessages());
         navigation.goBack();
         return true;
     }
@@ -185,9 +195,9 @@ const ChatScreen = ({navigation, route}) => {
 
         socketIO.on("connect_error", onSocketConnectionError);
 
-        socketIO.on('message:receive', (socket) => {
-            // log(socket)
+        socketIO.on('message:receive', async (socket) => {
             dispatch(messageActions.addMessageToStore({...socket, id: generateUUID()}));
+            await writeMessage(socket);
         })
     
         const backHandler = BackHandler.addEventListener("hardwareBackPress", goBack);

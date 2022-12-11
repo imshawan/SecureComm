@@ -1,22 +1,22 @@
 // import Realm from "realm";
-import { BSON } from "realm";
 import { log } from "../config";
 import { Messages, Rooms } from "./schemas";
 
 export const getMessagesByRoomId = async (roomId) => {
     const message = await Messages();
     let messageList = message.objects("Messages").filtered(`roomId = '${roomId}'`).sorted("createdAt");
-    message.close();
+    // message.close();
     return messageList;
 }
 
-export const writeMessage = async (message, realm) => {
-    realm.write(() => {
-        realm.create("Messages", {
-          _id: new BSON.ObjectID().toHexString(),
-          ...message
-        });
+export const writeMessage = async (message) => {
+    const realmObject = await Messages();
+
+    realmObject.write(() => {
+        realmObject.create("Messages", {...message, roomId: message.room});
     });
+
+    realmObject.close();
 }
 
 export const listMyRooms = async () => {

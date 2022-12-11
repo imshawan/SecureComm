@@ -9,6 +9,7 @@ const messageSchema = {
         message: "string",
         roomId: "int",
         createdAt: "string",
+        status: "string",
     }
 };
 
@@ -29,8 +30,13 @@ export const roomSchema = {
 }
 
 export const Messages = async () => {
+    let {defaultPath} = Realm;
+    let dbName = defaultPath.substring(defaultPath.lastIndexOf('/') + 1, defaultPath.length);
+
     return await Realm.open({
+        path: defaultPath.replace(dbName, 'messages.realm'),
         schema: [messageSchema],
+        schemaVersion: 1,
       });
 }
 

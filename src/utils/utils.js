@@ -128,5 +128,8 @@ export const processShortTime = timestamp => {
 };
 
 export const sortItemByTimestamp = (array=[], key) => {
+  if (!Array.isArray(array)) return [];
+  if (!array.length) return [];
+  
   return array.sort((firstElem, secondElem) => new Date(firstElem[key]).getTime() < (new Date(secondElem[key])).getTime());
 }
