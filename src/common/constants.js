@@ -37,6 +37,7 @@ export const ENDPOINTS = {
     getUsersByUsername: '/api/' + API_VERSION +'/users/username',
     updateUserData: '/api/' + API_VERSION +'/users/update',
     changePicture: '/api/' + API_VERSION +'/users/picture',
+    checkUserActivityStatus: '/api/' + API_VERSION +'/users/status',
 
     createRoom: '/api/' + API_VERSION +'/rooms/create',
     contactUs: '/api/' + API_VERSION +'/query/contact',

@@ -71,7 +71,7 @@ export const getUserPicture = (user) => {
 }
 
 // https://stackoverflow.com/questions/6108819/javascript-timestamp-to-relative-time
-export const processTime = timestamp => {
+export const processTime = (timestamp, relative=false) => {
   var currentTime = Date.now();
 
   var msPerMinute = 60 * 1000;
@@ -83,14 +83,22 @@ export const processTime = timestamp => {
   var elapsed = currentTime - new Date(timestamp);
 
   if (elapsed < msPerMinute) {
+    if (relative) {
+      return Math.round(elapsed/1000) + ' seconds ago';
+    }
     return processShortTime(timestamp);
-    //  return Math.round(elapsed/1000) + ' seconds ago';
+
   } else if (elapsed < msPerHour) {
+    if (relative) {
+      return Math.round(elapsed/msPerMinute) + ' minutes ago';
+    }
     return processShortTime(timestamp);
-    //  return Math.round(elapsed/msPerMinute) + ' minutes ago';
+    
   } else if (elapsed < msPerDay) {
+    if (relative) {
+      return Math.round(elapsed/msPerHour ) + ' hours ago';
+    }
     return processShortTime(timestamp);
-    //  return Math.round(elapsed/msPerHour ) + ' hours ago';
   }
 
   if (elapsed < msPerMonth) {

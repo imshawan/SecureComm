@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, StatusBar, TouchableOpacity, ScrollView } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector } from 'react-redux';
 import { useNavigation } from "@react-navigation/native";
 
 import ProfileAvtar from "../components/ProfileAvtar";
-import { colors, HEADER_HEIGHT, fontSizes, DIALOG_LABELS, BUTTONS, fontFamily, APP_REMOTE_HOST } from '../common';
+import { colors, HEADER_HEIGHT, fontSizes, DIALOG_LABELS, BUTTONS, fontFamily, APP_REMOTE_HOST, ENDPOINTS } from '../common';
 import { getUserPicture } from "../utils";
 import { log } from "../config";
+import { HTTP } from "../services";
 
 
 const styles = StyleSheet.create({
@@ -320,6 +321,10 @@ const AccountScreen = ({navigation, route}) => {
     const {params} = route;
     const currentUser = useSelector(state => state.user.currentUser);
     const profile = params && params.chatUser ? params.chatUser : currentUser;
+    const [userStatus, setUserStatus] = useState({
+        status: '',
+        lastActive: ''
+    });
 
     const getFullname = () => {
         return [profile.firstname, profile.lastname].join(' ') || profile.username;
@@ -356,7 +361,24 @@ const AccountScreen = ({navigation, route}) => {
         return null;
     }
 
+    const getUserStatus = () => {
+        let {status} = userStatus;
+        
+        if (!['online', 'offline'].includes(status)) {
+            return '--';
+        } else return status;
+    }
+
     const isCurrentUserProfile = profile._id === currentUser._id;
+
+    useEffect(() => {
+        (async () => {
+            try {
+                let {payload} = await HTTP.get(ENDPOINTS.checkUserActivityStatus);
+                setUserStatus(payload);
+            } catch (err) {}
+        })();
+    }, [userStatus.status])
 
     return (<>
             <StatusBar barStyle='light-content' backgroundColor={"#8b97b0"} />
@@ -387,7 +409,7 @@ const AccountScreen = ({navigation, route}) => {
                                         <Text numberOfLines={2} ellipsizeMode='tail' style={getFullname().length > 15 ? {...styles.profileNameText, height: 40} : styles.profileNameText}>{getFullname()}</Text>
                                         <Text numberOfLines={1} ellipsizeMode='tail' style={styles.usernameText} >{'@' + profile.username}</Text>
                                         <View style={getFullname().length <= 15 ? {...styles.statusContainer, marginTop: 30} : styles.statusContainer}>
-                                            <ProfileChipContent header={'Status'} subHeader={'Online'} />
+                                            <ProfileChipContent header={'Status'} subHeader={getUserStatus()} />
                                             <ProfileChipContent header={'Joined'} subHeader={getJoiningDate()} />
                                             <ProfileChipContent header={'Location'} subHeader={'India'} />
                                         </View>

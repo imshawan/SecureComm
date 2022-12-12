@@ -12,9 +12,10 @@ import { counterActions } from '../../store/countersStore';
 import { Thread, ChatInput } from '../../components/chat';
 import ProfileAvtar from '../../components/ProfileAvtar';
 import { log } from '../../config';
-import { colors, HEADER_HEIGHT, fontSizes, APP_REMOTE_HOST, fontFamily } from '../../common';
-import { generateUUID, getUserPicture, notifyUser } from '../../utils';
+import { colors, HEADER_HEIGHT, fontSizes, APP_REMOTE_HOST, fontFamily, ENDPOINTS } from '../../common';
+import { generateUUID, getUserPicture, notifyUser, processTime } from '../../utils';
 import { writeMessage, getMessagesByRoomId } from '../../database';
+import { HTTP } from '../../services';
 
 
 const styles = StyleSheet.create({
@@ -93,6 +94,10 @@ const ChatScreen = ({navigation, route}) => {
     const [roomId, setRoomId] = useState(currentRoom.roomId);
     const [socketIO, setSocket] = useState(null);
     const [isNewRoom, setIsNewRoom] = useState(isNew);
+    const [userStatus, setUserStatus] = useState({
+        status: '',
+        lastActive: ''
+    });
 
     const isFocused = useIsFocused();
     const dispatch = useDispatch();
@@ -124,6 +129,29 @@ const ChatScreen = ({navigation, route}) => {
         })();
 
       }, []);
+
+    useEffect(() => {
+        (async () => {
+            try {
+                log('callled')
+                let {payload} = await HTTP.get(ENDPOINTS.checkUserActivityStatus);
+                setUserStatus(payload);
+            } catch (err) {}
+        })();
+    }, [userStatus.status])
+
+    const getUserStatus = () => {
+        let {status, lastActive} = userStatus;
+        if (status == 'online') return status;
+        if (lastActive) {
+            lastActive = processTime(lastActive, true);
+        }
+        if (status == 'offline') {
+            return `last active ${lastActive}`;
+        }
+
+        return;
+    }
 
  
     const sendMessage = async () => {
@@ -224,7 +252,7 @@ const ChatScreen = ({navigation, route}) => {
                         </TouchableOpacity>
                         <TouchableOpacity onPress={navigateToChatUserProfile} activeOpacity={0.5}>
                             <Text style={styles.headerTextStyle}>{fullname}</Text>
-                            <Text style={styles.activeTimeStyle} numberOfLines={1} ellipsizeMode='tail'>{'Last online 2 min ago'}</Text>
+                            <Text style={styles.activeTimeStyle} numberOfLines={1} ellipsizeMode='tail'>{getUserStatus()}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
