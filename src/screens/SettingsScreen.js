@@ -104,16 +104,17 @@ const styles = StyleSheet.create({
     },
     individualList: {
         flexDirection: 'row',
-        height: 60,
+        height: 58,
         borderBottomWidth: 1,
         borderBottomColor: colors.grey,
         alignItems: 'center'
     },
     individualListAvtar: {
-        margin: 3,
+        // margin: 3,
         marginLeft: 15,
-        height: 45,
-        width: 45,
+        marginTop: 5,
+        height: 40,
+        width: 40,
         borderRadius: 8
     },
     individualListContainer: {
@@ -232,7 +233,7 @@ const SettingsScreen = ({navigation, route}) => {
                         <View style={styles.cardStyle}>
                             <TouchableOpacity onPress={() => navigation.navigate('BasicProfileEdit')} activeOpacity={0.3} style={styles.individualList}>
                                 <ProfileAvtar name={getFullname()} image={currentUser.picture} customStyles={styles.individualListAvtar}/>
-                                <View style={styles.individualListContainer}>
+                                <View style={[styles.individualListContainer, {width: '76.5%'}]}>
                                     <View style={styles.individualListTextContainer}>
                                         <Text numberOfLines={1} ellipsizeMode='tail' style={styles.individualListHead}>{getFullname()}</Text>
                                         <Text numberOfLines={1} ellipsizeMode='tail' style={styles.individualListSubtext}>{[currentUser.work, currentUser.organization].join(' at ')}</Text>
