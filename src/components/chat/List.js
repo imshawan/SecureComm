@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     width: '60%',
   },
   latestMsgText: {
-    fontSize: fontSizes.small,
+    fontSize: fontSizes.medium,
     color: colors.subText,
     fontFamily: fontFamily.regular,
     lineHeight: fontSizes.regular,

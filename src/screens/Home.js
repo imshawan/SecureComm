@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import { StyleSheet, StatusBar, FlatList } from "react-native";
 import { View as AnimatedView } from 'react-native-animatable';
 import { SpeedDial } from '@rneui/themed';
@@ -13,7 +13,7 @@ import { List } from "../components/chat";
 
 import { log } from '../config';
 import { colors, LABELS, APP_REMOTE_HOST } from '../common';
-import { storeNewRoom, Rooms, updateRoomData } from '../database';
+import { storeNewRoom, Rooms, updateRoomData, writeMessage } from '../database';
 import { displayNotification, notifyUser } from '../utils';
 
 const styles = StyleSheet.create({
@@ -77,7 +77,7 @@ const Home = ({navigation}) => {
                 lastActive: message.createdAt,
                 memberDetails: JSON.stringify(chatUser),
               },
-              currentRoom._id,
+              currentRoom.roomId,
             );
 
             await displayNotification(
@@ -107,6 +107,8 @@ const Home = ({navigation}) => {
                 lastActive: message.createdAt,
                 memberDetails: chatUser,
             }));
+
+            await writeMessage(message);
         })
 
         return () => socketIO.removeListener('global:message:receive');

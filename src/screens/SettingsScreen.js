@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector, useDispatch } from 'react-redux';
 import AsyncStorage from "@react-native-community/async-storage";
 
-import { clearCurrentRooms } from "../database";
+import { clearCurrentRooms, clearAllMessages } from "../database";
 import { roomActions } from '../store/roomListStore';
 import { applicationActions } from '../store/appStore';
 import ProfileAvtar from "../components/ProfileAvtar";
@@ -184,6 +184,7 @@ const SettingsScreen = ({navigation, route}) => {
         await HTTP.post(ENDPOINTS.logOut);
         
         await clearCurrentRooms();
+        await clearAllMessages();
         setVisible(false);
         await AsyncStorage.clear();
         dispatch(roomActions.clearRooms());

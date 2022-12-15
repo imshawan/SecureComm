@@ -14,7 +14,7 @@ import ProfileAvtar from '../../components/ProfileAvtar';
 import { log } from '../../config';
 import { colors, HEADER_HEIGHT, fontSizes, APP_REMOTE_HOST, fontFamily, ENDPOINTS } from '../../common';
 import { generateUUID, getUserPicture, notifyUser, processTime } from '../../utils';
-import { writeMessage, getMessagesByRoomId } from '../../database';
+import { writeMessage, getMessagesByRoomId, updateRoomData } from '../../database';
 import { HTTP } from '../../services';
 
 
@@ -133,7 +133,6 @@ const ChatScreen = ({navigation, route}) => {
     useEffect(() => {
         (async () => {
             try {
-                log('callled')
                 let {payload} = await HTTP.get(ENDPOINTS.checkUserActivityStatus);
                 setUserStatus(payload);
             } catch (err) {}
@@ -178,7 +177,11 @@ const ChatScreen = ({navigation, route}) => {
             // setIsNewRoom(false);
         }
 
+        dispatch(roomActions.updateLatestMessage({_id: currentRoom._id, message: payload.message, lastActive: payload.createdAt, memberDetails: chatUser}));
+
         await writeMessage(payload);
+        await updateRoomData({latestMessage: payload.message, lastActive: payload.createdAt}, roomId);
+        
     }
 
     const goBack = () => {
@@ -225,7 +228,8 @@ const ChatScreen = ({navigation, route}) => {
 
         socketIO.on('message:receive', async (socket) => {
             dispatch(messageActions.addMessageToStore({...socket, id: generateUUID()}));
-            await writeMessage(socket);
+            // await writeMessage(socket);
+            // await updateRoomData({latestMessage: socket.message, lastActive: socket.createdAt}, socket.room);
         })
     
         const backHandler = BackHandler.addEventListener("hardwareBackPress", goBack);

@@ -16,7 +16,7 @@ export const writeMessage = async (message) => {
         realmObject.create("Messages", {...message, roomId: message.room});
     });
 
-    realmObject.close();
+    // realmObject.close();
 }
 
 export const listMyRooms = async () => {
@@ -54,9 +54,9 @@ export const storeNewRoom = async (room, realm) => {
 
 export const updateRoomData = async (data, id) => {
     const realmObj = await Rooms();
-    id = String(id);
+    id = parseInt(id);
 
-    let document = realmObj.objects("Rooms").filtered(`_id = '${id}'`);
+    let document = realmObj.objects("Rooms").filtered(`roomId = '${id}'`);
     if (document && document.length) {
 
         realmObj.write(() => {
@@ -72,5 +72,13 @@ export const clearCurrentRooms = async () => {
     rooms.write(() => {
         let roomsObj = rooms.objects("Rooms");
         rooms.delete(roomsObj);
+    });
+}
+
+export const clearAllMessages = async () => {
+    const messages = await Messages();
+    messages.write(() => {
+        let messagesObj = messages.objects("Messages");
+        messages.delete(messagesObj);
     });
 }

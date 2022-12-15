@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     },
     subHeaderStyle: {
         fontSize: fontSizes.medium,
-        fontFamily: fontFamily.medium,
+        fontFamily: fontFamily.regular,
         color: colors.lightestGrey,
         lineHeight: fontSizes.medium + 5,
         textAlign: 'center',
