@@ -112,7 +112,17 @@ const SearchScreen = ({navigation}) => {
 
     }, [value])
 
-    const renderItem = ({item}) => <List key={item.roomId} item={item} />
+    const renderItem = ({item}) => {
+        let {memberDetails} = item;
+        if (Array.isArray(memberDetails) && memberDetails.length) {
+            let chatUser = memberDetails.find(obj => obj && Object.keys(obj)[0] != currentUser._id);
+            memberDetails = Object.entries(chatUser)[0][1];
+        }
+        
+        return (
+            <List key={item.roomId} item={{...item, memberDetails}} />
+        );
+    }
 
 
     return (

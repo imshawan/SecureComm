@@ -73,10 +73,6 @@ export const List = ({item, message}) => {
         chatUser = JSON.parse(memberDetails);
     }
 
-    if (Array.isArray(memberDetails) && memberDetails.length) {
-      chatUser = Object.entries(memberDetails[0])[0][1];
-    }
-
     let name = [chatUser.firstname, chatUser.lastname].join(' ') || chatUser.username;
 
     const userCardOnClick = async card => {
