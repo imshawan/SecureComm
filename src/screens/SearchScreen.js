@@ -79,7 +79,9 @@ const styles = StyleSheet.create({
     }
 });
 
-const ResultHeader = ({header}) => {
+const ResultHeader = ({header, show}) => {
+    if (!show) return;
+    
     return (
         <View style={styles.resultHeaderContainer}>
             <Text style={styles.resultHeaderText}>{header}</Text>
@@ -150,7 +152,7 @@ const SearchScreen = ({navigation}) => {
 
             </View>
             
-            <ResultHeader header={isRecents ? SEARCH_SCREEN.resultHeaders.recent : SEARCH_SCREEN.resultHeaders.all} />
+            <ResultHeader show={Boolean(results.length)} header={isRecents ? SEARCH_SCREEN.resultHeaders.recent : SEARCH_SCREEN.resultHeaders.all} />
 
             {results.length ? <FlatList 
                 data={results}

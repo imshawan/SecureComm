@@ -36,10 +36,11 @@ const styles = StyleSheet.create({
     input: {
       marginLeft: 10,
       width: "90%",
+      height: 48,
       color: colors.black,
       fontFamily: fontFamily.regular,
       fontSize: fontSizes.medium,
-      lineHeight: fontSizes.regular,
+      lineHeight: fontSizes.medium,
       alignSelf: 'center',
     },
     buttonStyle: {
@@ -71,7 +72,7 @@ const SearchBar = ({clicked, value, setValue, setClicked}) => {
 
             <TextInput
               style={styles.input}
-              placeholder="Search"
+              placeholder="Name or username"
               value={value}
               placeholderTextColor={colors.placeholderColor}
               onChangeText={setValue}
