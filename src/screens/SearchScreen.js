@@ -9,7 +9,7 @@ import SearchBar from '../components/SearchBar';
 import EmptyComponent from '../components/EmptyComponent';
 
 import { log } from '../config';
-import { colors, HEADER_HEIGHT, fontSizes, LABELS } from '../common';
+import { colors, HEADER_HEIGHT, fontSizes, LABELS, fontFamily } from '../common';
 import { getUserPicture } from '../utils';
 
 const {SEARCH_SCREEN} = LABELS;
@@ -65,7 +65,27 @@ const styles = StyleSheet.create({
     iconStyles: {
         color: colors.black
     },
+    resultHeaderContainer: {
+        width: '90%',
+        alignSelf: 'center',
+        marginTop: 10
+    },
+    resultHeaderText: {
+        fontFamily: fontFamily.regular,
+        fontSize: fontSizes.small,
+        lineHeight: fontSizes.small,
+        color: colors.lightBlack,
+        marginBottom: 5
+    }
 });
+
+const ResultHeader = ({header}) => {
+    return (
+        <View style={styles.resultHeaderContainer}>
+            <Text style={styles.resultHeaderText}>{header}</Text>
+        </View>
+    );
+}
 
 const SearchScreen = ({navigation}) => {
     const [value, setValue] = useState("");
@@ -76,10 +96,7 @@ const SearchScreen = ({navigation}) => {
     const recentRooms = useSelector(state => state.rooms.recentRooms);
     
     const [results, setResults] = useState(recentRooms);
-
-    const userCardOnClick = async (card) => {
-        navigation.navigate('ChatScreen', JSON.parse(JSON.stringify(card)));
-    }
+    const [isRecents, setIsRecents] = useState(true);
 
     useEffect(() => {
         if (!value || (value && value.length < 3)) return;
@@ -87,8 +104,10 @@ const SearchScreen = ({navigation}) => {
         let results = (roomList).filter(item => new RegExp(value).test(item.name));
         if (results.length) {
             setResults(results);
+            setIsRecents(false);
         } else {
             setResults(recentRooms)
+            setIsRecents(true);
         }
 
     }, [value])
@@ -121,6 +140,8 @@ const SearchScreen = ({navigation}) => {
 
             </View>
             
+            <ResultHeader header={isRecents ? SEARCH_SCREEN.resultHeaders.recent : SEARCH_SCREEN.resultHeaders.all} />
+
             {results.length ? <FlatList 
                 data={results}
                 renderItem={renderItem}

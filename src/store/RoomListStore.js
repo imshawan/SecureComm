@@ -7,6 +7,7 @@ const roomsInitialState = {
     recentRooms: [],
     currentRoom: {},
 }
+const MAX_ROOMS_IN_RECENTS = 3;
 
 const roomsSlice = createSlice({
     name: 'roomList',
@@ -28,10 +29,17 @@ const roomsSlice = createSlice({
             state.roomList = [];
         },
         addToRecent(state, action) {
-            if (state.recentRooms.length > 6) {
-                state.recentRooms.length = 5;
+            let {recentRooms} = state;
+            let {currentRoom} = action.payload;
+
+            let roomFound = recentRooms.findIndex(obj => obj.roomId == currentRoom.roomId);
+            if (roomFound > -1) return;
+
+            if (recentRooms.length >= MAX_ROOMS_IN_RECENTS) {
+                recentRooms.length = MAX_ROOMS_IN_RECENTS;
             }
-            state.recentRooms = sortItemByTimestamp([...new Set([...state.recentRooms, {...action.payload.currentRoom}])], 'lastActive');
+
+            state.recentRooms = sortItemByTimestamp(recentRooms.concat(currentRoom), 'lastActive');
         },
         updateLatestMessage(state, action) {
             let {message, _id, lastActive, memberDetails} = action.payload;

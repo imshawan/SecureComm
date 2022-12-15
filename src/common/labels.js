@@ -94,6 +94,11 @@ const SEARCH_SCREEN = {
     emptyComponent: {
         header: 'Oops! No chats yet',
         subHeader: 'Please start new conversations for chats to \n appear here.'
+    },
+
+    resultHeaders: {
+        recent: 'RECENTS',
+        all: 'ALL'
     }
 }
 

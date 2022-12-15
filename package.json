@@ -1,6 +1,6 @@
 {
   "name": "securecomm",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "author": "Shawan Mandal <hello@imshawan.dev>",
   "description": "An open-source & cross-platform chat application for mobile devices",
   "private": true,
