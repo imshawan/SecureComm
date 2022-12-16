@@ -226,6 +226,11 @@ const EMAIL_SCREEN = {
 
     codeSent: 'Code sent to ',
     enterCode: 'Enter the 6-digit code',
+
+    actions: {
+        verify: 'VERIFY',
+        change: 'CHANGE',
+    },
 }
 
 export const LABELS = {

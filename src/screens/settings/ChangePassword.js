@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, StatusBar, TouchableOpacity, Text, TextInput, Keyboard } from 'react-native';
+import { View, StyleSheet, StatusBar, TouchableOpacity, Text, ActivityIndicator, Keyboard } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AnimatedTextInput from '../../components/AnimatedTextInput';
 import { colors, HEADER_HEIGHT, fontSizes, LABELS, fontFamily, ERRORS, ENDPOINTS } from '../../common';
@@ -125,7 +125,8 @@ const styles = StyleSheet.create({
         oldPassword: '',
         newPassword: '',
         confirmPassword: ''
-      });
+    });
+    const [loading, setLoading] = useState(false);
 
   
     const handleOnChange = (field, value) => {
@@ -134,6 +135,23 @@ const styles = StyleSheet.create({
 
     const handleErrors = (errorMessage, field) => {
         setErrors(prevState => ({...prevState, [field]: errorMessage}));
+    }
+
+    const handlePasswordChange = async () => {
+      setLoading(true);
+
+      try {
+        let {payload} = await HTTP.post(ENDPOINTS.changePassword, state);
+        setLoading(false);
+
+        notifyUser(payload.message);
+        navigation.goBack();
+
+      } catch (error) {
+        let {status} = error;
+        notifyUser(status.message, {showAction: false});
+        setLoading(false);
+      }
     }
   
     const handleSubmitPress = async () => {
@@ -158,7 +176,7 @@ const styles = StyleSheet.create({
         }
         if (errors) return;
         
-      log(state)
+      handlePasswordChange();
     }
   
    
@@ -227,7 +245,7 @@ const styles = StyleSheet.create({
                     style={{...defaultStyles.buttonStyle, ...styles.buttonStyle}}
                     activeOpacity={0.5}
                     onPress={handleSubmitPress}>
-                    <Text style={defaultStyles.buttonTextStyle}>{CHANGE_PASSWORD_SCREEN.actionBtn}</Text>
+                    <Text style={defaultStyles.buttonTextStyle}>{loading ? <ActivityIndicator color={colors.white} size={'large'}/> : CHANGE_PASSWORD_SCREEN.actionBtn}</Text>
                 </TouchableOpacity>
   
             </View>

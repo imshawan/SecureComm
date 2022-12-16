@@ -202,7 +202,7 @@ const VerifyCodeSection = ({newEmail, visible, oldEmail}) => {
                 style={[defaultStyles.buttonStyle, styles.buttonStyle]}
                 activeOpacity={0.5}
                 onPress={handleSubmitPress}>
-                <Text style={defaultStyles.buttonTextStyle}>{loading ? <ActivityIndicator color={colors.white} size={'large'}/> : 'CHANGE'}</Text>
+                <Text style={defaultStyles.buttonTextStyle}>{loading ? <ActivityIndicator color={colors.white} size={'large'}/> : EMAIL_SCREEN.actions.change}</Text>
             </TouchableOpacity>
         </View>
     );
@@ -230,7 +230,7 @@ const EmailInputSection = ({value, setValue, onSubmit, isFetching=false, visible
                 style={[defaultStyles.buttonStyle, styles.buttonStyle]}
                 activeOpacity={0.5}
                 onPress={onSubmit}>
-                <Text style={defaultStyles.buttonTextStyle}>{isFetching ? <ActivityIndicator color={colors.white} size={'large'}/> : 'VERIFY'}</Text>
+                <Text style={defaultStyles.buttonTextStyle}>{isFetching ? <ActivityIndicator color={colors.white} size={'large'}/> : EMAIL_SCREEN.actions.verify}</Text>
             </TouchableOpacity>
         </View>
     );
