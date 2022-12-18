@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     sectionHeading: {
         marginVertical: 16,
         flexDirection: 'row',
-        height: 46,
+        // height: 46,
         width: '90%',
         alignSelf: 'center',
     },
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     },
     individualList: {
         flexDirection: 'row',
-        height: 58,
+        // height: 58,
         borderBottomWidth: 1,
         borderBottomColor: colors.grey,
         alignItems: 'center'
@@ -134,12 +134,14 @@ const styles = StyleSheet.create({
         color: colors.black,
         lineHeight: fontSizes.regular - 1,
         marginBottom: 5,
+        paddingTop: 12
     },
     individualListSubtext: {
         fontSize: fontSizes.medium,
         fontFamily: fontFamily.regular,
         color: colors.lightBlack,
-        lineHeight: fontSizes.medium
+        lineHeight: fontSizes.medium,
+        paddingBottom: 12
     },
     individualListIcon: {
         color: colors.lightBlack

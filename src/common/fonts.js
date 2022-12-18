@@ -1,19 +1,19 @@
-import {scale} from '../utils';
+import {scale, normalize} from '../utils';
 
 export const fontSizes = {
-    xxSmall: scale(7),
-    extraSmall: scale(8),
-    small: scale(10),
-    medium: scale(12),
-    regular: scale(14),
-    big: scale(16),
-    large: scale(18),
-    extraLarge: scale(20),
-    xxLarge: scale(22),
+    xxSmall: normalize(7),
+    extraSmall: normalize(8),
+    small: normalize(10),
+    medium: normalize(12),
+    regular: normalize(14),
+    big: normalize(16),
+    large: normalize(18),
+    extraLarge: normalize(20),
+    xxLarge: normalize(22),
   };
 
-export const appHeaderSize = scale(24);
-export const headerFontSize = scale(36);
+export const appHeaderSize = normalize(24);
+export const headerFontSize = normalize(36);
 
 export const fontFamily = {
   bold: 'SF-Pro-Rounded-Bold',
