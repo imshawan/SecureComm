@@ -3,6 +3,7 @@
  import {NavigationContainer} from '@react-navigation/native';
  import {createStackNavigator} from '@react-navigation/stack';
  import SplashScreen from 'react-native-splash-screen';
+ import messaging from '@react-native-firebase/messaging';
 
  import Loader from './components/Loader';
  
@@ -28,6 +29,9 @@
  import { listMyRooms } from './database';
  import { roomActions } from './store/roomListStore';
  import { applicationActions } from './store/appStore';
+import { HTTP } from './services';
+import { ENDPOINTS } from './common';
+import { notifyUser } from './utils';
  
 
  const Stack = createStackNavigator();
@@ -51,6 +55,50 @@
 
   const application = useSelector(state => state.application);
   const dispatch = useDispatch();
+
+  const onMessage = async (remoteMessage) => {
+    console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
+  }
+
+  const onNotificationOpenedApp = (remoteMessage) => {
+    console.log(
+      'Notification caused app to open from background state:',
+      remoteMessage.notification,
+    );
+    // navigation.navigate(remoteMessage.data.type);
+  }
+
+  const saveUserFCMToken = async (token) => {
+    try {
+      await HTTP.post(ENDPOINTS.saveFCMToken, {token});
+    } catch (err) {
+      let {status} = err;
+      if (status) {
+        notifyUser(status.message, {showAction: false});
+      }
+    }
+  }
+  
+  const onAppBootstrap = async () => {
+    await messaging().registerDeviceForRemoteMessages();
+    const token = await messaging().getToken();
+
+    await saveUserFCMToken(token);
+  }
+
+  useEffect(() => {
+    const unsubscribeMessages = messaging().onMessage(onMessage);
+    const unsubscribeTokenRefresh = messaging().onTokenRefresh(saveUserFCMToken);
+
+    messaging().onNotificationOpenedApp(onNotificationOpenedApp);
+    onAppBootstrap();
+
+    return () => {
+      unsubscribeMessages();
+      unsubscribeTokenRefresh();
+    };
+
+  }, []);
 
   useEffect(() => {
     

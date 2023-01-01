@@ -39,6 +39,8 @@ export const ENDPOINTS = {
     changePicture: '/api/' + API_VERSION +'/users/picture',
     checkUserActivityStatus: '/api/' + API_VERSION +'/users/status',
 
+    saveFCMToken: '/api/' + API_VERSION +'/fcm/token',
+
     createRoom: '/api/' + API_VERSION +'/rooms/create',
     contactUs: '/api/' + API_VERSION +'/query/contact',
 };

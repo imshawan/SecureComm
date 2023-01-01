@@ -14,7 +14,8 @@ import { List } from "../components/chat";
 import { log } from '../config';
 import { colors, LABELS, APP_REMOTE_HOST } from '../common';
 import { storeNewRoom, Rooms, updateRoomData, writeMessage } from '../database';
-import { displayNotification, notifyUser } from '../utils';
+import { notifyUser } from '../utils';
+import { displayChatNotification } from '../notification';
 
 const styles = StyleSheet.create({
     container: {
@@ -80,11 +81,11 @@ const Home = ({navigation}) => {
               currentRoom.roomId,
             );
 
-            await displayNotification(
+            await displayChatNotification(
                 chatUser._id,
                 [chatUser.firstname, chatUser.lastname].join(' '), 
                 message.message, 
-                chatUser.picture);
+                chatUser.picture, currentRoom.roomId);
 
             if (!roomExists(currentRoom.roomId)) {
                 // let chatUserData = currentRoom.memberDetails.find(el =>  Object.keys(el)[0] != currentUser._id);

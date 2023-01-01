@@ -31,7 +31,7 @@ export const createChannelById = async (name='Default') => {
   } else return channel.id;
 }
 
-export const displayNotification = async (id, title, body, icon) => {
+export const displayChatNotification = async (id, title, body, icon, roomId) => {
     const channelId = await getChannel('Notification');
     const {currentRoom, notifications} = getRoomAndNotificationPreferences();
 
@@ -40,7 +40,7 @@ export const displayNotification = async (id, title, body, icon) => {
     Store.dispatch(counterActions.incrementUnreadCount(id));
     
     await notifee.displayNotification({
-        id,
+        id: [id, ':', roomId].join(''),
         title,
         subtitle: 'New message',
         android: {
@@ -71,7 +71,7 @@ export const displayNotification = async (id, title, body, icon) => {
           actions: [
             {
               title: `<span style="color: ${colors.brandColor};">Open</span>`,
-              pressAction: { id: 'open' },
+              pressAction: { id: 'open', launchActivity: 'com.securecomm.MainActivity' },
             },
             {
               title: `<span style="color: ${colors.brandColor};">Dismiss</span>`,
