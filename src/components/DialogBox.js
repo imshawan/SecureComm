@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         marginTop: 8
     },
     buttonStyle: {
-        backgroundColor: colors.grey,
+        backgroundColor: colors.brandColor + '20',
         borderWidth: 0,
         color: colors.white,
         height: 38,
@@ -31,7 +31,9 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         paddingHorizontal: 16,
         marginLeft: 10,
-        marginBottom: 6
+        marginBottom: 6,
+        // borderWidth: 1,
+        // borderColor: colors.brandColor
     },
     buttonTextStyle: {
         color: colors.black,
@@ -73,7 +75,7 @@ const DialogBox = ({title, body, visible, setVisible, action1, action2, action1T
                         activeOpacity={0.5}
                         onPress={action2 || defaultAction}
                         style={styles.buttonStyle}>
-                        <Text style={styles.buttonTextStyle}>{action2Text || 'Close'}</Text>
+                        <Text style={[styles.buttonTextStyle, {color: colors.brandColor}]}>{action2Text || 'Close'}</Text>
                     </TouchableOpacity>
                 </Dialog.Actions>
             </Dialog>

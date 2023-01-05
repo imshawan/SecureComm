@@ -95,11 +95,18 @@ const NewChatScreen = ({navigation, route}) => {
     const [loading, setLoading] = useState(false);
     const [isInitialLoad, setIsInitialLoad] = useState(true);
     const [isSearching, setIsSearching] = useState(false);
+    const [containsQuery, setContainsQuery] = useState(null);
 
     const dispatch = useDispatch();
     const textInputRef = useRef();
 
     const handleSearch = useCallback(debounce(async(query) => {
+        if (!query || !query.length) {
+            setContainsQuery(false);
+        } else {
+            setContainsQuery(true);
+        }
+        
         if (!query || (query && query.length < 3)) return;
         if (isInitialLoad) {
             setIsInitialLoad(false);
@@ -167,6 +174,14 @@ const NewChatScreen = ({navigation, route}) => {
         }
     }
 
+    const ReactiveSearchIndicator = () => {
+        if (!containsQuery) return <></>;
+
+        if (isSearching) return <ActivityIndicator color={colors.brandColor} size={25} />;
+
+        return <Icon name={"times"} size={fontSizes.regular} style={styles.iconStyles} />;
+    }
+
     const renderItem = ({item}) => <UserList callback={() => userCardOnClick(item)} item={item} key={item._id} />
 
     return (<>
@@ -193,10 +208,7 @@ const NewChatScreen = ({navigation, route}) => {
                             onChangeText={(searchText) => handleSearch(searchText)}
                         />
                         <TouchableOpacity onPress={clearTextInput} style={styles.searchingIconContainerStyle}>
-                          {isSearching ? 
-                            <ActivityIndicator color={colors.brandColor} size={25} /> : 
-                            <Icon name={"times"} size={fontSizes.regular} style={styles.iconStyles} />
-                            }
+                          <ReactiveSearchIndicator />
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -208,7 +220,7 @@ const NewChatScreen = ({navigation, route}) => {
                 /> : (<EmptyComponent 
                         header={NEW_CHATS_SCREEN[isInitialLoad ? 'initialComponent' :'emptyComponent'].header}
                         subHeader={NEW_CHATS_SCREEN[isInitialLoad ? 'initialComponent' :'emptyComponent'].subHeader}
-                        IconComponent={() => <MaterialIcon name={isInitialLoad ? 'person-search' :'people-alt'} style={{color: colors.lightGrey}} size={90} />} 
+                        IconComponent={() => <MaterialIcon name={isInitialLoad ? 'person-search' : 'people-alt'} style={{color: colors.lightGrey}} size={90} />} 
                         />
                     )}
 

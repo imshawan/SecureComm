@@ -36,12 +36,12 @@ const styles = StyleSheet.create({
     input: {
       marginLeft: 10,
       width: "90%",
-      height: 48,
+      // height: 48,
       color: colors.black,
       fontFamily: fontFamily.regular,
-      fontSize: fontSizes.medium,
-      lineHeight: fontSizes.medium,
       alignSelf: 'center',
+      flex: 1,
+      padding: 8
     },
     buttonStyle: {
         padding: 11,
