@@ -159,7 +159,9 @@ const ChatScreen = ({navigation, route}) => {
         let payload = {
             name: fullname, 
             message, 
-            id: generateUUID('msg'), 
+            id: generateUUID('msg'),
+            fromId: currentUser._id, 
+            toId: chatUser._id,
             _id: currentUser._id, 
             room: roomId, 
             createdAt: new Date(Date.now()).toISOString(),
@@ -195,14 +197,14 @@ const ChatScreen = ({navigation, route}) => {
         return (
             <Thread 
                 key={item.id} 
-                userId={item._id}
+                userId={item.fromId}
                 name={item.name} 
                 message={item.message} 
                 timestamp={item.createdAt}
                 status={item.status}
-                isReceiver={item._id != currentUser._id}
-                containerStyles={{justifyContent: item._id != currentUser._id ? 'flex-start' : 'flex-end'}} 
-                customStyles={item._id != currentUser._id ? styles.receiverThreadStyles : styles.senderThreadStyles}
+                isReceiver={item.fromId != currentUser._id}
+                containerStyles={{justifyContent: item.fromId != currentUser._id ? 'flex-start' : 'flex-end'}} 
+                customStyles={item.fromId != currentUser._id ? styles.receiverThreadStyles : styles.senderThreadStyles}
             />
         );
     }

@@ -5,6 +5,8 @@ const messageSchema = {
     properties: {
         id: "string",
         _id: "string",
+        fromId: "string",
+        toId: "string",
         name: "string",
         message: "string",
         roomId: "int",
