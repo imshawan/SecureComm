@@ -71,7 +71,7 @@ export const displayChatNotification = async (id, title, body, icon, roomId) => 
           actions: [
             {
               title: `<span style="color: ${colors.brandColor};">Open</span>`,
-              pressAction: { id: 'open', launchActivity: 'com.securecomm.MainActivity' },
+              pressAction: { id: 'open', launchActivity: 'default' },
             },
             {
               title: `<span style="color: ${colors.brandColor};">Dismiss</span>`,

@@ -294,6 +294,7 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
     implementation platform("com.google.firebase:firebase-bom:31.0.1")
+    implementation 'com.google.firebase:firebase-messaging'
     implementation "com.google.firebase:firebase-analytics"
     implementation project(':react-native-splash-screen')
 
