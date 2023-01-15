@@ -141,3 +141,25 @@ export const sortItemByTimestamp = (array=[], key) => {
   
   return array.sort((firstElem, secondElem) => new Date(firstElem[key]).getTime() < (new Date(secondElem[key])).getTime());
 }
+
+export const getUnreadMessagesCount = (roomId, counters) => {
+  if (!roomId || !counters) {
+      throw new Error('Missing parameters during function call');
+  }
+
+  if (!Array.isArray(counters)) {
+      throw new Error(`Counters must be an array, found ${typeof counters} instead`);
+  }
+
+  if (roomId.length != 24) {
+      throw new Error('Invalid roomId was supplied!');
+  }
+
+  let objIndex = counters.findIndex(obj => obj && Object.keys(obj)[0] == roomId);
+
+  if (objIndex != -1) {
+      return counters[objIndex][roomId];
+  } else {
+      return 0;
+  }
+}

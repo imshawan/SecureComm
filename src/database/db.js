@@ -52,7 +52,11 @@ export const storeNewRoom = async (room, realm) => {
     }
 }
 
-export const updateRoomData = async (data, id) => {
+export const updateRoomData = async (data={}, id) => {
+    if (!data || !Object.keys(data).length) {
+        return;
+    }
+
     const realmObj = await Rooms();
     id = parseInt(id);
 

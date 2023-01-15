@@ -162,7 +162,7 @@ const ChatScreen = ({navigation, route}) => {
             id: generateUUID('msg'),
             fromId: currentUser._id, 
             toId: chatUser._id,
-            _id: currentUser._id, 
+            _id: '', 
             room: roomId, 
             createdAt: new Date(Date.now()).toISOString(),
             status: "sent",

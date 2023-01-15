@@ -3,12 +3,18 @@ import Sound from 'react-native-sound';
 import Store from '../store';
 import { counterActions } from '../store/countersStore';
 import { IMAGES, colors } from '../common';
+import { updateRoomData } from '../database';
+import { getUnreadMessagesCount } from '../utils';
 
 const notificationSound = new Sound('bell.mp3', Sound.MAIN_BUNDLE);
 
 export const getRoomAndNotificationPreferences = () => {
-    const {rooms, settings} = Store.getState();
-    return {currentRoom: rooms.currentRoom, notifications: settings.notifications};
+    const {rooms, settings, counters} = Store.getState();
+    const {unreadMessagesCount} = counters;
+
+    return {
+      currentRoom: rooms.currentRoom, 
+      notifications: settings.notifications, unreadMessagesCount};
 }
 
 export const createChannelById = async (name='Default') => {
@@ -33,11 +39,14 @@ export const createChannelById = async (name='Default') => {
 
 export const displayChatNotification = async (id, title, body, icon, roomId) => {
     const channelId = await getChannel('Notification');
-    const {currentRoom, notifications} = getRoomAndNotificationPreferences();
+    const {currentRoom, notifications, unreadMessagesCount} = getRoomAndNotificationPreferences();
 
     if (currentRoom._id == id) return;
 
     Store.dispatch(counterActions.incrementUnreadCount(id));
+    
+    const currentCount = getUnreadMessagesCount(id, unreadMessagesCount);
+    await updateRoomData({unreadMessageCount: currentCount + 1}, roomId);
     
     await notifee.displayNotification({
         id: [id, ':', roomId].join(''),
