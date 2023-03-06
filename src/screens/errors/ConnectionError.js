@@ -36,9 +36,12 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily.bold,
   },
   sectionSubheaderText: {
-    color: colors.black,
-    fontSize: fontSizes.regular,
+    fontSize: fontSizes.regular - 1,
     fontFamily: fontFamily.regular,
+    color: colors.htmlGrey,
+    lineHeight: fontSizes.extraLarge,
+    textAlign: 'center',
+    marginHorizontal: 8,
     marginBottom: 10
   },
   checkedItemsContainer: {

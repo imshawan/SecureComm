@@ -51,7 +51,7 @@ export const BUTTONS = {
     close: 'Cancel',
     signOut: 'Remove',
     removeAccount: 'Remove account',
-    connectionError: 'Retry connecting',
+    connectionError: 'Retry communicating',
 }
 
 export const SETTINGS = {
