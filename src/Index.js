@@ -20,6 +20,15 @@ const SecureComm = () => {
         }
     }
 
+    const showConnectionError = () => {
+        dispatch(applicationActions.setConnectionStatus(true));
+        hideSplashScreen();
+    }
+
+    const hideConnectionError = () => {
+        dispatch(applicationActions.setAuthenticated(false));
+    }
+
     const loadApplicationSettings = async () => {
         const notification = await getNotificationPreferences();
 
@@ -37,13 +46,18 @@ const SecureComm = () => {
         if (token) {
             setAuthToken(token);
             dispatch(applicationActions.setAuthToken(token));
-            let {payload} = await HTTP.post(ENDPOINTS.checkAuthentication, {});
-            dispatch(applicationActions.setAuthenticated(payload.authenticated));
-            if (payload.authenticated) {
-                let user = await getLoggedInUser();
-                dispatch(currentUserActions.setCurrentUser(user));
+
+            try {
+                let {payload} = await HTTP.post(ENDPOINTS.checkAuthentication, {});
+                dispatch(applicationActions.setAuthenticated(payload.authenticated));
+                if (payload.authenticated) {
+                    let user = await getLoggedInUser();
+                    dispatch(currentUserActions.setCurrentUser(user));
+                    hideSplashScreen();
+                }
+            } catch (err) {
+                showConnectionError();
             }
-            hideSplashScreen();
         } else {
             setTimeout(() => hideSplashScreen(), 1000);
         }

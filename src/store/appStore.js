@@ -7,6 +7,7 @@ const applicationInitialState = {
     authToken: null,
     initializingRooms: true,
     deviceId: null,
+    isConnectionError: null,
 }
 
 const applicationSlice = createSlice({
@@ -30,6 +31,9 @@ const applicationSlice = createSlice({
         },
         setDeviceId(state, action) {
             state.deviceId = action.payload;
+        },
+        setConnectionStatus(state, action) {
+            state.isConnectionError = action.payload;
         }
     }
 });

@@ -50,7 +50,8 @@ export const DIALOG_LABELS = {
 export const BUTTONS = {
     close: 'Cancel',
     signOut: 'Remove',
-    removeAccount: 'Remove account'
+    removeAccount: 'Remove account',
+    connectionError: 'Retry connecting',
 }
 
 export const SETTINGS = {
@@ -233,6 +234,14 @@ const EMAIL_SCREEN = {
     },
 }
 
+const CONNECTION_ERROR = {
+    header: 'Oops! Something went wrong',
+    subHeader: 'We are unable to communicate with our servers, you can try these steps to get back online:',
+
+    checkRouter: 'Check your modem/router and network cables',
+    reconnect: 'Try reconnecting your Wi-Fi or cellular data connections',
+}
+
 export const LABELS = {
     FORGOT_PASSWORD_SCREEN,
     LOCATION_EDIT_SCREEN,
@@ -244,5 +253,6 @@ export const LABELS = {
     NOTIFICATION_SCREEN,
     EMAIL_SCREEN,
     SEARCH_SCREEN,
-    NEW_CHATS_SCREEN
+    NEW_CHATS_SCREEN,
+    CONNECTION_ERROR
 };

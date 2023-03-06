@@ -26,6 +26,7 @@
  import ChangePassword from './screens/settings/ChangePassword';
  import Notification from './screens/settings/Notification';
  import Email from './screens/settings/Email';
+ import ConnectionError from './screens/errors/ConnectionError';
 
  import { listMyRooms } from './database';
  import { roomActions } from './store/roomListStore';
@@ -146,6 +147,7 @@ import { notifyUser } from './utils';
 
  export default Router = () => {
   const isAuthenticated = useSelector(state => state.application.isAuthenticated);
+  const isConnectionError = useSelector(state => state.application.isConnectionError);
 
   useEffect(() => {
     SplashScreen.hide();
@@ -153,7 +155,8 @@ import { notifyUser } from './utils';
 
   return (
     <>
-      {isAuthenticated ? <PrivateRoutes /> : <PublicRoutes />}
+      {isAuthenticated ? <PrivateRoutes /> : 
+        (isConnectionError ? <ConnectionError /> : <PublicRoutes />)}
     </>
   );
  }
