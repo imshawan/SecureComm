@@ -5,6 +5,7 @@
  import SplashScreen from 'react-native-splash-screen';
  import messaging from '@react-native-firebase/messaging';
  import DeviceInfo from 'react-native-device-info';
+ import { Platform } from 'react-native';
 
  import Loader from './components/Loader';
  
@@ -72,9 +73,10 @@ import { notifyUser } from './utils';
 
   const saveUserFCMToken = async (token) => {
     const deviceId = DeviceInfo.getUniqueIdSync();
+    const deviceType = Platform.OS;
 
     try {
-      await HTTP.post(ENDPOINTS.saveFCMToken, {token, deviceId});
+      await HTTP.post(ENDPOINTS.saveFCMToken, {token, deviceId, deviceType});
     } catch (err) {
       let {status} = err;
       if (status) {

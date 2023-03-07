@@ -53,6 +53,7 @@ const LoginScreen = ({navigation, route}) => {
     username: '',
     password: '',
     deviceId: DeviceInfo.getUniqueIdSync(),
+    deviceType: Platform.OS
   })
   const [loading, setLoading] = useState(false)
  
